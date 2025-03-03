@@ -1,0 +1,144 @@
+
+\documentclass[12pt]{report} 
+
+%?? paths
+\newcommand{\CiteMathPackage}{math} 
+\newcommand{\CiteReference}{../reference.bib}
+
+%?? packages 
+\usepackage{setspace,geometry,fancyvrb,rotating} 
+\usepackage{marginnote,datetime,enumitem} 
+\usepackage{titlesec,indentfirst} 
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools} 
+\usepackage{threeparttable,booktabs,adjustbox} 
+\usepackage{graphicx,epstopdf,float,soul,subfig} 
+\usepackage[toc,page]{appendix} 
+\usdate
+
+%?? page setup 
+\geometry{scale=0.8} 
+\titleformat{\paragraph}[runin]{\itshape}{}{}{}[.] 
+\titlelabel{\thetitle.\;} 
+\setlength{\parindent}{10pt} 
+\setlength{\parskip}{10pt} 
+\usepackage{Alegreya} 
+\usepackage[T1]{fontenc}
+% \usepackage{fourier} % Favorite Font
+
+%?? bibliography 
+\usepackage{natbib,fancybox,url,xcolor} 
+\definecolor{MyBlue}{rgb}{0,0.2,0.6} 
+\definecolor{MyRed}{HTML}{D2042D}
+\definecolor{MyGreen}{rgb}{0,0.4,0} 
+\definecolor{MyPink}{HTML}{E50379} 
+\definecolor{MyOrange}{HTML}{CC5500} 
+\definecolor{MyPurple}{HTML}{BF40BF}
+\newcommand{\highlightR}[1]{{\emph{\color{MyRed}{#1}}}} 
+\newcommand{\highlightB}[1]{{\emph{\color{MyBlue}{#1}}}} 
+\newcommand{\highlightP}[1]{{\emph{\color{MyPink}{#1}}}} 
+\newcommand{\highlightO}[1]{{\emph{\color{MyOrange}{#1}}}}
+\newcommand{\highlightPP}[1]{{\emph{\color{MyPurple}{#1}}}}
+\usepackage[bookmarks=true,bookmarksnumbered=true,colorlinks=true,linkcolor=MyGreen,citecolor=MyGreen,filecolor=MyBlue,urlcolor=MyGreen]{hyperref} 
+\bibliographystyle{econ}
+
+%?? math and theorem environment 
+\theoremstyle{definition} 
+\newtheorem{assumption}{Assumption} 
+\newtheorem{definition}{Definition} 
+\newtheorem{theorem}{Theorem} 
+\newtheorem{proposition}{Proposition} 
+\newtheorem{lemma}{Lemma} 
+\newtheorem{example}{Example} 
+\newtheorem{corollary}[theorem]{Corollary} 
+\usepackage{mathtools} 
+\usepackage{\CiteMathPackage}
+
+\begin{document} 
+
+%??%??%??%??%??%??%??%??%??%??%??%??%??%??%??%??%??%??%??%??%??%?? 
+%?? title 
+%??%??%??%??%??%??%??%??%??%??%??%??%??%??%??%??%??%??%??%??%??%??
+
+\title{\bf The Economics of Taxation, second edition, 2011} 
+\author{Wenzhi Wang \thanks{This note is written in my pre-doc period at the University of Chicago Booth School of Business.} } 
+\date{\today} 
+\maketitle 
+
+\tableofcontents
+
+\chapter*{Introduction}
+
+\part{The Effects of Taxation}
+
+The first part of this book is dedicated to the study of the economic effects of taxation. Any tax measure will prompt agents to change their behavior so as to pay less taxes. For instance, an often debated question is that of the negative effect of the income tax on labor supply. We examine in Chapter \ref{ch1_distortions_welfarelosses} the mechanisms that change the main behaviors. We also see there how the social losses induced by taxation can be evaluated.
+
+Social losses are, of course, not borne equally by all agents, and that indeed is a hot-button political issue. Suppose, for instance, that the government decides to raise the VAT on sales of cars. Some effects of such a measure are predictable: car producers will complain that their sales will decrease and car buyers will fear a rise in the price of cars. But who really bears the price of such a rise in VAT, and in what proportions? Chapter \ref{ch2_} studies this question, first in a partial equilibrium, then in a general equilibrium framework.
+
+It is important to understand the contents of both chapters well before moving to the discussion of optimal taxation in the second part of the book.
+
+\chapter{Distortions and Welfare Losses} \label{ch1_distortions_welfarelosses}
+
+A traditional technocratic view of the economist is that his role is to take governmental objectives and find a way to implement them that minimizes distortions or, equivalently, that reduces the efficiency of the economy by as little as possible. But what are these distortions, and how can they be measured? At a Pareto optimum the marginal rates of substitution of all consumers are equal to the technical marginal rates of substitution of all firms. Under the usual conditions and without taxation, the competitive equilibrium is Pareto optimal because every consumer equates his marginal rates of substitution to the relative prices. Once taxes are introduced in such an economy, the relative prices perceived by various agents differ: for instance, consumers observe after-tax prices while producers observe before-tax prices. In equilibrium, the equality of marginal rates of substitution is not sustained, and this condition cannot be a Pareto optimum. The price system does not coordinate the agents' decisions efficiently because it sends different signals to different agents.
+
+\section{The Effects of Taxation}
+
+We will focus here on the main economic decisions that are central to tax policy debates. In each case we will adopt a partial equilibrium viewpoint; for instance, we will neglect the effect of the income tax on workers' wages.
+
+\subsection{Labor Supply}
+
+\subsubsection{The Standard Model}
+
+Consider a consumer with utility function $U\of{C, L}$, where $C$ is consumption of an aggregate good of unit price and $L$ is labor (so that $U$ increases in $C$ and decreases in $L$). Assume that a proportional income tax at rate $t$ is created so that the budget constraint becomes 
+\begin{equation}
+    \notag 
+    C \leq \bp{1-t} \bp{w L + \undl{R}} \coloneqq s L + M,
+\end{equation}
+where $\undl{R}$ represents nonlabor income (which is taxed at the same rate as labor income) and we define $s \coloneqq \bp{1-t}w$ and $M \coloneqq \bp{1-t} \undl{R}$.
+
+The creation of (or an increase in) the income tax can have three effects:
+\begin{enumerate}[topsep=0pt, leftmargin=20pt, itemsep=0pt, label=(\arabic*)]
+	\setlength{\parskip}{10pt} 
+	\item In lowering $M$ (net nonlabor income), when leisure is a normal good, an income tax reduces the demand for leisure and thus increases labor supply.
+	\item A decrease in the net wage $s$ goes in the same direction and also reduces income.
+	\item A decrease in net wages may make work less attractive, and thus reduce the supply of labor.
+\end{enumerate}
+
+Effects (1) and (2) are income effects that depend on the average tax rate, whereas the substitution effect (3) depends on the marginal tax rate. This distinction hardly matters when the tax is proportional, but it may become important with a progressive income tax.
+
+To evaluate these effects, start with 
+\begin{equation}
+    \notag 
+    \pdfrac{L}{t} = \pdfrac{L}{s} \pdfrac{s}{t} + \pdfrac{L}{M} \pdfrac{M}{t}.
+\end{equation}
+The Slutsky equation is 
+\begin{equation}
+    \notag 
+    \pdfrac{L}{s} = S + L \pdfrac{L}{M},
+\end{equation}
+where $S > 0$ is the Slutsky term, which is the compensated derivative of labor supply with respect to the net wage:
+\begin{equation}
+    \notag 
+    S \coloneqq \bp{\pdfrac{L}{s}}_{U}.
+\end{equation}
+Therefore, 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% \bibliography{\CiteReference} 
+
+\end{document}
