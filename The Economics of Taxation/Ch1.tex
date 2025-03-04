@@ -1,0 +1,221 @@
+% !TEX root = EoT.tex
+
+
+\chapter{Distortions and Welfare Losses} \label{ch1_distortions_welfarelosses}
+
+A traditional technocratic view of the economist is that his role is to take governmental objectives and find a way to implement them that minimizes distortions or, equivalently, that reduces the efficiency of the economy by as little as possible. But what are these distortions, and how can they be measured? At a Pareto optimum the marginal rates of substitution of all consumers are equal to the technical marginal rates of substitution of all firms. Under the usual conditions and without taxation, the competitive equilibrium is Pareto optimal because every consumer equates his marginal rates of substitution to the relative prices. Once taxes are introduced in such an economy, the relative prices perceived by various agents differ: for instance, consumers observe after-tax prices while producers observe before-tax prices. In equilibrium, the equality of marginal rates of substitution is not sustained, and this condition cannot be a Pareto optimum. The price system does not coordinate the agents' decisions efficiently because it sends different signals to different agents.
+
+We are now going to study the effects of taxes on the main economic decisions:
+\begin{itemize}[topsep=0pt, leftmargin=20pt, itemsep=0pt]
+	\setlength{\parskip}{10pt} 
+	\item Supply of labor 
+	\item Interest from savings
+	\item Risk-taking
+\end{itemize}
+
+\section{The Effects of Taxation}
+
+We will focus here on the main economic decisions that are central to tax policy debates. In each case we will adopt a partial equilibrium viewpoint; for instance, we will neglect the effect of the income tax on workers' wages.
+
+\subsection{Labor Supply}
+
+\subsubsection{The Standard Model}
+
+Consider a consumer with utility function $U\of{C, L}$, where $C$ is consumption of an aggregate good of unit price and $L$ is labor (so that $U$ increases in $C$ and decreases in $L$). Assume that a proportional income tax at rate $t$ is created so that the budget constraint becomes 
+\begin{equation}
+    \notag 
+    C \leq \bp{1-t} \bp{w L + \undl{R}} \coloneqq s L + M,
+\end{equation}
+where $\undl{R}$ represents nonlabor income (which is taxed at the same rate as labor income) and we define $s \coloneqq \bp{1-t}w$ and $M \coloneqq \bp{1-t} \undl{R}$.
+
+The creation of (or an increase in) the income tax can have three effects:
+\begin{enumerate}[topsep=0pt, leftmargin=20pt, itemsep=0pt, label=(\arabic*)]
+	\setlength{\parskip}{10pt} 
+	\item In lowering $M$ (net nonlabor income), when leisure is a normal good, an income tax reduces the demand for leisure and thus increases labor supply.
+	\item A decrease in the net wage $s$ goes in the same direction and also reduces income.
+	\item A decrease in net wages may make work less attractive, and thus reduce the supply of labor.
+\end{enumerate}
+
+Effects (1) and (2) are income effects that depend on the average tax rate, whereas the substitution effect (3) depends on the marginal tax rate. This distinction hardly matters when the tax is proportional, but it may become important with a progressive income tax.
+
+To evaluate these effects, start with 
+\begin{equation}
+    \notag 
+    \pdfrac{L}{t} = \pdfrac{L}{s} \pdfrac{s}{t} + \pdfrac{L}{M} \pdfrac{M}{t}.
+\end{equation}
+The Slutsky equation is 
+\begin{equation}
+    \notag 
+    \pdfrac{L}{s} = S + L \pdfrac{L}{M},
+\end{equation}
+where $S > 0$ is the Slutsky term, which is the compensated derivative of labor supply with respect to the net wage:
+\begin{equation}
+    \notag 
+    S \coloneqq \bp{\pdfrac{L}{s}}_{U}.
+\end{equation}
+Therefore, 
+\begin{equation}
+    \notag 
+    \pdfrac{L}{t} = -w S - \bp{wL + \undl{R}} \pdfrac{L}{M}
+\end{equation}
+The first term on the RHS is the substitution effect and is clearly negative. The second term comes from two income effects; it is positive if leisure is a normal good, and it is multiplied by income. This suggests that the income effect is smaller for low-income individuals. Thus the income tax may have more disincentive effects on the poor than on the rich, other things equal.
+
+The effect of taxation on labor supply can be illustrated using a Cobb-Douglas utility function $U = a\log\of{C} + \bp{1-a} \log\of{\ol{L} - L}$, but it is easy to see that the $\bp{1-t}$ term in the budget constraint then only reduced utility without modifying labor supply. The income effect and substitution effect exactly cancel out, and taxation does not change labor supply. As is often the case, the Cobb-Douglas specification is a very special one. It can be checked that if preferences are CES with an elasticity of substitution $\s$, then the income tax reduces labor supply if and only if $\s > 1$.
+
+Obviously using a proportional tax gives a very approximate view of real-world income taxes. But it is easy to analyze simple variants. Thus let us create a negative income tax $G$ that is a benefit given to all individuals independently of their income. Then the after-tax income becomes $\bp{sL + M + G}$; other things equal, the presence of the $G$ term adds an income effect that reduces labor supply. If the negative income tax is financed by increasing $t$, then the effects described above come into play. For poor individuals, going from a proportional income tax to a negative income tax may reduce labor supply unambiguously. This remark, however, neglects the fact that in most developed countries, the poorest households receive large means-tested benefits. Such transfers should be modeled in order to understand hte labor supply of the poor.
+
+\subsubsection{Criticisms and Extensions}
+
+The standard model implicitly assumes that workers can choose their hours $L$ freely. Yet the number of hours worked may not be chosen so freely, especially in some European countries where working hours are regulated and part-time worker often is not the result of free choice. Thus it is interesting to look at the participation decision, that is the choice between not working and working a conventional number of hours $\undl{L}$. For simplicity, let us neglect part-time work and assume that the utility function $U = u\of{C} - v\of{L}$, with $v\of{0} = 0$; then we can compare $\bs{u\of{\bp{1-t}w \undl{L} + \undl{R}} - v\of{\undl{L}}}$ and $u\of{\bp{1-t} \undl{R}}$. Note that the participation decision is determined by the average and not the marginal tax rate. 
+
+The derivation in $t$ of the difference of these two utilities is 
+\begin{equation}
+    \notag 
+    -\bp{w\undl{L} + \undl{R}} u^{\prime}\of{\bp{1-t} \bp{w\undl{L} + \undl{R}}} + Ru^{\prime}\of{\bp{1-t}\undl{R}}
+\end{equation}
+Thus it appears that participation decreases in $t$ if and only if $x u^{\prime}\of{x}$ is increasing\footnote{Equivalently, this holds if and only if the marginal utility of income that hs an elasticity $x u^{\prime\prime} / u^{\prime}$ that is larger than $-1$.}, which seems reasonable. Progressivity further reduces the incentive to participate, since the average tax rate is higher when the individual workers than when he does not. This analysis of the decision to participate also applies to the decision to retire, with the caveat that pension rights depend on paid contributions.
+
+We could also reinterpret the standard model by analyzing $L$ as an effort variable of the individual, something he does to improve the productivity of his labor input; the resulting problem is formally identical, so long as the effort brings an increases in wages and is costly in utility terms. This reinterpretation is useful when studying the optimal taxation problem.
+
+Even if we focus on labor supply, taxation impacts other variables than hours worked and effort. Consider, for instance, two jobs: job $2$ is more unpleasant and therefroe better paid than job $1$. Let us assume again that utility is separable so that an individual must compare the increase in utility from income $\bs{U\of{W_2\bp{1-t}} - U\of{W_1\bp{1-t}}}$ in taking job $2$ to the increase in the disutility of labor $\bp{v_2 - v_1}$. Taxation reduces the former and leaves the second latter unchanged, which makes job $2$ less attractive. Similarly, taxation makes household work (e.g., household chores and child care, which are often outside of the market system) more attractive as it is not taxed labor.
+
+What the government does with the income tax it collects, of course, matters a great deal. The tax receipts could be used to finance a public good; if the utility each consumer derives from the public good is separable from the other arguments of the utility function, then our earlier conclusions do not change. However, the government could redistribute the tax receipts among agents. For simplicity, assume this is done in a lump-sum manner, independently of each agent's economic decisions. First, consider the very unlikely but illustrative case where each agent receives, in lump-sum fashion, exactly the amount of the tax he has paid. Then for each agent the total income effect would be zero, and only the substitution effect would remain. Such a ``tax-and-compensate'' policy would unambiguously reduce labor supply. If, as is more likely, redistribution goes from the rich to the poor, then the average income effect would depend on the relative size of the income effects on rich and poor. An increase in the income tax could also be compensated by a reduction, say, in VAT rates. Then, the analysis would also need to take into account changes in consumption patterns.
+
+
+\subsection{The Effects of Taxation on Savings}
+
+In most countries both labor income and income from savings are taxed. WIth perfect financial markets, taxation of labor income only changes the savings rate in that the savings rate depends on permanent income. We will consider below the effect of taxation of income from savings ont he time profile of consumption over the life cycle. We will neglect, for the moment, the taxation of labor income. We will assume an exogenous interest rate that neglects general equilibrium effects.
+
+\subsubsection{Theoretical Analysis}
+
+Imagine a consumer who lives two periods and whose labor supply is inelastic. He gets in the first period a wage $w$, consumes some part of it, and saves the rest according to 
+\begin{equation}
+    \notag 
+    C_1 + E = w .
+\end{equation}
+In the second period, he does not work and consumes the net income from his savings. Given an interest rate $r$ and taxation of income from savings at a proportional rate $t$, his budget constraint in the second period is 
+\begin{equation}
+    \notag 
+    C_2 = \bs{1 + r\bp{1-t}} E.
+\end{equation}
+In the case of perfect financial markets, the consumer can save as mush as he likes and the two budget constraints can be aggregated in an intertemporal constraint
+\begin{equation}
+    \notag 
+    C_1 + p C_2 = w,
+\end{equation}
+where $p$ is the relative price of second-period consumption. More precisely, 
+\begin{equation}
+    \notag 
+    p = \frac{1}{1+r}
+\end{equation}
+without taxation and 
+\begin{equation}
+    \notag 
+    p = \frac{1}{1 + r\bp{1-t}}
+\end{equation}
+with taxation.
+
+As usual, the increase in $p$ due to taxation has two effects:
+\begin{itemize}[topsep=0pt, leftmargin=20pt, itemsep=0pt]
+	\setlength{\parskip}{10pt} 
+	\item An income effect. The increase in $p$ reduces both $C_1$ and $C_2$ if consumption in both periods are normal goods, which increases savings $E = w - C_1$.
+	\item A substitution effect. The increase in $p$ makes second-period consumption more expensive and thus tends to reduce savings.
+\end{itemize}
+
+Let us denote $U\of{C_1, C_2}$ as the utility function of the consumer. We write 
+\begin{equation}
+    \notag 
+    \pdfrac{C_1}{p} = \bp{\pdfrac{C_1}{p}}_{U} - C_2 \pdfrac{C_1}{w}.
+\end{equation}
+The \highlightB{intertemporal elasticity of substitution} is 
+\begin{equation}
+    \notag 
+    \s = \bp{\frac{\partial \log\of{C_1 / C_2}}{\partial \log p}}_{U}.
+\end{equation}
+Notice that since Hicksian demands are the derivatives of the expenditure function $e\of{p, U}$ with respect to prices, the equality 
+\begin{equation}
+    \notag 
+    C_1\of{p, U} + p C_2\of{p, U} = e\of{p, U}
+\end{equation}
+implies, by differentiating in $p$, that 
+\begin{equation}
+    \notag 
+    \bp{\frac{\partial C_1}{\partial p}}_{U} + p \bp{\frac{\partial C_2}{\partial p}}_{U} = 0.
+\end{equation}
+Since, by definition, 
+\begin{equation}
+    \notag 
+    \s = \bp{\pdfrac{C_1}{p}}_{U} - \bp{\pdfrac{C_2}{p}}_{U},
+\end{equation}
+we obtain 
+\begin{equation}
+    \notag 
+    \s = \bp{1 + \frac{C_1}{p C_2}} \bp{\pdfrac{\log C_1}{\log p}}_{U} = \frac{w}{p C_2} \bp{\pdfrac{\log C_1}{\log p}}_{U}
+\end{equation}
+and 
+\begin{equation}
+    \notag 
+    \bp{\pdfrac{\log C_1}{\log p}}_{U} = e \s,
+\end{equation}
+where $$e \coloneqq \frac{E}{w} = \frac{p C_2}{w}$$ denotes the savings rate.
+
+We also have 
+\begin{equation}
+    \notag 
+    \pdfrac{C_1}{w} = \frac{C_1}{w} \pdfrac{\log C_1}{\log w}.
+\end{equation}
+Finally, by substituting within the Slutsky equation and denoting 
+\begin{equation}
+    \notag 
+    \eta \coloneqq \pdfrac{\log C_1}{\log w}
+\end{equation}
+as the income elasticity of first-period consumption, we get 
+\begin{equation}
+    \notag 
+    \pdfrac{\log C_1}{\log p} = e \s - C_2 \frac{p}{C_1} \eta \frac{C_1}{w} = e\bp{\s - \eta}.
+\end{equation}
+Moreover, 
+\begin{equation}
+    \notag 
+    \pdfrac{\log E}{\log p} = - \frac{C_1}{E} \pdfrac{\log C_1}{\log p},
+\end{equation}
+hence, 
+\begin{equation}
+    \notag 
+    \pdfrac{\log E}{\log p} = -\bp{1-e}\bp{\s-\eta},
+\end{equation}
+which shows the negative substition effect ($-\bp{1-e}\s$) and the income effect $\bp{1-e}\eta$. What is the order of magnitude the resulting effect? \highlightP{Note that once again, the Cobb-Douglas utility function is not much help because it implies $\s = \eta = 1$ and thus no effect of taxation on savings.} A reasonable assumption is that preferences are homothetic, so that both consumptions are proportional to permanent income ($\eta = 1$). Choose $s = r = 1 / 2$, which is not unrealistic, since the two periods represent the working life and retirement. Then a 50 percent tax on income from savings increases $p$ by $20$ percent and reduce savings by $10$ percent multiplied by $\bp{\s - 1}$ (to the first order). \highlightP{Thus to get large effects of taxation on savings, the intertemporal elasticity of substitution has to be quite large. It is even possible for taxation to increase savings (which is the case if and only if $\s < \eta$).}
+
+If the consumer is paid wages in both periods, then we must take into account a new income effect as permanent income becomes 
+\begin{equation}
+    \notag 
+    w_1 + \frac{w_2}{1 + r \bp{1-t}}.
+\end{equation}
+This time the consumer may decide to borrow (if his second-period wages are relatively high), which makes imperfections on financial markets relevant. If the interest rate at which he can borrow $r^+$ is larger than the interest paid on his savings $r^-$, then his budget constraint has a kink at the zero savings point. Under these circumstances some consumers will choose to locate at that point, and the substitution effect does not come into play, at least locally. The negative influence of taxation on savings is lower as a result.
+
+As for the taxation of labor income, say that labor income is taxed at the same rate as income from savings. Then, as is the case for th ideal income tax, $w$ must be replaced with $w\bp{1-t}$. The taxation reduces permanent income and thus both present and future consumptions. Since savings this time is $\bs{\bp{1-t}w - C_1}$, the way this effect goes depends on the income elasticity $\eta$.
+
+Because the taxation of savings affects not only income but also accumulated savings, or wealth taxes, there are taxes on bequest. Suppose that in addition to his lifetime consumptions, the consumer derives utility from any (after-tax) bequest $H$ he leaves at his death. Then his utility is $U\of{C_1, C_2, H}$, and given a taxation rate on bequests, his second period budgest constraint becomes 
+\begin{equation}
+    \notag 
+    C_2 + \frac{H}{1 - \tau} = E \bp{1 + r\bp{1-t}},
+\end{equation}
+and his intertemporal budget constraint becomes 
+\begin{equation}
+    \notag 
+    C_1 + p C_2 + p^{\prime} H = w,
+\end{equation}
+where $p$ is still defined as 
+\begin{equation}
+    \notag 
+    p \coloneqq \frac{1}{1 + r\bp{1-t}}
+\end{equation}
+and $p^{\prime} = p / \bp{1-\tau}$. With a taxation rate of income from savings fixed at $p$, by the Hicksian-Leontief theorem the two consumptions can be aggregated within a composite good. The effect of changes on the rate of bequest taxation $\tau$ is formally analogous to that of $t$ on savings.
+
+This analysis of bequest is only half convincing, however. Whether bequests are planned or accidental (due to early death) is a controversial issue. The taxation of bequests, like wealth taxes, yields very small amount of tax revenues in most countries. 
+
+\subsubsection{Empirical Results}
+
+\subsection{Taxation and Risk-Taking}
+
+
