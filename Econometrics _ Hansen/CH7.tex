@@ -1,0 +1,886 @@
+% !TEX root = Econometrics.tex
+
+\setcounter{chapter}{6}
+\chapter{Asymptotic Theory for Least Squares}
+
+\section{Introduction}
+
+It turns out that the asymptotic theory of least squares estimation applies equally to the projection model and the linear CEF model. Therefore the results in this chapter will be stated for the broader projection model described in Section 2.18. Recall that the model is $Y = \ora{X}^\prime \ora{\b} + e$ with the linear projection coefficient $\ora{\b} = \bp{\E\bs{\ora{X}\ora{X}^\prime}}^{-1} \E\bs{\ora{X} Y}$.
+
+Throughout the chapter, the following assumptions are made.
+
+\begin{assumption}[Random Sampling and Finite Second Moments] 
+    \label{hansen_ass_7_1}
+
+    \begin{enumerate}[topsep=0pt, leftmargin=20pt, itemsep=0pt, label=(\arabic*)]
+        \setlength{\parskip}{10pt} 
+        \item The variables $\bp{Y_i, \ora{X}_i}, i=1, \ldots, n$ are iid.
+        \item $\E\bs{Y^2} < \infty$.
+        \item $\E\bs{\norm{\ora{X}}^2} < \infty$.
+        \item $\Qb_{XX} = \E\bs{\ora{X}\ora{X}^\prime}$ is positive definite.
+    \end{enumerate}
+\end{assumption}
+
+The distributional results will require a strengthening of these assumptions to finite fourth moments. We discuss the specific conditions in Section \ref{hansen_sec_7_3}.
+
+\section{Consistency of Least Squares Estimator} \label{hansen_sec_7_2}
+
+In this section we use the weak law of large numbers (WLLN) and continuous mapping theorem (CMT) to show that the least squares estimator $\wh{\oras{\b}}$ is consistent for the projection coefficient $\ora{\b}$.
+
+This derivation is based on three key components. First, the OLS estimator can be written as a continuous function of a set of sample moments. Second, the WLLN shows that sample moments converge in probability to population moments. And third, the CMT states that continuous functions preserve convergence in probability. We now explain each step in brief and then in greater detail.
+
+First, observe that the OLS estimator
+\begin{equation}
+    \notag
+    \wh{\oras{\b}} = \bp{\frac{1}{n} \sum_{i=1}^n \ora{X}_i \ora{X}_i^\prime}^{-1} \bp{\frac{1}{n} \sum_{i=1}^n \ora{X}_i Y_i} = \wh{\Qb}_{XX}^{-1} \wh{\oras{Q}}_{XY}
+\end{equation}
+is a function of the sample moments 
+$$\wh{\Qb}_{XX} = \frac{1}{n} \sum_{i=1}^n \ora{X}_i \ora{X}_i^\prime$$ 
+and 
+$$\wh{\oras{Q}}_{XY} = \frac{1}{n} \sum_{i=1}^n \ora{X}_i Y_i.$$
+
+Second, by an application of the WLLN these sample moments converge in probability to their population expectations. \highlightO{Specifically, the fact that $\bp{Y_i, \ora{X}_i}$ are mutually i.i.d. implies that any function of $\bp{Y_i, \ora{X}_i}$ is i.i.d., including $\ora{X}_i Y_i$ and $\ora{X}_i \ora{X}_i^\prime$. These variables also have finite expectations under Assumption \ref{hansen_ass_7_1}.} Under these conditions, the WLLN implies that as $n \rightarrow \infty$,
+\begin{equation}
+    \label{hansen_eq_7_1}
+    \wh{\Qb}_{XX} = \frac{1}{n} \sum_{i=1}^n \ora{X}_i \ora{X}_i^\prime \inprob \E\bs{\ora{X}_1 \ora{X}_1^\prime} = \Qb_{XX}
+\end{equation}
+and 
+\begin{equation}
+    \notag
+    \wh{\oras{Q}}_{XY} = \frac{1}{n} \sum_{i=1}^n \ora{X}_i Y_i^\prime \inprob \E\bs{\ora{X}_1 Y_1^\prime} = \ora{Q}_{XY}.
+\end{equation}
+
+Third, the CMT allows us to combine these equations to show that $\wh{\oras{\b}}$ converges in probability to $\ora{\b}$. Specifically, as $n \rightarrow \infty$,
+\begin{equation}
+    \label{hansen_eq_7_2}
+    \wh{\oras{\b}} = \wh{\Qb}_{XX}^{-1} \wh{\oras{Q}}_{XY} \inprob \Qb_{XX}^{-1}\ora{Q}_{XY} = \ora{\b}.
+\end{equation}
+
+To fully understand the application of the CMT we walk through it in detail. We can write 
+\begin{equation}
+    \notag
+    \wh{\oras{\b}} = g\of{\wh{\Qb}_{XX}, \wh{\oras{Q}}_{XY}},
+\end{equation}
+where $g\of{\Ab, \ora{b}} = \Ab^{-1}\ora{b}$ is a function of $\Ab$ and $\ora{b}$. The function  $g\of{\Ab, \ora{b}}$ is a continuous function of $\Ab$ and $\ora{b}$ at all values of the arguments such that $\Ab^{-1}$ exists. Assumption \ref{hansen_ass_7_1} specifies that $\Qb_{XX}$ is positive definite, which means that $\Qb_{XX}^{-1}$ exists. Thus $g\of{\Ab, \ora{b}}$ is continuous at $\Ab = \Qb_{XX}$. This justifies the application of the CMT in (\ref{hansen_eq_7_2}).
+
+For a slightly different demonstration of (\ref{hansen_eq_7_2}) recall that (\ref{hansen_eq_4_6}) implies that 
+\begin{equation}
+    \label{hansen_eq_7_3}
+    \wh{\oras{\b}} - \ora{\b} = \wh{\Qb}_{XX}^{-1} \wh{\oras{Q}}_{Xe}
+\end{equation}
+where 
+\begin{equation}
+    \notag
+    \wh{\oras{Q}}_{Xe} = \frac{1}{n} \sum_{i=1}^{n} \ora{X}_i e_i.
+\end{equation}
+The WLLN and (\ref{hansen_eq_2_25}) imply 
+\begin{equation}
+    \notag
+    \wh{\ora{Q}}_{Xe} \inprob \E\bs{\ora{X}e} = \ora{0}.
+\end{equation}
+Therefore, 
+\begin{equation}
+    \notag
+    \wh{\oras{\b}} - \ora{\b} = \wh{\Qb}_{XX}^{-1} \wh{\oras{Q}}_{Xe} \inprob \wh{\Qb}_{XX}^{-1} \ora{0} = \ora{0},
+\end{equation}
+which is the same as $\wh{\oras{\b}} \inprob \ora{\b}$.
+
+\begin{theorem}[Consistency of Least squares]
+    \label{hansen_thm_7_1}
+
+    Under Assumption \ref{hansen_ass_7_1}, 
+    $$\wh{\Qb}_{XX} \inprob \Qb_{XX},$$ 
+    $$\wh{\oras{Q}}_{XY} \inprob \ora{Q}_{XY},$$ 
+    $$\wh{\Qb}_{XX}^{-1} \inprob \Qb_{XX}^{-1},$$ 
+    $$\wh{\oras{Q}}_{Xe} \inprob \ora{0},$$ 
+    and 
+    $$\wh{\oras{\b}} \inprob \ora{\b}$$ 
+    as $n \rightarrow \infty$.
+\end{theorem}
+
+In the stochastic order notation, Theorem \ref{hansen_thm_7_1} can be equivalently written as
+\begin{equation}
+    \label{hansen_eq_7_4}
+    \wh{\oras{\b}} = \b + o_p\of{1}.
+\end{equation}
+
+\section{Asymptotic Normality} \label{hansen_sec_7_3}
+
+We started this chapter discussin the need for an approximation to the distribution of the OLS estimator $\wh{\oras{\b}}$. In Section \ref{hansen_sec_7_2} we showed that $\wh{\oras{\b}}$ converges in probability to $\ora{\b}$. Consistency is a good first step, but in itself does not describe the distribution of the estimator. In this section we derive an approximation typically called the \highlightB{asymptotic distribution}.
+
+\highlightP{The derivation starts by writing the estimator as a function of sample moments. One of the moments must be written as a sum of zero-mean random vectors and normalized so that the central limit theorem can be applied.} The steps are as follows.
+
+Take equation (\ref{hansen_eq_7_3}) and multiply it by $\sqrt{n}$. This yields the expression
+\begin{equation}
+    \label{hansen_eq_7_5}
+    \sqrt{n} \bp{\wh{\oras{\b}} - \ora{\b}} = \bp{\frac{1}{n} \sum_{i=1}^n \ora{X}_i \ora{X}_i^\prime}^{-1} \bp{\frac{1}{\sqrt{n}} \sum_{i=1}^{n} \ora{X}_i e_i}.
+\end{equation}
+This shows that the normalized and centered estimator $\sqrt{n} \bp{\wh{\oras{\b}} - \ora{\b}}$ is a function of the sample average $n^{-1} \sum_{i=1}^n \ora{X}_i \ora{X}_i^\prime$ and the normalized sample average $n^{-1/2} \sum_{i=1}^{n} \ora{X}_i e_i$.
+
+The random pairs $\bp{Y_i, \ora{X}_i}$ are i.i.d., meaning that they are independent across $i$ and identically distributed. Any function of $\bp{Y_i, \ora{X}_i}$ is also i.i.d.. This includes $e_i = Y_i - \ora{X}_i^\prime \ora{\b}$ and the product $\ora{X}_i e_i$. The latter is mean zero ($\E\bs{\ora{X} e} = 0$) and has $k \times k$ covariance matrix
+\begin{equation}
+    \notag
+    \bds{\O} = \E\bs{\bp{\ora{X} e}\bp{\ora{X} e}^\prime} = \E\bs{\ora{X} \ora{X}^\prime e^2} .
+\end{equation}
+We show below that $\bds{\O}$ has finite elements under a strengthening of Assumption \ref{hansen_ass_7_1}. Since $\ora{X}_i e_i$ is i.i.d., mean zero, and finite variance, the central limit theorem implies 
+\begin{equation}
+    \notag
+    \frac{1}{\sqrt{n}} \sum_{i=1}^{n} \ora{X}_i e_i \Rightarrow N\of{0, \bds{\O}}.
+\end{equation}
+
+We state the required conditions here.
+
+\begin{assumption}[Random Sampling and Finite Fourth Moments]
+    \label{hansen_ass_7_2}
+
+    \begin{enumerate}[topsep=0pt, leftmargin=20pt, itemsep=0pt, label=(\arabic*)]
+        \setlength{\parskip}{10pt} 
+        \item The variables $\bp{Y_i, \ora{X}_i}, i=1, \ldots, n$ are iid.
+        \item $\E\bs{Y^4} < \infty$.
+        \item $\E\bs{\norm{\ora{X}}^4} < \infty$.
+        \item $\Qb_{XX} = \E\bs{\ora{X}\ora{X}^\prime}$ is positive definite.
+    \end{enumerate}
+\end{assumption}
+
+Assumption \ref{hansen_ass_7_2} implies that $\bds{\O} < \infty$. To see this, take the $j\ell$th element of $\bds{\O}$, $\E\bs{\ora{X}_j \ora{X}_\ell^\prime e^2}$. \highlightR{First, Theorem \ref{hansen_thm_2_9}(6) shows that $\E\bs{e^4} < \infty$.} By the expectation inequality the $j\ell$th element of $\bds{\O}$ is bounded by 
+\begin{equation}
+    \notag
+    \abs{\E\bs{\ora{X}_j \ora{X}_\ell^\prime e^2}} \leq \E\bs{\abs{\ora{X}_j \ora{X}_\ell^\prime e^2}} = \E\bs{\abs{\ora{X}_j} \abs{\ora{X}_\ell} e^2}.
+\end{equation}
+By two applications of the \highlightR{Cauchy-Schwarz inequality} this is smaller than 
+\begin{equation}
+    \notag
+    \bp{\E\bs{\abs{\ora{X}_j}^2 \abs{\ora{X}_\ell}^2}}^{1/2} \bp{\E\bs{e^4}}^{1/2} \leq \bp{\E\bs{\abs{\ora{X}_j}^4}}^{1/4} \bp{\E\bs{\abs{\ora{X}_\ell}^4}}^{1/4} \bp{\E\bs{e^4}}^{1/2} < \infty
+\end{equation}
+where the finiteness holds under Assumption \ref{hansen_ass_7_2}. Thus $\O < \infty$.
+
+An alternative way to show that the elements of $\bds{\O}$ are finite is by using a matrix norm $\norm{\cdot}$. Then by the expectation inequality, the Cauchy-Schwarz inequality, Assumption \ref{hansen_ass_7_2}, and $\E\bs{e^4}<\infty$,
+\begin{equation}
+    \notag
+    \norm{\bds{\O}} \leq \E\bs{\norm{\ora{X}\ora{X}^\prime e^2}} = \E\bs{\norm{\ora{X}}^2 e^2} \leq \bp{\E\bs{\norm{\ora{X}}^4}}^{1/2}\bp{\E\bs{e^4}}^{1/2} < \infty.
+\end{equation}
+This is a more compact argument (often described as more elegant) but such manipulations should not be done without understanding the notation and the applicability of each step of the argument.
+
+\begin{theorem}
+    \label{hansen_thm_7_2}
+    Assumption \ref{hansen_ass_7_2} implies that 
+    \begin{equation}
+        \label{hansen_eq_7_6}
+        \bds{\O} = \E\bs{\ora{X} \ora{X}^\prime e^2} < \infty
+    \end{equation}
+    and 
+    \begin{equation}
+        \label{hansen_eq_7_7}
+        \frac{1}{\sqrt{n}} \sum_{i=1}^{n}\ora{X}_i e_i \Rightarrow N\of{\ora{0}, \bds{\O}}
+    \end{equation}
+    as $n \rightarrow \infty$.
+\end{theorem}
+
+Putting together (\ref{hansen_eq_7_1}), (\ref{hansen_eq_7_5}) and (\ref{hansen_eq_7_7}),
+\begin{equation}
+    \notag
+    \sqrt{n} \bp{\wh{\oras{\b}} - \ora{\b}} \Rightarrow \Qb_{XX}^{-1} N\of{0, \bds{\O}} = N\of{\ora{0}, \Qb_{XX}^{-1}\bds{\O}\Qb_{XX}^{-1}}
+\end{equation}
+as $n \rightarrow \infty$. The final equality follows from the property that linear combinations of normal vectors are also normal (Theorem \ref{Hansen_thm_5_2}).
+
+\begin{theorem}[Asymptotic Normality of Least Squares Estimator]
+    \label{hansen_thm_7_3}
+
+    Under Assumption \ref{hansen_ass_7_2}, as $n \rightarrow \infty$
+    \begin{equation}
+        \notag
+        \sqrt{n} \bp{\wh{\oras{\b}} - \ora{\b}} \Rightarrow N\of{0, \bds{V}_{\ora{\b}}}
+    \end{equation}
+    where $\Qb_{XX} = \E\bs{\ora{X}\ora{X}^\prime}$, $\bds{\O} = \E\bs{\ora{X}\ora{X}^\prime e^2}$, and 
+    \begin{equation}
+        \label{hansen_eq_7_8}
+        \Vb_{\ora{\b}} = \Qb_{XX}^{-1} \bds{\O} \Qb_{XX}^{-1}.
+    \end{equation}
+\end{theorem}
+
+In the stochastic order notation, Theorem \ref{hansen_thm_7_3} implies that $\wh{\oras{\b}} = \ora{\b} + O_p\of{n^{-1/2}}$ which is strong than (\ref{hansen_eq_7_4}).
+
+The matrix $\Vb_{\ora{\b}} = \Qb_{XX}^{-1} \bds{\O} \Qb_{XX}^{-1}$ is the variance of the asymptotic distribution of $\sqrt{n} \bp{\wh{\oras{\b}} - \ora{\b}}$. Consequently, $\Vb_{\ora{\b}}$ is often refereed to as the \highlightB{asymptotic covariance matrix} of $\wh{\oras{\b}}$. The expression $\Vb_{\ora{\b}} = \Qb_{XX}^{-1} \bds{\O} \Qb_{XX}^{-1}$ is called a \highlightB{sandwich} form as the matrix $\bds{\O}$ is sandwiched between two copies of $\Qb_{XX}^{-1}$.
+
+It is useful to compare the variance of the asymptotic distribution given in (\ref{hansen_eq_7_8}) and the finite-sample conditional variance in the CEF model as given in (\ref{hansen_eq_4_10}):
+\begin{equation}
+    \label{hansen_eq_7_9}
+    \Vb_{\wh{\oras{\b}}} = \var\bs{\wh{\oras{\b}} \mid \Xb} = \left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \boldsymbol{D} \boldsymbol{X}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}.
+\end{equation}
+\highlightP{Notice that $\Vb_{\wh{\oras{\b}}}$ is the exact conditional variance of $\wh{\oras{\b}}$ and $\Vb_{\ora{\b}}$ is the asymptotic variance of $\sqrt{n} \bp{\wh{\oras{\b}} - \ora{\b}}$.} Then $\Vb_{\ora{\b}}$ should be (roughly) $n$ times as large as $\Vb_{\wh{\oras{\b}}}$. Indeed, multiplying (\ref{hansen_eq_7_9}) by $n$ and distributing we find
+\begin{equation}
+    \notag
+    n \Vb_{\wh{\oras{\b}}} = \bp{\frac{1}{n} \Xb^\prime \Xb}^{-1} \bp{\frac{1}{n} \Xb^\prime \Db \Xb} \bp{\frac{1}{n} \Xb^\prime \Xb}^{-1}
+\end{equation}
+which looks like an estimator of $\Vb_{\ora{\b}}$. Indeed, as $n \rightarrow \infty$, $n \Vb_{\wh{\oras{\b}}} \inprob \Vb_{\ora{\b}}$. \highlightP{The expression $\Vb_{\wh{\oras{\b}}}$ is useful for practical inference (such as computation of standard errors and tests) since it is the variance of the estimator $\ora{\b}$, while $\Vb_{\ora{\b}}$ is useful for asymptotic theory as it is well defined in the limit as $n$ goes to infinity.} We will make use of both symbols and it will be advisable to adhere to this convention.
+
+There is a special case when $\bds{\O}$ and $\Vb_{\ora{\b}}$ simplify. Suppose that 
+\begin{equation}
+    \label{hansen_eq_7_10}
+    \cov\of{\ora{X}\ora{X}^\prime, e^2} = 0.
+\end{equation}
+Condition (\ref{hansen_eq_7_10}) holds in the homoskedastic linear regression model but it is somewhat broader. Under (\ref{hansen_eq_7_10}) the asymptotic variance formulae simplifies as 
+\begin{equation}
+    \notag
+    \bds{\O} = \E\bs{\ora{X}\ora{X}^\prime} \E\bs{e^2} = \Qb_{XX}\s^2
+\end{equation}
+\begin{equation}
+    \label{hansen_eq_7_11}
+    \Vb_{\ora{\b}} = \Qb_{XX}^{-1} \bds{\O} \Qb_{XX}^{-1} = \Qb_{XX}^{-1} \s^2 \eqqcolon \Vb_{\oras{\b}}^0.
+\end{equation}
+In (\ref{hansen_eq_7_11}) we define $\Vb_{\oras{\b}}^0 \coloneqq \Qb_{XX}^{-1} \s^2$ whether (\ref{hansen_eq_7_10}) is true or false. When (\ref{hansen_eq_7_10}) is true then $\Vb_{\ora{\b}} = \Vb_{\oras{\b}}^0$, otherwise $\Vb_{\ora{\b}} \neq \Vb_{\oras{\b}}^0$. We call $\Vb_{\oras{\b}}^0$ the \highlightB{homoskedastic asymptotic covariance matrix}.
+
+Theorem \ref{hansen_thm_7_3} states that the sampling distribution of the least squares estimator, after rescaling, is approximately normal when the sample size $n$ is sufficiently large. This holds true for all joint distributions of $(Y, \ora{X})$ which satisfy the conditions of Assumption \ref{hansen_ass_7_2}. Consequently, asymptotic normality is routinely used to approximate the finite sample distribution of $\sqrt{n} \bp{\wh{\oras{\b}} - \ora{\b}}$.
+
+A difficulty is that for any fixed $n$ the sampling distribution of $\wh{\oras{\b}}$ can be arbitrarily far from the normal distribution. The normal approximation improves as $n$ increases, but how large should $n$ be in order for the approximation to be useful? Unfortunately, there is no simple answer to this reasonable question. \highlightP{The trouble is that no matter how large is the sample size the normal approximation is arbitrarily poor for some data distribution satisfying the assumptions.}
+
+
+\section{Joint Distribution}
+\setcounter{equation}{12}
+
+Theorem \ref{hansen_thm_7_3} gives the point asymptotic distribution of the coefficient estimators. We can use the result to study the covariance between the coefficient estimators. For simplicity, take the case of two regressors, no intercept, and homoskedastic error. Assume the regressors are mean zero, variance one, with correlation $\rho$. Then using the formula for inversion of a $2 \times 2$ matrix, 
+\begin{equation}
+    \notag
+    \Vb_{\oras{\b}}^0 = \s^2 \Qb_{XX}^{-1} = \frac{\s^2}{1 - \rho^2} \bs{\begin{array}{cc}
+        1 & -\rho \\
+        -\rho & 1 
+    \end{array} }.
+\end{equation}
+Thus if $X_1$ and $X_2$ are positively correlated $(\rho > 0)$, then $\wh{\b}_1$ and $\wh{\b}_2$ are negatively correlated (and vice-versa).
+
+This finding that the correlation of the regressors is of opposite sign of the correlation of the coefficient estimates is sensitive to the assumption of homoskedasticity. If the errors are heteroskedastic then this relationship is not guaranteed.
+
+We can extend the above analysis to study the covariance between coefficient sub-vectors. For example, partitioning $\Xb^\prime = \bp{\Xb_1^\prime, \Xb_2^\prime}^\prime$ and $\ora{\b}^\prime = \bp{\ora{\b}_1^\prime, \ora{\b}_2^\prime}^\prime$, we can write the general model as 
+\begin{equation}
+    \notag
+    Y = \Xb_1^\prime \ora{\b}_1 + \Xb_2^\prime \ora{\b}_2 + e
+\end{equation}
+and the coefficient estimates as $\wh{\oras{\b}}^\prime = \bp{\wh{\oras{\b}}_1^\prime, \wh{\oras{\b}}_2^\prime}^\prime$. Make the partitions 
+\begin{equation}
+    \notag
+    \boldsymbol{Q}_{X X}=\left[\begin{array}{ll}
+    \boldsymbol{Q}_{11} & \boldsymbol{Q}_{12} \\
+    \boldsymbol{Q}_{21} & \boldsymbol{Q}_{22}
+    \end{array}\right], \quad \bds{\Omega}=\left[\begin{array}{ll}
+        \bds{\Omega}_{11} & \bds{\Omega}_{12} \\
+        \bds{\Omega}_{21} & \bds{\Omega}_{22}
+    \end{array}\right] . 
+\end{equation}
+We know 
+\begin{equation}
+    \notag
+    \boldsymbol{Q}_{X X}^{-1}=\left[\begin{array}{cc}
+        \boldsymbol{Q}_{11 \cdot 2}^{-1} & -\boldsymbol{Q}_{11 \cdot 2}^{-1} \boldsymbol{Q}_{12} \boldsymbol{Q}_{22}^{-1} \\
+        -\boldsymbol{Q}_{22 \cdot 1}^{-1} \mathbf{Q}_{21} \boldsymbol{Q}_{11}^{-1} & \boldsymbol{Q}_{22 \cdot 1}^{-1}
+        \end{array}\right]
+\end{equation}
+where $\boldsymbol{Q}_{11 \cdot 2} = \Qb_{11} - \Qb_{12} \Qb_{22}^{-1} \Qb_{21}$ and $\boldsymbol{Q}_{22 \cdot 1} = \Qb_{22} - \Qb_{21} \Qb_{11}^{-1} \Qb_{12}$. Thus, when the error is homoskedastic,
+\begin{equation}
+    \notag
+    \cov\of{\ora{\b}_1, \ora{\b}_2} = - \s^2 \boldsymbol{Q}_{11 \cdot 2}^{-1} \boldsymbol{Q}_{12} \boldsymbol{Q}_{22}^{-1}
+\end{equation}
+which is a matrix generalization of the two-regressor case.
+
+In general you can show that 
+\begin{equation}
+    \label{hansen_eq_7_13}
+    \boldsymbol{V}_{\boldsymbol{\beta}}=\left[\begin{array}{ll}
+    \boldsymbol{V}_{11} & \boldsymbol{V}_{12} \\
+    \boldsymbol{V}_{21} & \boldsymbol{V}_{22}
+    \end{array}\right]
+\end{equation}
+where 
+\begin{align}
+    & \boldsymbol{V}_{11}=\boldsymbol{Q}_{11 \cdot 2}^{-1}\left(\Omega_{11}-\boldsymbol{Q}_{12} \boldsymbol{Q}_{22}^{-1} \Omega_{21}-\Omega_{12} \boldsymbol{Q}_{22}^{-1} \boldsymbol{Q}_{21}+\boldsymbol{Q}_{12} \boldsymbol{Q}_{22}^{-1} \Omega_{22} \boldsymbol{Q}_{22}^{-1} \boldsymbol{Q}_{21}\right) \boldsymbol{Q}_{11 \cdot 2}^{-1} \label{hansen_eq_7_14} \\
+    & \boldsymbol{V}_{21}=\boldsymbol{Q}_{22 \cdot 1}^{-1}\left(\Omega_{21}-\boldsymbol{Q}_{21} \boldsymbol{Q}_{11}^{-1} \Omega_{11}-\Omega_{22} \boldsymbol{Q}_{22}^{-1} \boldsymbol{Q}_{21}+\boldsymbol{Q}_{21} \boldsymbol{Q}_{11}^{-1} \Omega_{12} \boldsymbol{Q}_{22}^{-1} \boldsymbol{Q}_{21}\right) \boldsymbol{Q}_{11 \cdot 2}^{-1} \label{hansen_eq_7_15} \\
+    & \boldsymbol{V}_{22}=\boldsymbol{Q}_{22 \cdot 1}^{-1}\left(\Omega_{22}-\boldsymbol{Q}_{21} \boldsymbol{Q}_{11}^{-1} \Omega_{12}-\Omega_{21} \boldsymbol{Q}_{11}^{-1} \boldsymbol{Q}_{12}+\boldsymbol{Q}_{21} \boldsymbol{Q}_{11}^{-1} \Omega_{11} \boldsymbol{Q}_{11}^{-1} \boldsymbol{Q}_{12}\right) \boldsymbol{Q}_{22 \cdot 1}^{-1} \label{hansen_eq_7_16}.
+\end{align}
+
+\section{Consistency of Error Variance Estimators}
+\setcounter{equation}{16}
+
+Using the methods of Section \ref{hansen_sec_7_2}, we can show that the estimators $\wh{\s}^2 = \frac{1}{n}\sum_{i=1}^{n} \wh{e}_i^2$ and $s^2 = \frac{1}{n-k}\sum_{i=1}^{n} \wh{e}_i^2$ are consistent for $\s^2$.
+
+
+The trick is to write the residual $\wh{e}_i^2$ as equal to the error $e_i$ plus a deviation 
+\begin{equation}
+    \notag
+    \wh{e}_i = Y_i - \ora{X}_i^\prime \wh{\oras{\b}} = e_i - \ora{X}_i^\prime \bp{\wh{\oras{\b}} - \ora{\b}}.
+\end{equation}
+Thus the squared residual equals the squared error plus a deviation
+\begin{equation}
+    \label{hansen_eq_7_17}
+    \wh{e}_i^2 = e_i^2 - 2 e_i \ora{X}_i^\prime \bp{\wh{\oras{\b}} - \ora{\b}} + \bp{\wh{\oras{\b}} - \ora{\b}}^\prime \ora{X}_i \ora{X}_i^\prime \bp{\wh{\oras{\b}} - \ora{\b}} .
+\end{equation} 
+So when we take the average of the squared residuals we obtain the average of the squared errors, plus two terms which are (hopefully) asymptotically negligible.
+\begin{equation}
+    \label{hansen_eq_7_18}
+    \wh{\s}^2 = \frac{1}{n}\sum_{i=1}^{n} \wh{e}_i^2 =  \frac{1}{n}\sum_{i=1}^{n} e_i^2 - 2 \bp{\frac{1}{n} \sum_{i=1}^{n}e_i \ora{X}_i^\prime} \bp{\wh{\oras{\b}} - \ora{\b}} + \bp{\wh{\oras{\b}} - \ora{\b}}^\prime \bp{ \frac{1}{n} \sum_{i=1}^{n} \ora{X}_i \ora{X}_i^\prime} \bp{\wh{\oras{\b}} - \ora{\b}}.
+\end{equation}
+Indeed, the WLLN shows that 
+\begin{equation}
+    \notag
+    \begin{aligned}
+        & \frac{1}{n} \sum_{i=1}^n e_i^2 \underset{p}{\longrightarrow} \sigma^2 \\
+        & \frac{1}{n} \sum_{i=1}^n e_i X_i^{\prime} \underset{p}{\longrightarrow} \mathbb{E}\left[e X^{\prime}\right]=0 \\
+        & \frac{1}{n} \sum_{i=1}^n X_i X_i^{\prime} \underset{p}{\longrightarrow} \mathbb{E}\left[X X^{\prime}\right]=\boldsymbol{Q}_{X X}
+    \end{aligned}
+\end{equation}
+Theorem \ref{hansen_thm_7_1} shows that $\wh{\oras{\b}} \inprob \ora{\b}$. Hence (\ref{hansen_eq_7_18}) converges in probability to $\s^2$ as desired.
+
+Finally, since $\frac{n}{n-k} \rightarrow 1$ as $n \rightarrow \infty$ it follows that $s^2 = \bp{\frac{n}{n-k}} \wh{\s}^2 \inprob \s^2$. Thus both estimators are consistent.
+
+\begin{theorem}
+    \label{hansen_thm_7_4}
+    Under Assumption \ref{hansen_ass_7_1}, $\wh{\s}^2 \inprob \s^2$ and $s^2 \inprob \s^2$ as $n \rightarrow \infty$.
+\end{theorem}
+
+\section{Homoskedastic Covariance Matrix Estimation}
+
+Theorem \ref{hansen_thm_7_3} shows that $\sqrt{n} \bp{\wh{\oras{\b}} - \ora{\b}}$ is asymptotically normal with asymptotic covariance matrix $\Vb_{\oras{\b}}$. For asymptotic inference (confidence intervals and tests) we need a consistent estimator of $\Vb_{\oras{\b}}$. Under homoskedasticity $\Vb_{\oras{\b}}$ simplifies to $\Vb_{\oras{\b}}^0 = \Qb_{XX}^{-1}\s^2$ and in this section we consider the simplified problem of estimating $\Vb_{\oras{\b}}^0$.
+
+The standard moment estimator of $\Qb_{XX}$ is $\wh{\Qb}_{XX}$ defined in (\ref{hansen_eq_7_1}) and thus an estimator for $\Qb_{XX}^{-1}$ is $\wh{\Qb}_{XX}^{-1}$. The standard estimator of $\s^2$ is the unbiased estimator $s^2$ defined as 
+\begin{equation}
+    \notag
+    s^2 = \frac{1}{n-k}\sum_{i=1}^{n}\wh{e}_i^2. 
+\end{equation}
+Thus a natural plug-in estimator for $\Vb_{\oras{\b}}^0 = \Qb_{XX}^{-1}\s^2$ is $\wh{\Vb}_{\oras{\b}}^0 = \wh{\Qb}_{XX}^{-1}s^2$.
+
+Consistency of $\wh{\Vb}_{\oras{\b}}^0$ for $\Vb_{\oras{\b}}^0$ follows from the consistency of the moment estimators $\Qb_{XX}$ and $s^2$ and an application of the continuous mapping theorem.
+
+\begin{theorem}
+    \label{hansen_thm_7_5}
+    Under Assumption \ref{hansen_ass_7_1}, $\wh{\Vb}_{\oras{\b}}^0 \inprob \Vb_{\oras{\b}}^0$ as $n \rightarrow \infty$, where $\wh{\Vb}_{\oras{\b}}^0$ is constructed as follows,
+    \begin{equation}
+        \notag 
+        \wh{\Vb}_{\oras{\b}}^0 = \bp{\frac{1}{n} \sum_{i=1}^{n}\ora{X}_i \ora{X}_i^\prime}^{-1} \bp{\frac{1}{n-k}\sum_{i=1}^{n}\wh{e}_i^2}.
+    \end{equation}
+\end{theorem}
+
+\highlightR{It is instructive to notice that Theorem \ref{hansen_thm_7_5} does not require the assumption of homoskedasticity.} That is, $\wh{\Vb}_{\oras{\b}}^0$ is consistent for $\Vb_{\oras{\b}}^0$ regardless if the regression is homoskedastic or heteroskedastic. \highlightP{However, $\Vb_{\oras{\b}}^0 = \Vb_{\oras{\b}} = \operatorname*{avar}\bs{\wh{\oras{\b}}}$ only under homoskedasticity. Thus, in the general case $\wh{\Vb}_{\oras{\b}}^0$ is consistent for a well-defined but non-useful object.}
+
+\section{Heteroskedastic Covariance Matrix Estimation} \label{hansen_sec_7_7}
+
+Theorem \ref{hansen_thm_7_3} established that the asymptotic covariance matrix of $\sqrt{n} \bp{\wh{\oras{\b}} - \ora{\b}}$ is $\Vb_{\oras{\b}} = \Qb_{XX}^{-1} \bds{\O} \Qb_{XX}^{-1}$. We now consider estimation of this covariance matrix without imposing homoskedasticity. The standard approach is to use a plug-in estimator which replaces the unknowns with sample moments.
+
+As described in the previous section a natural estimator for $\Qb_{XX}^{-1}$ is $\wh{\Qb}_{XX}^{-1}$ where $\wh{\Qb}_{XX}$ is defined in (\ref{hansen_eq_7_1}).
+
+The moment estimator for $\bds{\O}$ is 
+\begin{equation}
+    \notag
+    \wh{\bds{\O}} = \frac{1}{n} \sum_{i=1}^{n} \ora{X}_i \ora{X}_i^\prime \wh{e}_i^2,
+\end{equation}
+leading to the plug-in covariance matrix estimator 
+\begin{equation}
+    \label{hansen_eq_7_19}
+    \wh{\Vb}_{\ora{\b}}^{\text{HC0}} = \wh{\Qb}_{XX}^{-1} \wh{\bds{\O}} \wh{\Qb}_{XX}^{-1}.
+\end{equation}
+You can check that $\wh{\Vb}_{\oras{\b}}^{\text{HC0}} = n \wh{\Vb}_{\wh{\oras{\b}}}^{\text{HC0}}$ where $\wh{\Vb}_{\wh{\oras{\b}}}^{\text{HC0}}$ is the HC0 covariance matrix estimator from (\ref{hansen_eq_4_31}).
+
+As shown in Theorem \ref{hansen_thm_7_1}, $\wh{\Qb}_{XX}^{-1} \inprob \Qb_{XX}^{-1}$, so we just need to verify the consistency of $\wh{\bds{\O}}$. The key is to replace the squared residual $\wh{e}_i^2$ with the squared error $e_i^2$, and then show the difference is asymptotically negligible.
+
+Specifically, observe that 
+\begin{equation}
+	\notag
+	\begin{aligned}
+		\wh{\bds{\O}} & = \frac{1}{n} \sum_{i=1}^{n} \ora{X}_i \ora{X}_i^\prime \wh{e}_i^2 \\
+        & = \frac{1}{n} \sum_{i=1}^{n} \ora{X}_i \ora{X}_i^\prime {e}_i^2 + \frac{1}{n} \sum_{i=1}^{n} \ora{X}_i \ora{X}_i^\prime \bp{\wh{e}_i^2 - e_i^2}.
+	\end{aligned}
+\end{equation}
+The first term is an average of the i.i.d. random variables $\ora{X}_i \ora{X}_i^\prime {e}_i^2$, and therefore by the WLLN converges in probability to its expectation, namely, 
+\begin{equation}
+    \notag
+    \frac{1}{n} \sum_{i=1}^{n} \ora{X}_i \ora{X}_i^\prime {e}_i^2 \inprob \E\bs{\ora{X} \ora{X}^\prime {e}^2} = \bds{\O}.
+\end{equation}
+Technically, this requires that $\bds{\O}$ has finite elements, which was shown in (\ref{hansen_eq_7_6}).
+
+It remains to show that 
+\begin{equation}
+    \label{hansen_eq_7_20}
+    \frac{1}{n} \sum_{i=1}^{n} \ora{X}_i \ora{X}_i^\prime \bp{\wh{e}_i^2 - e_i^2} \inprob 0.
+\end{equation}
+There are multiple ways to do this. A reasonable straightforward yet slightly tedious derivation is to start by applying the triangle inequality using a matrix norm,
+\begin{equation}
+    \label{hansen_eq_7_21}
+    \begin{aligned}
+        \left\|\frac{1}{n} \sum_{i=1}^n \ora{X}_i \ora{X}_i^{\prime}\left(\widehat{e}_i^2-e_i^2\right)\right\| & \leq \frac{1}{n} \sum_{i=1}^n\left\|\ora{X}_i \ora{X}_i^{\prime}\left(\widehat{e}_i^2-e_i^2\right)\right\| \\
+        & =\frac{1}{n} \sum_{i=1}^n\left\|\ora{X}_i\right\|^2\left|\widehat{e}_i^2-e_i^2\right| .
+    \end{aligned}
+\end{equation}
+Then recalling the expression for the squared residual (\ref{hansen_eq_7_17}), apply the triangle inequality and then the Schwarz inequality twice 
+\begin{equation}
+    \label{hansen_eq_7_22}
+    \begin{aligned}
+        \left|\widehat{e}_i^2-e_i^2\right| & \leq 2\left|e_i \ora{X}_i^{\prime}(\widehat{\oras{\beta}}-\ora{\beta})\right|+(\widehat{\ora{\beta}}-\ora{\beta})^{\prime} \ora{X}_i \ora{X}_i^{\prime}(\widehat{\oras{\beta}}-\ora{\beta}) \\
+        & =2\left|e_i\right|\left|\ora{X}_i^{\prime}(\widehat{\oras{\beta}}-\ora{\beta})\right|+\left|(\widehat{\oras{\beta}}-\ora{\beta})^{\prime} \ora{X}_i\right|^2 \\
+        & \leq 2\left|e_i\right|\left\|\ora{X}_i\right\|\|\widehat{\oras{\beta}}-\ora{\beta}\|+\left\|\ora{X}_i\right\|^2\|\widehat{\oras{\beta}}-\ora{\beta}\|^2
+    \end{aligned}
+\end{equation}
+Combining (\ref{hansen_eq_7_21}) and (\ref{hansen_eq_7_22}), we find 
+\begin{equation}
+    \label{hansen_eq_7_23}
+    \norm{\frac{1}{n} \sum_{i=1}^{n} \ora{X}_i \ora{X}_i^\prime \bp{\wh{e}_i^2 - e_i^2}} \leq 2\bp{\frac{1}{n}\sum_{i=1}^{n} \norm{\ora{X}_i}^3 \abs{e_i}} \|\widehat{\oras{\beta}}-\ora{\beta}\| + \bp{\frac{1}{n}\sum_{i=1}^{n} \norm{\ora{X}_i}^4} \|\widehat{\oras{\beta}}-\ora{\beta}\|^2 = o_p\of{1}.
+\end{equation}
+The expression is $o_p\of{1}$ because $\norm{\ora{\b} - \ora{\b}} \inprob 0$ and both averages in parenthesis are averages of random variables with finite expectation under Assumption \ref{hansen_ass_7_2} (and are thus $O_p\of{1}$). Indeed, by Holder's inequality, 
+\begin{equation}
+    \notag
+    \mathbb{E}\left[\|X\|^3|e|\right] \leq\left(\mathbb{E}\left[\left(\|X\|^3\right)^{4 / 3}\right]\right)^{3 / 4}\left(\mathbb{E}\left[e^4\right]\right)^{1 / 4}=\left(\mathbb{E}\|X\|^4\right)^{3 / 4}\left(\mathbb{E}\left[e^4\right]\right)^{1 / 4}<\infty.
+\end{equation}
+
+\begin{theorem}
+    \label{hansen_thm_7_6}
+    Under Assumption \ref{hansen_ass_7_2}, as $n \rightarrow \infty$, $\wh{\bds{\O}} \inprob \bds{\O}$ and $\wh{\Vb}_{\oras{\b}}^{\text{HC0}} \inprob {\Vb}_{\oras{\b}}$, where $\wh{\Vb}_{\oras{\b}}^{\text{HC0}}$ is constructed as follows
+    \begin{equation}
+        \notag 
+        \wh{\Vb}_{\oras{\b}}^{\text{HC0}} = \bp{\frac{1}{n} \sum_{i=1}^{n} \ora{X}_i \ora{X}_i^{\prime}}^{-1} \bp{\frac{1}{n} \sum_{i=1}^{n} \ora{X}_i \ora{X}_i^{\prime}\wh{e}_i^2} \bp{\frac{1}{n} \sum_{i=1}^{n} \ora{X}_i \ora{X}_i^{\prime}}^{-1}.
+    \end{equation}
+\end{theorem}
+
+\section{Summary of Covariance Matrix Notation}
+
+The notation we have introduced may be somewhat confusing so it is helpful to write it down in one place.
+
+The exact variance of $\wh{\oras{\b}}$ (under the assumptions of the linear regression model) and the asymptotic variance of $\sqrt{n}\bp{\wh{\oras{\b}} - \ora{\b}}$ (under the more general assumptions of the linear projection model) are 
+\begin{equation}
+    \notag
+    \begin{aligned}
+        & \boldsymbol{V}_{\wh{\oras{\b}}}=\operatorname{var}[\wh{\oras{\b}} \mid \boldsymbol{X}]=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\boldsymbol{X}^{\prime} \boldsymbol{D} \boldsymbol{X}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \\
+        & \boldsymbol{V}_{\oras{\b}}=\operatorname{avar}\left[\sqrt{n}\left(\wh{\oras{\b}}-\ora{\b}\right)\right]=\boldsymbol{Q}_{X X}^{-1} \bds{\Omega} \boldsymbol{Q}_{X X}^{-1} .
+    \end{aligned}
+\end{equation}
+The HC0 estimators of these covariance matrices are 
+\begin{equation}
+    \notag
+    \begin{aligned}
+        & \widehat{\boldsymbol{V}}_{\wh{\oras{\b}}}^{\mathrm{HC} 0}=\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^n \ora{X}_i \ora{X}_i^{\prime} \widehat{e}_i^2\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \\
+        & \widehat{\boldsymbol{V}}_{{\oras{\b}}}^{\mathrm{HC} 0}=\widehat{\boldsymbol{Q}}_{X X}^{-1} \widehat{\bds{\Omega}} \widehat{\boldsymbol{Q}}_{X X}^{-1}
+    \end{aligned}
+\end{equation}
+and satisfy the simple relationship $\widehat{\boldsymbol{V}}_{{\ora{\b}}}^{\mathrm{HC} 0} = n \widehat{\boldsymbol{V}}_{\wh{\oras{\b}}}^{\mathrm{HC} 0}$.
+
+Similarly, under the assumption of homoskedasticity the exact and asymptotic variances simplify to
+\begin{equation}
+    \notag
+    \begin{aligned}
+        & \boldsymbol{V}_{\wh{\oras{\b}}}^0 = \left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \s^2 \\
+        & \boldsymbol{V}_{\oras{\b}}^0 = \boldsymbol{Q}_{X X}^{-1} \s^2.
+    \end{aligned}
+\end{equation}
+Their standard estimators are 
+\begin{equation}
+    \notag
+    \begin{aligned}
+        & \wh{\boldsymbol{V}}_{\wh{\oras{\b}}}^0 = \left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} s^2 \\
+        & \wh{\boldsymbol{V}}_{\oras{\b}}^0 = \boldsymbol{Q}_{X X}^{-1} s^2.
+    \end{aligned}
+\end{equation}
+which also satisfy the relationship $\wh{\boldsymbol{V}}_{\oras{\b}}^0 = n \wh{\boldsymbol{V}}_{\wh{\oras{\b}}}^0$.
+
+\section{Alternative Covariance Matrix Estimators}
+
+In Section \ref{hansen_sec_7_7}, we introduced $\wh{\Vb}_{\oras{\b}}^{\text{HC0}}$ as an estimator of $\Vb_{\oras{\b}}$. $\wh{\Vb}_{\oras{\b}}^{\text{HC0}}$ is a scaled version of $\wh{\Vb}_{\wh{\oras{\b}}}^{\text{HC0}}$ from Section \ref{hansen_sec_4_15}, where we also introduced the alternative HC1, HC2, and HC3 heteroskedasticity-robust covariance matrix estimators. We now discuss the consistency properties of these estimators. 
+
+To do so we introduce their scaled versions, e.g., 
+\begin{equation}
+    \notag 
+    \wh{\Vb}_{\oras{\b}}^{\text{HC1}} = n \wh{\Vb}_{\wh{\oras{\b}}}^{\text{HC1}}, \quad \wh{\Vb}_{\oras{\b}}^{\text{HC2}} = n \wh{\Vb}_{\wh{\oras{\b}}}^{\text{HC2}},\quad \wh{\Vb}_{\oras{\b}}^{\text{HC3}} = n \wh{\Vb}_{\wh{\oras{\b}}}^{\text{HC3}}.
+\end{equation}
+These are alternative estimators of the asymptotic covariance matrix $\Vb_{\oras{\b}}$.
+
+Notice that 
+\begin{equation}
+    \notag 
+    \wh{\Vb}_{\oras{\b}}^{\text{HC1}} = n \wh{\Vb}_{\wh{\oras{\b}}}^{\text{HC1}} = \frac{n}{n-k} \wh{\Vb}_{{\oras{\b}}}^{\text{HC0}},
+\end{equation}
+where $\wh{\Vb}_{{\oras{\b}}}^{\text{HC0}}$ was defined in (\ref{hansen_eq_7_19}) and shown consistent for $\Vb_{\oras{\b}}$ in Theorem \ref{hansen_thm_7_6}. If $k$ is fixed as $n \rightarrow \infty$, then $\frac{n}{n-k} \rightarrow 1$ and thus $\wh{\Vb}_{\oras{\b}}^{\text{HC1}}$ is consistent for $\Vb_{\oras{\b}}$.
+
+The alternative estimators $\wh{\Vb}_{\oras{\b}}^{\text{HC2}}$ and $\wh{\Vb}_{\oras{\b}}^{\text{HC3}}$ take the form (\ref{hansen_eq_7_19}) but with $\wh{\bds{\O}}$ replaced by 
+\begin{equation}
+    \notag
+    \begin{aligned}
+    &\widetilde{\bds{\Omega}}=\frac{1}{n} \sum_{i=1}^n\left(1-h_{i i}\right)^{-2} \ora{X}_i \ora{X}_i^{\prime} \widehat{e}_i^2\\
+    &\ol{\bds{\Omega}}=\frac{1}{n} \sum_{i=1}^n\left(1-h_{i i}\right)^{-1} \ora{X}_i \ora{X}_i^{\prime} \widehat{e}_i^2,
+    \end{aligned}
+\end{equation}
+respectively. To show that these estimators also consistent for $\Vb_{\oras{\b}}$ given $\wh{\bds{\O}} \inprob \bds{\O}$ it is sufficient to show that the differences $\wt{\bds{\O}} - \wh{\bds{\O}}$ and $\ol{\bds{\O}} - \wh{\bds{\O}}$ converge in probability to zero as $n \rightarrow \infty$. 
+
+The trick is the fact that the leverage values are asymptotically negligible:
+\begin{equation}
+    \label{hansen_eq_7_24}
+    h_n^* = \max_{1 \leq i \leq n} h_{ii} = o_p\of{1}.
+\end{equation}
+
+
+\begin{theorem}
+    \label{hansen_thm_7_7}
+    Under Assumption \ref{hansen_ass_7_2}, as $n \rightarrow \infty$, 
+    \begin{equation}
+        \notag 
+        \wh{\Vb}_{\oras{\b}}^{\text{HC1}} \inprob {\Vb}_{\oras{\b}}^{\text{HC1}}, \quad \wh{\Vb}_{\oras{\b}}^{\text{HC2}} \inprob {\Vb}_{\oras{\b}}^{\text{HC2}}, \quad \wh{\Vb}_{\oras{\b}}^{\text{HC3}} \inprob {\Vb}_{\oras{\b}}^{\text{HC3}}
+    \end{equation}
+\end{theorem}
+
+Theorem \ref{hansen_thm_7_7} shows that the alternative covariance matrix estimators are also consistent for the asymptotic covariance matrix. To simplify notation, for the remainder of the chapter we will use the notation $\wh{\Vb}_{\oras{\b}}$ and $\wh{\Vb}_{\wh{\oras{\b}}}$ to refer to any of the heteroskedasticity-consistent covariance matrix estimators HC0, HC1, HC2 and HC3, since they all have the same asymptotic limits.
+
+
+\section{Functions of Parameters}
+
+In most serious applications a researcher is actually interested in a specific transformation of the coefficient vector $\ora{\b}$, where we can write the parameter of interest $\t$ as a function of the coefficients, e.g., $\t = r\of{\ora{\b}}$ for some function $r: \R^k \rightarrow \R^q$. The estimate of $\t$ is 
+\begin{equation}
+    \notag
+    \wh{\t} = r\of{\wh{\oras{\b}}}.
+\end{equation}
+
+\begin{theorem}
+    \label{hansen_thm_7_8}
+    Under Assumption \ref{hansen_ass_7_1}, if $r\of{\ora{\b}}$ is continuous at the true value of $\ora{\b}$ then as $n \rightarrow \infty$, $\wh{\t} \inprob \t$.
+\end{theorem}
+
+Furthermore, if the transformation is sufficiently smooth, by the Delta Method we can show that $\wh{\t}$ is asymptotically normal.
+
+\begin{assumption}
+    \label{hansen_ass_7_3}
+    $r\of{\ora{\b}}: \R^k \rightarrow \R^q$ is continuously differentiable at the true value of $\ora{\b}$ and 
+    $$
+    \Rb = \frac{\partial}{\partial \oras{\b}} r\of{\oras{\b}}^\prime
+    $$
+    has rank $q$.
+\end{assumption}
+
+\begin{theorem}[Asymptotic Distribution of Functions of Parameters]
+    \label{hansen_thm_7_9}
+
+    Under Assumption \ref{hansen_ass_7_2} and \ref{hansen_ass_7_3}, as $n \rightarrow \infty$, 
+    \begin{equation}
+        \label{hansen_eq_7_25}
+        \sqrt{n} \bp{\wh{\t} - \t} \indist N\of{0, \Vb_\t}
+    \end{equation}
+    where $\Vb_\t = \Rb^\prime \Vb_{\oras{\b}} \Rb$.
+\end{theorem}
+
+In many cases the function $r\of{\ora{\b}}$ is linear:
+\begin{equation}
+    \notag
+    r\of{\ora{\b}} = \Rb^\prime \ora{\b}
+\end{equation}
+for some $k \times q$ matrix $\Rb$. In particular, if $\Rb$ is a ``selector matrix''
+\begin{equation}
+    \notag 
+    \Rb = \bp{\begin{array}{c}
+        \Ib \\
+        \bds{0}
+    \end{array}},
+\end{equation}
+then we can partition $\ora{\b} = \bp{\ora{\b}_1^{\prime}, \ora{\b}_2^{\prime}}^{\prime}$ so that $\Rb^{\prime} \ora{\b} = \ora{\b}_1$. Then 
+\begin{equation}
+    \notag 
+    \Vb_{\t} = \Vb_{11},
+\end{equation}
+the upper-left sub-matrix of $\Vb_{11}$ given in (\ref{hansen_eq_7_14}).
+
+To illustrate the case of a nonlinear transformation take the example $\t = \b_j / \b_l$ for $j \neq l$. Then 
+\begin{equation}
+    \label{hansen_eq_7_26}
+    \boldsymbol{R}=\frac{\partial}{\partial \oras{\beta}} r(\oras{\beta})=\left(\begin{array}{c}
+        \frac{\partial}{\partial \beta_1}\left(\beta_j / \beta_l\right) \\
+        \vdots \\
+        \frac{\partial}{\partial \beta_j}\left(\beta_j / \beta_l\right) \\
+        \vdots \\
+        \frac{\partial}{\partial \beta_{\ell}}\left(\beta_j / \beta_l\right) \\
+        \vdots \\
+        \frac{\partial}{\partial \beta_k}\left(\beta_j / \beta_l\right)
+        \end{array}\right)=\left(\begin{array}{c}
+        0 \\
+        \vdots \\
+        1 / \beta_l \\
+        \vdots \\
+        -\beta_j / \beta_l^2 \\
+        \vdots \\
+        0
+        \end{array}\right)
+\end{equation}
+so 
+\begin{equation}
+    \notag
+    \boldsymbol{V}_\theta=\boldsymbol{V}_{j j} / \beta_l^2+\boldsymbol{V}_{l l} \beta_j^2 / \beta_l^4-2 \boldsymbol{V}_{j l} \beta_j / \beta_l^3
+\end{equation}
+where $\Vb_{ab}$ denotes the $ab$th element of $\Vb_{\b}$.
+
+For inference we need an estimator of the asymptotic covariance matrix $\Vb_\t = \Rb^\prime \Vb_{\oras{\b}} \Rb$. For this it is typical to use the plug-in estimator 
+\begin{equation}
+    \label{hansen_eq_7_27}
+    \wh{\Rb} = \frac{\partial}{\partial \oras{\b}} r\of{\wh{\oras{\b}}}^\prime.
+\end{equation}
+The derivation in (\ref{hansen_eq_7_27}) may be calculated analytically or numerically.
+
+The estimator for $\Vb_\t$ is 
+\begin{equation}
+    \label{hansen_eq_7_28}
+    \wh{\Vb}_\t = \wh{\Rb}^\prime \wh{\Vb}_{\ora{\b}} \wh{\Rb}. 
+\end{equation}
+Alternatively, the homoskedastic covariance matrix estimator could be used leading to a homoskedastic covariance matrix estimator for $\t$.
+\begin{equation}
+    \label{hansen_eq_7_29}
+    \wh{\Vb}_\t^0 = \wh{\Rb}^\prime \wh{\Vb}_{\ora{\b}}^0 \wh{\Rb} = \wh{\Rb}^\prime \wh{\Qb}_{XX}^{-1} \wh{\Rb} s^2. 
+\end{equation}
+
+As the primary justification for $\wh{\Vb}_\t$ is the asymptotic approximation (\ref{hansen_eq_7_25}), $ \wh{\Vb}_\t$ is often called an \highlightB{asymptotic covariance matrix estimator}.
+
+\begin{theorem}
+    \label{hansen_thm_7_10}
+    Under Assumption \ref{hansen_ass_7_2} and \ref{hansen_ass_7_3}, as $n \rightarrow \infty$, $\wh{\Vb}_\t \inprob \Vb_{\t}$.
+\end{theorem}
+
+In practice, we may set 
+\begin{equation}
+    \label{hansen_eq_7_30}
+    \wh{\Vb}_{\wh{\t}} = \wh{\Rb}^\prime \wh{\Vb}_{\wh{\oras{\b}}} \wh{\Rb} = n^{-1} \wh{\Rb}^\prime \wh{\Vb}_{\ora{\b}} \wh{\Rb}
+\end{equation}
+as an estimator of the variance of $\wh{\t}$.
+
+\section{Asymptotic Standard Errors}
+
+As described in Section \ref{hansen_sec_4_16} a standard error is an estimator of the standard deviation of the distribution of an estimator.
+\begin{equation}
+    \notag
+    s\of{\wh{\t}} = \sqrt{\wh{\Rb}^\prime \wh{\Vb}_{\wh{\oras{\b}}} \wh{\Rb}} = \sqrt{n^{-1} \wh{\Rb}^\prime \wh{\Vb}_{\oras{\b}} \wh{\Rb}}.
+\end{equation}
+When the justification is based on asymptotic theory we call $s\of{\wh{\t}}$ or $s\of{\wh{\b}_j}$ an \highlightB{asymptotic standard error} for $\wh{\t}$ or $\wh{\b}_j$. When reporting your results it is good practice to report standard errors for each reported estimate and this includes functions and transformations of your parameter estimates. This helps users of the work (including yourself ) assess the estimation precision.
+
+
+\section{t-statistic}
+\setcounter{equation}{32}
+
+Let $\t = r\of{\ora{\b}}: \R^k \rightarrow \R$ be a a parameter of interest, $\wh{\t}$ its estimator, and $s\of{\wh{\t}}$ its asymptotic standard error. Consider the statistic 
+\begin{equation}
+    \label{hansen_eq_7_33}
+    T\of{\t} = \frac{\wh{\t} - \t}{s\of{\wh{\t}}}.
+\end{equation}
+
+
+By Theorems \ref{hansen_thm_7_9} and \ref{hansen_thm_7_10}, $\sqrt{n}\bp{\wh{\t}-\t} \indist N\of{0, \Vb_\t}$ and $\wh{\Vb}_\t \inprob \Vb_\t$. Thus 
+\begin{equation}
+    \notag
+    \begin{aligned}
+        T(\theta) & =\frac{\widehat{\theta}-\theta}{s(\widehat{\theta})} \\
+        & =\frac{\sqrt{n}(\widehat{\theta}-\theta)}{\sqrt{\widehat{V}_\theta}} \\
+        & \longrightarrow \frac{\mathrm{N}\left(0, V_\theta\right)}{\sqrt{V_\theta}} \\
+        & =Z \sim \mathrm{N}(0,1) .
+    \end{aligned}
+\end{equation}
+
+\begin{assumption}
+    \label{hansen_ass_7_4}
+
+    $\Vb_{\t} = \Rb^\prime \Vb_{\oras{\b}} \Rb > 0.$
+\end{assumption}
+
+Thus the asymptotic distribution of the t-ratio $T\of{\t}$ is standard normal. Since this distribution does not depend on the parameters we say that $T\of{\t}$ is \highlightB{asymptotically pivotal}. In finite samples $T\of{\t}$ is not necessarily pivotal but the property means that the dependence on unknowns diminishes as $n$ increases. 
+
+It is also useful to consider the distribution of the \highlightB{absolute $t$-ratio} $\abs{T\of{\t}}$. Since $T\of{\t} \indist Z$ the continuous mapping theorem yields $\abs{T\of{\t}} \indist \abs{Z}$. Letting $\Phi\of{u} = \P\bs{Z \leq u}$ denote the standard normal distribution function we calculation the distribution of $\abs{Z}$ as 
+\begin{equation}
+    \label{hansen_eq_7_34}
+    \P\bs{\abs{Z} \leq u} = 2 \Phi\of{u} - 1.
+\end{equation}
+
+\begin{theorem}
+    \label{hansen_thm_7_11}
+
+    Under Assumption \ref{hansen_ass_7_2}, \ref{hansen_ass_7_3}, and \ref{hansen_ass_7_4}, $T\of{\t} \indist Z = N\of{0,1}$ and $\abs{T\of{\t}} \indist \abs{Z}$.
+\end{theorem}
+
+The asymptotic normality of Theorem \ref{hansen_thm_7_11} is used to justify confidence intervals and tests for the parameters.
+
+\section{Confidence Intervals}
+
+The estimator $\wh{\t}$ is a \highlightB{point estimator} for $\t$ meaning that $\wh{\t}$ is a single value in $\R^q$. A broader concept is a \highlightB{set estimator} $\wh{C}$ which is a collection of values in $\R^q$. When the parameter $\t$ is real-valued then it is common to focus on sets of the form $\wh{C} = \bs{\wh{L}, \wh{U}}$, which is called an \highlightB{interval estimator} for $\t$.
+
+An interval estimate $\wh{C}$ is a function of the data and hence is random. The \highlightB{coverage probability} of the interval $\wh{C} = \bs{\wh{L}, \wh{U}}$ is $\P\bs{\t \in \wh{C}}$. The randomness comes from $\wh{C}$ as the parameter $\t$ is treated as fixed. In Section \ref{hansen_sec_5_10} we introduced confidence intervals for the normal regression model which used the finite sample distribution of the $t$-statistic. When we are outside the normal regression model we cannot rely on the exact normal distribution theory but instead use asymptotic approximations. A benefit is that we can construct confidence intervals for general parameters of interest $\t$ not just regression coefficients.
+
+An interval estimator $\wh{C}$ is called a \highlightB{confidence interval} when the goal is to set the coverage probability to equal a pre-specified target such as $90\%$ or $95\%$. $\wh{C}$ is called a $1-\a$ confidence interval is 
+\begin{equation}
+    \notag 
+    \inf_{\t} \P\bs{\t \in \wh{C}} = 1 - \a.
+\end{equation}
+
+When $\wh{\t}$ is asymptotically normal with standard errors $s\of{\wh{\t}}$ the conventional confidence interval for $\t$ takes the form 
+\begin{equation}
+    \label{hansen_eq_7_35}
+    \wh{C} = \bs{\wh{\t} - c \times s\of{\wh{\t}}, \wh{\t} + c \times s\of{\wh{\t}}},
+\end{equation}
+where $c$ equals the $1-\a$ quantile of the distribution of $\abs{Z}$. Using (\ref{hansen_eq_7_34}) we calculate that $c$ is equivalently the $1 - \a/2$ quantile of the standard normal distribution. Thus, $c$ solves 
+\begin{equation}
+    \notag 
+    2 \Phi\of{c} - 1 = 1 - \a.
+\end{equation}
+The confidence interval (\ref{hansen_eq_7_35}) is symmetric about the point estimator $\wh{\t}$ and its length is proportional to the standard error $s\of{\wh{\t}}$.
+
+Equivalently, (\ref{hansen_eq_7_35}) is the set of parameter values for $\t$ such that the $t$-statistic $T\of{\t}$ is smaller (in absolute value) than $c$, that is, 
+\begin{equation}
+    \notag 
+    \wh{C} = \bc{\t: \abs{T\of{\t}} \leq c} = \bc{\t: -c \leq \frac{\wh{\t} - \t}{s\of{\wh{\t}}} \leq c}.
+\end{equation}
+
+The coverage probability of this confidence interval is 
+\begin{equation}
+    \notag 
+    \P\bs{\t \in \wh{C}} = \P\bs{\abs{T\of{\t}} \leq c} \rightarrow \P\bs{\abs{Z} \leq c} = 1 - \a,
+\end{equation}
+where the limit is taken as $n \rightarrow \infty$, and holds since $T\of{\t}$ is asymptotically standard normal by Theorem \ref{hansen_thm_7_11}. We call the limit the \highlightB{asymptotic coverage probability} and call $\wh{C}$ an asymptotic $1 - \a$ confidence interval for $\t$. Since the $t$-ratio is asymptotically pivotal, the asymptotic coverage probability is independent of the parameter $\t$.
+
+It is useful to contrast the confidence interval (\ref{hansen_eq_7_35}) with (\ref{hansen_eq_5_8}) for the normal regression model. They are similar but there are differences. \highlightP{The normal regression interval (\ref{hansen_eq_5_8}) only applies to regression coefficients $\b$ not to functions $\t$ of the coefficients. The normal interval (\ref{hansen_eq_5_8}) also is constructed with the homoskedastic standard error, while (\ref{hansen_eq_7_35}) can be constructed with a heteroskedastic-robust standard error. Furthermore, the constants $c$ in (\ref{hansen_eq_5_8}) are calculated using the student $t$ distribution, while $c$ in (\ref{hansen_eq_7_35}) are calculated using the normal distribution.} The difference between the student $t$ and normal values are typically small in practice (since sample sizes are large in typical economic applications). However, since the student $t$ values are larger, it results in slightly larger confidence intervals which is reasonable. A practical rule of thumb is that if the sample sizes are sufficiently small that it makes a difference then neither (\ref{hansen_eq_5_8}) nor (\ref{hansen_eq_7_35}) should be trusted. Despite these differences the coincidence of the intervals means that inference on regression coefficients is generally robust to using either the exact normal sampling assumption or the asymptotic large sample approximation, at least in large samples.
+
+\highlightP{Stata by default reports $95\%$ confidence intervals for each coefficient where the critical values $c$ are calculated using the $t_{n-k}$ distribution. This is done for all standard error methods even though it is only exact for homoskedastic standard errors and under normality.}
+
+The standard coverage probability for confidence intervals is $95\%$, leading to the choice $c = 1.96$ for the constant in (\ref{hansen_eq_7_35}). Rounding $1.96$ to $2$, we obtain the most commonly used confidence interval in applied econometric practice
+$$
+\wh{C} = \bs{\wh{\t} - 2 \times s\of{\wh{\t}}, \wh{\t} + 2 \times s\of{\wh{\t}}}.
+$$
+This is a useful rule-of thumb. This asymptotic $95\%$ confidence interval $\wh{C}$ is simple to compute and can be roughly calculated from tables of coefficient estimates and standard errors. (Technically, it is an asymptotic $95.4\%$ interval due to the substitution of $2.0$ for $1.96$ but this distinction is overly precise.)
+
+\begin{theorem}
+    \label{hansen_thm_7_12}
+    Under Assumptions \ref{hansen_ass_7_2}, \ref{hansen_ass_7_3}, and \ref{hansen_ass_7_4}, for $\wh{C}$ defined in (\ref{hansen_eq_7_35}), with 
+    $$
+    c = \Phi^{-1}\of{1 - \frac{\a}{2}},
+    $$
+    we have 
+    \begin{equation}
+        \notag 
+        \P\bs{\t \in \wh{C}} \rightarrow 1 - \a.
+    \end{equation}
+    For $c = 1.96$, $\P\bs{\t \in \wh{C}} \rightarrow 0.95$.
+\end{theorem}
+
+Confidence intervals are a simple yet effective tool to assess estimation uncertainty. When reading a set of empirical results look at the estimated coefficient estimates and the standard errors. For a parameter of interest compute the confidence interval $\wh{C}$ and consider the meaning of the spread of the suggested values. If the range of values in the confidence interval are too wide to learn about $\t$ then do not jump to a conclusion about $\t$ based on the point estimate alone.
+
+\section{Regression Intervals}
+
+In the linear regression model the confidence expectation of $Y$ given $\ora{X} = \ora{x}$ is 
+\begin{equation}
+    \notag 
+    m\of{\ora{x}} = \E\bs{Y \mid \ora{X} = \ora{x}} = \ora{x}^{\prime} \ora{\b}.
+\end{equation}
+In some cases we want to estimate $m\of{\ora{x}}$ at a particular point $\ora{x}$. Notice that this is a linear function of $\ora{\b}$. Letting $r\of{\ora{\b}} = \ora{x}^{\prime} \ora{\b}$ and $\t = r\of{\ora{\b}}$, we see that $\wh{m}\of{\ora{x}} = \wh{\t} = \ora{x}^{\prime} \ora{\b}$ and $\Rb = \ora{\x}$, so 
+$$
+s\of{\ora{\t}} = \sqrt{\ora{x}^{\prime} \wh{\Vb}_{\oras{\b}} \ora{x}}.
+$$
+Thus, an asymptotic $95\%$ confidence interval for $m\of{\ora{x}}$ is 
+\begin{equation}
+    \notag 
+    \bs{\ora{x}^{\prime}\ora{\b} - 1.96 \times \sqrt{\ora{x}^{\prime} \wh{\Vb}_{\oras{\b}} \ora{x}},\; \ora{x}^{\prime}\ora{\b} + 1.96 \times \sqrt{\ora{x}^{\prime} \wh{\Vb}_{\oras{\b}} \ora{x}}}.
+\end{equation}
+It is interesting to observe that if this is viewed as a function of $\ora{x}$ the width of the confidence interval is dependent on $\ora{x}$.
+
+\section{Forecast Intervals}
+
+Suppose we are given a value of the regressor vector $\ora{X}_{n+1}$ for an individual outside the sample and we want to forecast $Y_{n+1}$ for this individual. This is equivalent to forecasting $Y_{n+1}$ given $\ora{X}_{n+1} = \ora{x}$ which will generally be a function of $\ora{x}$. A reasonable forecasting rule is the conditional expectation $m\of{\ora{x}}$ as it is the mean-square minimizing forecast. A point forecast is the estimated conditional expectation $\wh{m}\of{\ora{x}} = \ora{x}^{\prime} \ora{\b}$. We would also like a measure of uncertainty for the forecast.
+
+The forecast error is $\wh{e}_{n+1} = Y_{n+1} - \wh{m}\of{\ora{x}} = e_{n+1} - \ora{x}^{\prime} \bp{\wh{\oras{\b}} - \ora{\b}}$. As the out-of-sample error $e_{n+1}$ is independent of the in-sample estimator $\wh{\oras{\b}}$, this has conditional variance 
+\begin{equation}
+    \label{hansen_eq_7_36}
+    \begin{aligned}
+        \E\bs{\wh{e}_{n+1}^2 \mid \ora{X}_{n+1} = \ora{x}} & = \E\bs{\bp{e_{n+1} - \ora{x}^{\prime} \bp{\wh{\oras{\b}} - \ora{\b}}}^2 \mid \ora{X}_{n+1} = \ora{x}} \\
+        & = \E\bs{\wh{e}_{n+1} \mid \ora{X}_{n+1} = \ora{x}} + \ora{x}^{\prime} \E\bs{\bp{\wh{\oras{\b}} - \ora{\b}}^2} \ora{x} \\
+        & = \s^2\of{\ora{x}} + \ora{x}^{\prime} \Vb_{\wh{\oras{\b}}} \ora{x}.
+    \end{aligned}
+\end{equation}
+
+Under homoskedasticity $\E\bs{\wh{e}_{n+1} \mid \ora{X}_{n+1} = \ora{x}} = \s^2$. In this case a simple estimator of (\ref{hansen_eq_7_36}) is $\wh{\s}^2 + \ora{x}^{\prime} \Vb_{\wh{\oras{\b}}} \ora{x}$ so a standard error for the forecast can be estimated as 
+\begin{equation}
+    \notag 
+    \wh{s}\of{\wh{m}\of{\ora{x}}} = \sqrt{\wh{\s}^2 + \ora{x}^{\prime} \wh{\Vb}_{\wh{\oras{\b}}} \ora{x}}.
+\end{equation}
+\highlightP{Notice that this is different from the standard error for the conditional expectation.}
+
+The conventional $95\%$ forecast interval for $Y_{n+1}$ uses a normal approximation and equals 
+\begin{equation}
+    \notag 
+    \bs{\ora{x}^{\prime}\wh{\oras{\b}} - 1.96 \times \wh{s}\of{\wh{m}\of{\ora{x}}},\; \ora{x}^{\prime}\wh{\oras{\b}} + 1.96 \times \wh{s}\of{\wh{m}\of{\ora{x}}}}.
+\end{equation}
+However, it is difficult to fully justify this choice. It would be correct if we have a normal distribution to the ratio 
+\begin{equation}
+    \notag 
+    \frac{e_{n+1} - \ora{x}^{\prime}\bp{\wh{\oras{\b}} - \oras{\b}}}{\wh{s}\of{\wh{m}\of{\ora{x}}}}.
+\end{equation} 
+The difficulty is that the equation error $e_{n+1}$ is generally non-normal and asymptotic theory cannot be applied to a single observation. The only special exception is the case where $e_{n+1}$ has the exact distribution $N\of{0, \s^2}$ which is generally invalid.
+
+An accurate forecast interval would use the conditional distribution of $e_{n+1}$ given $\ora{X}_{n+1} = \ora{x}$, which is more challenging to estimate. Due to this difficulty many applied forecasters use the simple approximate interval despite the lack of a convincing justification.
+
+\section{Wald Statistic}
+
+Let $\ora{\t} = r\of{\ora{\b}}: \R^k \rightarrow \R^q$ be any parameter vector of interest, $\wh{\oras{\t}}$ its estimator, and $\wh{\Vb}_{\wh{\oras{\t}}}$ its covariance matrix estimator. Consider the quadratic form 
+\begin{equation}
+    \label{hansen_eq_7_37}
+    W\of{\ora{\t}} = \bp{\wh{\oras{\t}} - \ora{\t}}^{\prime} \wh{\Vb}_{\wh{\oras{\t}}}^{-1} \bp{\wh{\oras{\t}} - \ora{\t}} = n \bp{\wh{\oras{\t}} - \ora{\t}}^{\prime} \bp{\wh{\Vb}_{{\oras{\t}}}}^{-1} \bp{\wh{\oras{\t}} - \ora{\t}},
+\end{equation}
+where 
+$$
+\wh{\Vb}_{\oras{\t}} = n \wh{\Vb}_{\wh{\oras{\t}}}.
+$$
+When $q = 1$, then $W\of{\t} = T\of{\t}^2$ is the square of the $t$-ratio. When $q > 1$, $W\of{\ora{\t}}$ is typically callied a \highlightB{Wald statistic}. We are interested in its sampling distribution. 
+
+The asymptotic distribution of $W\of{\ora{\t}}$ is simple to derive given Theorem \ref{hansen_thm_7_9} and Theorem \ref{hansen_thm_7_10}. They show that 
+\begin{equation}
+    \notag 
+    \sqrt{n}\bp{\wh{\oras{\t}} - \oras{\t}} \indist \ora{Z} \sim N\of{0, \Vb_{\oras{\t}}},
+\end{equation}
+and 
+\begin{equation}
+    \notag 
+    \wh{\Vb}_{\oras{\t}} \inprob \Vb_{\oras{\t}}.
+\end{equation}
+It follows that 
+\begin{equation}
+    \notag 
+    W\of{\ora{\t}} = \sqrt{n}\bp{\wh{\oras{\t}} - \oras{\t}}^{\prime} \wh{\Vb}_{\oras{\t}}^{-1} \sqrt{n}\bp{\wh{\oras{\t}} - \oras{\t}} \indist \ora{Z}^{\prime} \Vb_{\oras{\t}}^{-1} \ora{Z}
+\end{equation}
+a quadratic int he normal random vector $\ora{Z}$. As shown in Theorem \ref{Hansen_thm_5_3}(5), the distribution of this quadratic form is $\chi_q^2$, a chi-square random variable with $q$ degrees of freedom.
+
+\begin{theorem}
+    \label{hansen_thm_7_13}
+    Under Assumptions \ref{hansen_ass_7_2}, \ref{hansen_ass_7_3}, and \ref{hansen_ass_7_4}, as $n \rightarrow \infty$, 
+    $$
+    W\of{\oras{\t}} \indist \chi_{q}^2.
+    $$
+\end{theorem}
+Theorem \ref{hansen_thm_7_13} is used to justify multivariate confidence regions and multivariate hypothesis tests.
+
+\section{Homoskedastic Wald Statistic}
+
+Under the conditional homoskedasticity assumption $\E\bs{e^2 \mid \ora{X}} = \s^2$ we can construct the Wald statistic using the homoskedastic covariance matrix estimator $\wh{\Vb}_{\oras{\t}}^0$ defined in (\ref{hansen_eq_7_29}). This yields a homoskedastic Wald statistic
+\begin{equation}
+    \label{hansen_eq_7_38}
+    W^0\of{\oras{\t}} = \bp{\wh{\oras{\t}} - \ora{\t}}^{\prime} \bp{\wh{\Vb}_{\wh{\oras{\t}}}^0}^{-1} \bp{\wh{\oras{\t}} - \ora{\t}} = n \bp{\wh{\oras{\t}} - \ora{\t}}^{\prime} \bp{\wh{\Vb}_{{\oras{\t}}}^0}^{-1} \bp{\wh{\oras{\t}} - \ora{\t}}.
+\end{equation} 
+
+
+Using the additional assumption of conditional homoskedasticity it has the same asymptotic distribution as $W\of{\oras{\t}}$.
+\begin{theorem}
+    \label{hansen_thm_7_14}
+    Under Assumptions \ref{hansen_ass_7_2}, \ref{hansen_ass_7_3}, and $\E\bs{e^2 \mid \ora{X}} = \s^2 > 0$, as $n \rightarrow \infty$,
+    $$
+    W^0\of{\oras{\t}} \indist \chi_q^2.
+    $$
+\end{theorem}
+
+A confidence region $\wh{\Cc}$ is a set estimator for $\oras{\t} \in \R^q$ when $q > 1$. A confidence region $\wh{\Cb}$ is a set in $\R^q$ intended to cover the true parameter value with a pre-selected probability $1-\a$. Thus an ideal confidence region has the coverage probability $\P\bs{\ora{\t} \in \wh{\Cb}} = 1-\a$. In practice it is typically not possible to construct a region with exact coverage but we can calculate its asymptotic coverage.
+
+When the parameter estimator satisfies the conditions of Theorem \ref{hansen_thm_7_13}, a good choice for a confidence region is the ellipse 
+\begin{equation}
+    \notag 
+    \wh{\Cb} = \bc{\oras{\t}: W\of{\oras{\t}} \leq c_{1-\a}},
+\end{equation}
+with $c_{1-\a}$ the $1 - \a$ quantile of the $\chi_q^2$ distribution, i.e., $F_q\of{c_{1-\a}} = 1-\a$.
+
+Theorem \ref{hansen_thm_7_13} implies 
+\begin{equation}
+    \notag 
+    \P\bs{\oras{\t} \in \wh{\Cb}} \rightarrow \P\bs{\chi_q^2 \leq c_{1-\a}} = 1-\a,
+\end{equation}
+which shows that $\wh{\Cb}$ has asymptotic coverage $1-\a$.
+
+
+
+\section{Confidence Regions}
+

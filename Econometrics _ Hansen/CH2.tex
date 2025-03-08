@@ -1,0 +1,1058 @@
+% !TEX root = Econometrics.tex
+
+\setcounter{chapter}{1}
+\chapter{Conditional Expectation and Projection}
+
+% \section{Introduction}
+
+\setcounter{section}{1}
+
+\section{The Distribution of Wages}
+
+Suppose that we are interested in wage rates in the US. Since wage rates vary across workers we cannot describe wage rates by a single number. Instead, we can describe wages using a probability distribution. Formally, we view the wage of an individual worker as a random variable $w$ with the \highlightB{probability distribution}
+\begin{equation}
+    \notag 
+    F\of{u} = \P\bs{w \leq u}.
+\end{equation}
+\highlightP{When we say that a person's wage is random, we mean that we do not know their wage before it is measured, and we treat observed wage rates as realizations from the distribution $F$.}
+
+When a distribution $F$ is differentiable we define the \highlightB{probability density function} 
+\begin{equation}
+    \notag 
+    f\of{u} = \fdfrac{F\of{u}}{u}.
+\end{equation}
+The density contains the same information as the distribution function, but the density is typically easier to visually interpret.
+
+Important measures of central tendency are the median and mean. The \highlightB{median} $m$ of a continuous function $F$ is the unique solution to 
+\begin{equation}
+    \notag 
+    F\of{m} = \frac{1}{2}.
+\end{equation}
+The median is a robust measure of central tendency, but it is tricky to use for many calculations as it is not a linear operator.
+
+The \highlightB{mean} or \highlightB{expectation} of a random variable $Y$ with discrete support is 
+\begin{equation}
+    \notag 
+    \mu = \E\bs{Y} = \sum_{j=1}^{\infty} \tau_j \P\bs{Y = \tau_j}.
+\end{equation}
+For a continuous random variable with density $f\of{y}$ the expectation is 
+\begin{equation}
+    \notag 
+    \mu = \E\bs{Y} = \int_{-\infty}^{\infty} y f\of{y} dy.
+\end{equation}
+The expectation is a convenient measure of central tendency because it is a linear operator and arises naturally in many economic models. A disadvantage of the expectation is that it is not robust especially in the presence of substantial skewness or thick tails, which are both features of the wage distribution.
+
+% \section{Conditional Expectation}
+
+\setcounter{section}{3}
+
+\section{Logs and Percentages}
+
+In this section, we want to motivate and clarify the use of the logarithm in regression analysis by making two observations. 
+%First, when applied to numbers the difference of logarithms approximately equals the percentage difference. Second, when applied to averages the difference in logarithms approximately equals the percentage difference in the geometric mean.
+
+Take two positive numbers $a$ and $b$. The percentage difference between $a$ and $b$ is $$p = 100\bp{\frac{a-b}{b}}.$$ Rewriting 
+\begin{equation}
+    \notag 
+    \frac{a}{b} = 1 + \frac{p}{100}.
+\end{equation}
+Taking natural logarithms, 
+\setcounter{equation}{1}
+\begin{equation}
+    \label{hansen_eq_2_2}
+    \log a - \log b = \log\of{1 + \frac{p}{100}}.
+\end{equation}
+A useful approximation for small $x$ is 
+\begin{equation}
+    \label{hansen_eq_2_3}
+    \log\of{1+x} \simeq x.
+\end{equation}
+
+Applying (\ref{hansen_eq_2_3}) to (\ref{hansen_eq_2_2}) and multiplying by $100$ we find 
+\begin{equation}
+    \notag 
+    p \simeq 100 \bp{\log a - \log b}.
+\end{equation}
+\highlightP{This shows that $100$ multiplied by the difference in logarithms is approximately the percentage difference.}
+
+Now consider the difference in the expectation of log transformed random variables. Take two random variables $X_1, X_2 > 0$. It will be useful to define their \highlightB{geometric means} $$\t_1 = \exp\of{\E\bs{\log X_1}}, \quad \t_2 = \exp\of{\E\bs{\log X_2}}.$$
+Similarly, we are interested in the percentage difference between $\t_1$ and $\t_2$, i.e., 
+\begin{equation}
+    \notag 
+    p = 100 \bp{\frac{\t_2 - \t_1}{\t_1}}
+\end{equation}
+The difference in the expectation of the log transforms (multiplied by 100) is 
+$$100\bp{\E\bs{\log X_2} - \E\bs{\log X_1}} = 100 \bp{\log\t_2 - \log\t_1} \simeq p,$$
+the percentage difference between $\t_1$ and $\t_2$. \highlightP{In words, the difference between the average of the log transformed variables is (approximately) the percentage difference in the geometric means.}
+
+\section{Conditional Expectation Function}
+
+Conditional expectations can be written with the generic notation $$\E\bs{Y \mid X_1=x_1, \ldots, X_k=x_k} = m\of{x_1, \ldots, x_k}.$$
+We call this the \highlightB{conditional expectation function (CEF)}. The CES if a function of $\bp{x_1, x_2, \ldots, x_k}$ as it varies with the variables. 
+
+For greater compactness we typically write the conditioning variables as a vector in $\R^k$:
+\begin{equation}
+    \label{hansen_eq_2_4}
+    \ora{X} = \left(\begin{array}{c}
+        X_1 \\
+        X_2 \\
+        \vdots \\
+        X_k
+    \end{array}\right).
+\end{equation}
+Given this notation, the CEF can be compactly written as 
+\begin{equation}
+    \notag 
+    \E\bs{Y \mid \ora{X} = \ora{x}} = m\of{\ora{x}}.
+\end{equation}
+
+The CEF $m\of{{{\ora{x}}}} = \E\bs{Y \mid \ora{X} = \ora{x}}$ is a function of $\ora{x} \in \R^k$. It says: ``When $\ora{X}$ takes the value $\ora{x}$ then the average value of $Y$ is $m\of{\ora{x}}$.'' Sometimes it is useful to view the CEF as a function of the random variable $\ora{X}$. In this case we evaluate the function $m\of{\ora{x}}$ at $\ora{X}$, and write $m\of{\ora{X}}$ or $\E\bs{Y \mid \ora{X}}$. This is random as it is a function of the random variable $\ora{X}$.
+
+% \section{Continuous Variables}
+
+\setcounter{section}{6}
+
+\section{Law of Iterated Expectations}
+
+\begin{theorem}[Simple Law of Iterated Expectations]
+    If $\E \abs{Y} < \infty$, then for any random vector $\ora{X}$, $$\E\bs{\E\bs{Y \mid \ora{X}}} = \E\of{Y}.$$
+\end{theorem}
+
+This states that the expectation of the conditional expectation is the unconditional expectation. In other words, the average of the conditional averages is the unconditional average. For discrete $X$,
+\begin{equation}
+    \notag 
+    \E\bs{\E\bs{Y \mid X}} = \sum_{j=1}^{\infty} \E\bs{Y \mid X = x_j} \P\bs{X = x_j}.
+\end{equation}
+For continuous $X$,
+\begin{equation}
+    \notag 
+    \E\bs{\E\bs{Y \mid X}} = \int_{\R} \E\bs{Y \mid X = x} f_{X}\of{x} \mathrm{d} x.
+\end{equation}
+
+\begin{theorem}[Law of Iterated Expectations]
+    If $\E \abs{Y} < \infty$, then for any random vectors $X_1$ and $X_2$, $$\E\bs{\E\bs{Y \mid X_1, X_2} \mid X_1} = \E\of{Y \mid X_1}.$$
+\end{theorem}
+
+Notice the way the law is applied. The inner expectation conditions on $X_1$ and $X_2$, while the outer expectation conditions only on $X_1$. The iterated expectation yields the simple answer $\E\bs{Y \mid X_1}$, the expectation conditional on $X_1$ alone. Sometimes we phrase this as: ``\highlightP{The smaller information set wins!}''
+
+\begin{theorem}[Conditioning Theorem] \label{hansen_thm_2_3}
+    If  $\E \abs{Y} < \infty$, then 
+    \setcounter{equation}{6}
+    \begin{equation}
+        \label{hansen_eq_2_7}
+        \E\bs{g\of{X}Y \mid X} = g\of{X}\E\bs{Y \mid X}.
+    \end{equation}
+    If in addition $E\abs{g\of{X}}<\infty$,
+    \begin{equation}
+        \label{hansen_eq_2_8}
+        \E\bs{g\of{X}Y} = \E\bs{g\of{X} \E\bs{Y \mid X}}.
+    \end{equation}
+\end{theorem}
+
+\section{CEF Error}
+\setcounter{equation}{8}
+
+The CEF error is defined as the difference between $Y$ and the CEF evaluated at $X$:
+$$e = Y - m\of{\ora{X}}.$$
+By construction, this yields the formula 
+\begin{equation}
+    \label{hansen_eq_2_9}
+    Y = m\of{\ora{X}} + e
+\end{equation}
+
+In (\ref{hansen_eq_2_9}) it is useful to understand that the error $e$ is derived from the joint distribution of $\bp{Y, \ora{X}}$, and so its properties are derived from this construction.
+
+\highlightR{A key property of the CEF error is that it has a conditional mean of zero.} To see this, by the linearity of expectations, the definition $m\of{\ora{X}} = \E\bs{Y \mid \ora{X}}$ and the conditioning theorem 
+\begin{equation}
+    \notag
+    \begin{aligned}
+        \E\bs{e \mid \ora{X}} & = \E\bs{Y - m\of{\ora{X}} \mid \ora{X}} \\ 
+        & = \E\bs{Y \mid \ora{X}} - \E\bs{m\of{\ora{X}} \mid \ora{X}} \\ 
+        & = m\of{\ora{X}} - m\of{\ora{X}} = 0.
+    \end{aligned}
+\end{equation}
+
+This fact can be combined with the law of iterated expectations to show that \highlightR{the unconditional mean is also zero}.
+\begin{equation}
+    \notag
+    \E\bs{e} = \E\bs{\E\bs{e \mid \ora{X}}} = \E\bs{0} = 0.
+\end{equation}
+
+We state this and some other results formally.
+
+\begin{theorem}[Properties of the CEF Error]
+    \label{hansen_thm_2_4}
+    If $\E\bs{Y} < \infty$, then 
+    \begin{enumerate}[topsep=10pt, leftmargin=20pt, itemsep=0pt, label=(\arabic*)]
+        \setlength{\parskip}{10pt} 
+        \item $\E\bs{e \mid \ora{X}} = 0$.
+        \item $\E\bs{e} = 0$.
+        \item If $\E\bs{\abs{Y}^r} < \infty$ for $r \geq 1$, then $\E\bs{\abs{e}^r}<\infty$.
+        \item For any function $h\of{\ora{x}}$ such that $\E\bs{h\of{\ora{X}}e} < \infty$ then $\E\bs{h\of{\ora{X}}e} = 0$.
+    \end{enumerate}
+\end{theorem}
+
+The equations
+\begin{equation}
+    \notag
+    \begin{aligned}
+        & Y = m\of{\ora{X}} + e \\
+        & \E\bs{e \mid \ora{X}} = 0
+    \end{aligned}
+\end{equation}
+together imply that $m\of{\ora{X}}$ is the CEF of $Y$ given $\ora{X}$. \highlightP{It is important to understand that this is not a restriction. These equations hold true by definition.}
+
+The condition $\E\bs{e \mid \ora{X}}=0$ is implied by the definition of $e$ as the difference between $Y$ and the CEF $m\of{\ora{X}}$. The equation $\E\bs{e \mid \ora{X}} = 0$ is sometimes called a \highlightB{conditional mean restriction}, since the conditional mean of the error $e$ is restricted to equal zero. The property is also sometimes called \highlightB{mean independence}, for the conditional mean of $e$ is 0 and thus independent of $X$. \highlightP{However, it does not imply that the distribution of $e$ is independent of $X$. }
+
+\section{Intercept-Only Model}
+
+A special case of the regression model is when there are no regressors $X$. In this case $m\of{\ora{X}} = \E\bs{Y} = \mu$, the unconditional mean of $Y$. We can still write an equation for $Y$ in the regression format:
+\begin{equation}
+    \notag
+    \begin{aligned}
+        & Y = \mu + e \\
+        & \E\bs{e} = 0,
+    \end{aligned}
+\end{equation}
+where $\mu = \E\bs{Y}$. This is useful for it unifies the notation
+
+\section{Regression Variance}
+
+An important measure of the dispersion about the CEF function is the unconditional variance of the CEF error $e$. We write this as 
+\begin{equation}
+    \notag
+    \s^2 = \var\bs{e} = \E\bs{\bp{e - \E\bs{e}}^2} = \E\bs{e^2}.
+\end{equation}
+
+Theorem \ref{hansen_thm_2_4}, item (3) implies the following simple but useful result.
+\begin{theorem}
+    \label{hansen_thm_2_5}
+    If $\E\bs{Y^2}<\infty$, then $\s^2 < \infty$.
+\end{theorem}
+
+We can call $\s^2$ the \highlightB{regression variance} or the \highlightB{variance of the regression error}. The magnitude of $\s^2$ measures the amount of variation in $Y$ which is not ``explained'' or accounted for in the conditional expectation $\E\bs{Y \mid \ora{X}}$.
+
+The regression variance depends on the regressors. Consider two regressions 
+\begin{equation}
+    \notag
+    \begin{aligned}
+        & Y = \E\bs{Y \mid X_1} + e_1 \\
+        & Y = \E\bs{Y \mid X_1, X_2} + e_2 .
+    \end{aligned}
+\end{equation}
+We write the two errors distinctly as $e_1$ and $e_2$ as they are different -- changing the conditioning information changes the conditional expectation and therefore the regression error as well.
+
+In our discussion of iterated expectations we have seen that by increasing the conditioning set the conditional expectation reveals greater detail about the distribution of $Y$. What is the implication for the regression error? It turns out that there is a simple relationship. The simple relationship we now derive shows that the variance of this unexplained portion decreases when we condition on more variables. \highlightP{This relationship is monotonic in the sense that increasing the amount of information always decreases the variance of the unexplained portion.}
+
+\begin{theorem}
+    \label{hansen_thm_2_6}
+    If $\E\bs{Y^2}<\infty$, then 
+    \begin{equation}
+        \notag
+        \var\bs{Y} \geq \var\bs{Y - \E\bs{Y \mid X_1}} \geq \var\bs{Y - \E\bs{Y \mid X_1, X_2}}.
+    \end{equation}
+\end{theorem}
+
+Theorem \ref{hansen_thm_2_6} says that the variance of the difference between $Y$ and its conditional expectation (weakly) decreases whenever an additional variable is added to the conditioning information.
+
+\section{Best Predictor}
+
+Suppose that given a random vector $\ora{X}$ we want to predict or forecast $Y$. We can write any predictor as a function $g\of{\ora{X}}$ of $\ora{X}$. The (ex-post) prediction error is the realized difference $Y - g\of{\ora{X}}$. A non-stochastic measure of the magnitude of the prediction error is the expectation of its square
+\begin{equation}
+    \label{hansen_eq_2_10}
+    \E\bs{\bp{Y - g\of{\ora{X}}}^2}.
+\end{equation}
+
+We can define the best predictor as the function $g\of{\ora{X}}$ which minimizes (\ref{hansen_eq_2_10}). What function is the best predictor? It turns out that the answer is the CEF $m(\ora{X})$. This holds regardless of the joint distribution of $\bp{Y, \ora{X}}$.
+
+\begin{theorem}[Conditional Expectation as Best Predictor]
+    \label{hansen_thm_2_7}
+
+    If $\E\bs{Y^2} < \infty$, then for any predictor $g\of{\ora{X}}$, 
+    \begin{equation}
+        \notag
+        \E\bs{\bp{Y - g\of{\ora{X}}}^2} \geq \E\bs{\bp{Y - m\of{\ora{X}}}^2},
+    \end{equation}
+    where $m\of{\ora{X}} = \E\bs{Y \mid \ora{X}}$.
+\end{theorem}
+
+To see this, note that the mean squared error of a predictor $g\of{\ora{X}}$ is 
+\begin{equation}
+    \notag 
+    \begin{aligned}
+        \E\bs{\bs{Y - g\of{\ora{X}}}^2} & = \E\bs{\bp{e + m\of{\ora{X}} - g\of{\ora{X}}}^2} \\
+        & = \E\bs{e^2} + 2\E\bs{e\bs{m\of{\ora{X}} - g\of{\ora{X}}}} +\E\bs{\bs{m\of{\ora{X}} - g\of{\ora{X}}}^2} \\
+        & = \E\bs{e^2} + \E\bs{\bs{m\of{\ora{X}} - g\of{\ora{X}}}^2} \\
+        & \geq \E\bs{e^2} = \E\bs{\bp{Y - m\of{\ora{X}}}^2}.
+    \end{aligned}
+\end{equation}
+The first equality makes the substitution $Y = m\of{\ora{X}} + e$ and the third equality uses Theorem \ref{hansen_thm_2_4}, item (4). The RHS after the third equality is minimized by setting $g\of{\ora{X}} = m\of{\ora{X}}$, yielding the inequality in the fourth line. 
+
+
+\section{Conditional Variance}
+
+While the conditional mean is a good measure of the location of a conditional distribution it does not provide information about the spread of the distribution. A common measure of the dispersion is the \highlightB{conditional variance}. We first give the general definition of the conditional variance of a random variable $W$.
+
+\begin{definition}
+    If $\E\bs{W^2}<\infty$, the \highlightB{conditional variance} of $W$ given $X = x$ is 
+    \begin{equation}
+        \notag
+        \s^2\of{\ora{x}} = \var\bs{W \mid \ora{X} = \ora{x}} = \E\bs{\bp{W - \E\bs{W \mid \ora{X} = \ora{x}}}^2 \mid \ora{X} = \ora{x}}.
+    \end{equation}
+    The conditional variance treated as a random variable is $\var\bs{W \mid \ora{X}} = \s^2\of{\ora{X}}$.
+\end{definition}
+
+The conditional variance is distinct from the unconditional variance $\var[W]$. {The difference is that the conditional variance is a function of the conditioning variables.} Notice that the conditional variance is the conditional second moment, centered around the conditional first moment.
+
+Given this definition we define the \highlightB{conditional variance of the regression error}.
+
+\begin{definition}
+    If $\E\bs{e^2} < \infty$, the \highlightB{conditional variance of the regression error} $e$ given $\ora{X} = \ora{x}$ is 
+    \begin{equation}
+        \notag
+        \s^2\of{\ora{x}} = \var\bs{e \mid \ora{X} = \ora{x}} = \E\bs{e^2 \mid \ora{X} = \ora{x}}.
+    \end{equation}
+    The conditional variance of $e$ treated as a random variable is $\var\bs{e \mid \ora{X}} = \s^2\of{\ora{X}}$.
+\end{definition}
+
+Again, the conditional variance $\s^2\of{\ora{x}}$ is distinct from the unconditional variance $\s^2$. \highlightP{The conditional variance is a function of the regressors, the unconditional variance is not.}
+
+Notice as well that $\s^2\of{\ora{x}} = \var\bs{Y \mid \ora{X} = \ora{x}}$ so it is equivalently the conditional variance of the dependent variable. Generally, $\s^2\of{\ora{x}}$ is a non-trivial function of $\ora{x}$ and can take any form subject to the restriction that it is non-negative. One way to think about $\s^2\of{\ora{x}}$ is that it is the conditional mean of $e^2$ given $\ora{X}$. Notice as well that
+\begin{equation}
+    \notag 
+    \s^2\of{\ora{x}} \coloneqq \E\bs{e^2 \mid \ora{X} = \ora{x}} = \E\bs{Y^2 \mid \ora{X} = \ora{x}},
+\end{equation}
+so the \highlightR{conditional variance of the regression error is equivalently the conditional variance of the dependent variable}.
+
+The variance of $Y$ is in a different unit of measurement than $Y$. To convert the variance to the same unit of measure we define the \highlightB{conditional standard deviation} as its square root $\s\of{\ora{x}} = \sqrt{\s^2\of{\ora{x}}}$.
+
+The unconditional variance is related to the conditional variance by the following identity. 
+\begin{theorem}
+    \label{hansen_thm_2_8}
+    If $\E\bs{Y^2} < \infty$ then 
+    \begin{equation}
+        \notag
+        \var\bs{Y} = \E\bs{\var\bs{Y \mid \ora{W}}} + \var\bs{\E\bs{Y \mid \ora{W}}}.
+    \end{equation}
+\end{theorem}
+Theorem \ref{hansen_thm_2_8} decomposes the unconditional variance into what are sometimes called the ``within group variance'' and the ``across group variance''.
+
+The regression error has a conditional mean of zero, so its unconditional error variance equals the expected conditional variance, or equivalently can be found by the law of iterated expectations
+\begin{equation}
+    \notag
+    \s^2 = \E\bs{e^2} = \E\bs{\E\bs{e^2 \mid \ora{X}}} = \E\bs{\s^2\of{\ora{X}}}.
+\end{equation}
+That is, \highlightR{the unconditional error variance is the average conditional variance}.
+
+Given the conditional variance we can define a \highlightB{rescaled error}
+\begin{equation}
+    \label{hansen_eq_2_11}
+    u = \frac{e}{\s\of{\ora{X}}}.
+\end{equation}
+We can calculate that since $\s\of{\ora{X}}$ is a function of $\ora{X}$
+\begin{equation}
+    \notag
+    \E\bs{u \mid \ora{X}} = \E\bs{\frac{e}{\s\of{\ora{X}}} \mid \ora{X}} = \frac{1}{\s\of{\ora{X}}} \E\bs{e \mid \ora{X}} = 0
+\end{equation}
+and 
+\begin{equation}
+    \notag 
+    \var\bs{u \mid \ora{X}} = \E\bs{u^2 \mid \ora{X}} = \frac{1}{\s^2\of{\ora{X}}} \E\bs{e^2 \mid \ora{X}} = 1.
+\end{equation}
+\highlightR{Thus $u$ has a conditional mean of zero and a conditional variance of 1.}
+
+Notice that (\ref{hansen_eq_2_11}) can be rewritten as 
+\begin{equation}
+    \notag
+    e = \s\of{\ora{X}}u, 
+\end{equation}
+and substituting this for $e$ in the CEF equation (\ref{hansen_eq_2_9}), we find that 
+\begin{equation}
+    \notag
+    Y = m\of{\ora{X}} + \s\of{\ora{X}}u.
+\end{equation}
+This is an alternative (mean-variance) representation of the CEF equation.
+
+Many econometric studies focus on the conditional mean $m\of{\ora{x}}$ and either ignore the conditional variance $\s^2\of{\ora{x}}$, treat it as a constant $\s^2\of{\ora{x}} = \s^2$, or treat it as a nuisance parameter (a parameter not of primary interest). This is appropriate when the primary variation in the conditional distribution is in the mean but can be short-sighted in other cases. 
+
+\section{Homoskedasticity and Heteroskedasticity}
+
+An important special case obtains when the conditional variance $\s^2\of{\ora{x}}$ is a constant and independent of $\ora{x}$. This is called \highlightB{homoskedasticity}.
+\begin{definition}
+    The error is \highlightB{homoskedastic} if $\s^2\of{\ora{x}} = \s^2$ does not depend on $\ora{x}$.
+\end{definition}
+In the general case where $\s^2\of{\ora{x}}$ depends on $\ora{x}$, we say that the error $e$ is heteroskedastic.
+\begin{definition}
+    The error is \highlightB{heteroskedastic} if $\s^2\of{\ora{x}}$ depends on $\ora{x}$.
+\end{definition}
+
+\highlightP{It is helpful to understand that the concepts homoskedasticity and heteroskedasticity concern the conditional variance, not the unconditional variance.} By definition, the unconditional variance $\s^2$ is a constant and independent of the regressors $\ora{X}$. So when we talk about the variance as a function of the regressors we are talking about the conditional variance $\s^2\of{\ora{x}}$.
+
+Older textbooks also tend to describe homoskedasticity as a component of a correct regression specification and describe heteroskedasticity as an exception or deviance. This description has influenced many generations of economists but it is unfortunately backwards. \highlightP{The correct view is that heteroskedasticity is generic and ``standard'', while homoskedasticity is unusual and exceptional.} The default in empirical work should be to assume that the errors are heteroskedastic, not the converse.
+
+
+\section{Regression Derivative}
+
+One way to interpret the CEF $m\of{\ora{x}} = \E\bs{Y \mid \ora{X} = \ora{x}}$ is in terms of how marginal changes in the regressors $\ora{x}$ imply changes in the conditional mean of the response variable $Y$. We can unify the continuous and discrete cases with the notation
+\begin{equation}
+    \notag
+    \nabla_1 m(\ora{x})=\left\{\begin{array}{cc}
+        \frac{\partial}{\partial x_1} m\left(x_1, \ldots, x_k\right), & \text { if } X_1 \text { is continuous } \\
+        m\left(1, x_2, \ldots, x_k\right)-m\left(0, x_2, \ldots, x_k\right), & \text { if } X_1 \text { is binary. }
+        \end{array}\right.
+\end{equation}
+Collecting the $k$ effects into one $k \times 1$ vector, we define the \highlightB{regression derivative} with respect to $\ora{X}$:
+
+\begin{equation}
+    \notag
+    \ora{\nabla m\of{\ora{x}}} = \left[\begin{array}{cccc}
+        \nabla_1 m(\ora{x}) \\
+        \nabla_2 m(\ora{x}) \\
+        \vdots \\
+        \nabla_k m(\ora{x})
+    \end{array} \right] .
+\end{equation}
+
+\highlightP{First, the effect of each variable is calculated holding the other variables constant.} This is the \highlightB{ceteris paribus} concept commonly used in economics. But in the case of a regression derivative, the conditional mean does not literally hold all else constant. It only holds constant the variables included in the conditional mean. This means that the regression derivative depends on which regressors are included. \highlightP{Second, the regression derivative is the change in the conditional expectation of $Y$, not the change in the actual value of $Y$ for an individual.}
+
+\section{Linear CEF}
+
+An important special case is when the CEF $m\of{\ora{x}} = \E\bs{Y \mid \ora{X} = \ora{x}}$ is linear in $\ora{x}$. In this case we can write the mean equation as 
+\begin{equation}
+    \notag
+    m\of{\ora{x}} = x_1 \b_1 + x_2 \b_2 + \ldots + x_k \b_k + \b_{k+1}
+\end{equation} 
+Notationally it is convenient to write this as a simple function of the vector $\ora{x}$. An easy way to do so is to augment the regressor vector $\ora{X}$ by listing the number ``1'' as an element. We call this the ``constant'' and the corresponding coefficient is called the “intercept”. Equivalently, specify that the final element of the vector $\ora{x}$ is $x_k = 1$. $\ora{X}$ has been redefined as the $k \times 1$ vector 
+\begin{equation}
+    \label{2.12}
+    \ora{X} = \left(\begin{array}{ccccc}
+        X_1 \\
+        X_2 \\
+        \vdots \\
+        X_{k-1} \\
+        1
+    \end{array}\right)
+\end{equation}
+With this redefinition, the CEF is 
+\begin{equation}
+    \label{hansen_eq_2_13}
+    m\of{\ora{x}} = x_1 \b_1 + x_2 \b_2 + \ldots + x_{k-1} \b_{k-1} + \b_{k} = \ora{x}^\prime \ora{\b}
+\end{equation}
+where 
+\begin{equation}
+    \ora{\b} = \left(\begin{array}{ccc}
+        \b_1 \\
+        \vdots \\
+        \b_k
+    \end{array}\right)
+\end{equation}
+is a $k \times 1$ coefficient vector. This is the \highlightB{linear CEF model}. It is also often called the \highlightB{linear regression model}, or the regression of $Y$ on $\ora{X}$.
+
+In the linear CEF model the regression derivative is simply the coefficient vector. That is $\ora{\nabla m\of{\ora{x}}} = \ora{\b}$. This is one of the appealing features of the linear CEF model. The coefficients have simple and natural interpretations as the marginal effects of changing one variable, holding the others constant.
+
+Therefore, a linear CEF model is defined as follows.
+\begin{equation}
+    \notag
+    \begin{aligned}
+        & Y = \ora{X}^\prime \ora{\b} + e \\
+        & \E\bs{e \mid \ora{X}} = 0
+    \end{aligned}
+\end{equation}
+If in addition the error is homoskedastic we call this the homoskedastic linear CEF model.
+\begin{equation}
+    \notag
+    \begin{aligned}
+        & Y = \ora{X}^\prime \ora{\b} + e \\
+        & \E\bs{e \mid \ora{X}} = 0 \\
+        & \E\bs{e^2 \mid \ora{X}} = \s^2
+    \end{aligned}
+\end{equation}
+
+% \section{Linear CEF with Nonlinear Effects}
+
+\setcounter{section}{16}
+\section{Linear CEF with Dummy Variables}
+
+When all regressors take a finite set of values, it turns out the CEF can be written as a linear function of regressors. 
+
+This simplest example is a \highlightB{binary} variable which takes only two distinct values. For example, in traditional data sets the variable gender takes only the values man and woman (or male and female). Binary variables are extremely common in econometric applications and are alternatively called \highlightB{dummy variables} or \highlightB{indicator variables}.
+
+In general, if there are $p$ dummy variables $X_1, \ldots, X_p$, then the CEF takes at most $2^p$ distinct values and can be written as a linear function of the $2^p$ regressors including $X_1, X_2, \ldots, X_p$ and all cross-products. A linear regression model which includes all $2^p$ binary interactions is called a \highlightB{saturated dummay variable regression model}. It is a complete model of the conditional mean. 
+
+\section{Best Linear Predictor} \label{hansen_sec_2_18}
+\setcounter{equation}{16}
+
+While the condition mean $m\of{\ora{X}} = \E\bs{Y \mid \ora{X}}$ is the best predictor of $Y$ among all functions of $\ora{X}$, its functional form is typically known. In particular, the linear CEF model is empirically unlikely to be accurate unless $\ora{X}$ is discrete and low-dimensional so all interactions are included. Consequently, in most cases it is more realistic to view the linear specification (\ref{hansen_eq_2_13}) as an approximation. In this section we derive a specific approximation with a simple interpretation.
+
+Theorem \ref{hansen_thm_2_7} showed that the conditional mean $m\of{\ora{X}}$ is the best predictor in the sense that it has the lowest mean squared error among all predictors. \highlightP{By extension, we can define an approximation to the CEF by the linear function with the lowest mean squared error among all linear predictors.}
+
+For this derivation we require the following regularity condition.
+
+\begin{assumption} 
+    \label{hansen_ass_2_1}
+    \begin{enumerate}[topsep=0pt, leftmargin=20pt, itemsep=0pt, label=(\arabic*)]
+        \setlength{\parskip}{10pt} 
+        \item $\E\bs{Y^2} < \infty$.
+        \item $\E\bs{\norm{\ora{X}}^2} < \infty$.
+        \item $\Qb_{XX} = \E\bs{\ora{X}\ora{X}^\prime}$ is positive definite.
+    \end{enumerate}
+\end{assumption}
+We use $\norm{x} = \sqrt{\ora{x}^\prime \ora{x}}$ to denote the Euclidean length of the vector $\ora{x}$.
+
+The first two parts of Assumption \ref{hansen_ass_2_1} imply that the variables $Y$ and $\ora{X}$ have finite means, variances, and covariances. The third part of the assumption is more technical, and its role will become apparent shortly. It is equivalent to imposing that the columns of the matrix $\Qb_{XX}$ are linearly independent, or that the matrix is invertible.
+
+A linear predictor for $Y$ is a function $\ora{X}^\prime \ora{\b}$ for some $\ora{\b} \in \R^k$. The mean squared prediction error is 
+\begin{equation}
+    \label{2.17}
+    S\of{\ora{\b}} = \E\bs{\bp{Y - \ora{X}^\prime \ora{\b}}^2}.
+\end{equation}
+The best linear predictor of $Y$ given $X$, written $\mathcal{P}\bs{Y \mid \ora{X}}$, is found by selecting $\ora{\b}$ which minimizes the $S\of{\ora{\b}}$.
+
+\begin{definition}
+    The \highlightB{best linear predictor} of $Y$ given $X$ is 
+    \begin{equation}
+        \notag
+        \mathcal{P}\bs{Y \mid \ora{X}} = \ora{X}^\prime \ora{\b}
+    \end{equation}
+    where $\ora{\b}$ which minimizes the mean squared prediction error 
+    $$S\of{\ora{\b}} = \E\bs{\bp{Y - \ora{X}^\prime \ora{\b}}^2}.$$
+    The minimizer 
+    \begin{equation}
+        \label{hansen_eq_2_18}
+        \ora{\b} = \argmin_{\ora{b} \in \R^k} S\of{\ora{b}}
+    \end{equation}
+    is called the \highlightB{linear projection coefficient}.
+\end{definition}
+
+We now calculate an explicit expression for its value. The mean squared prediction error (\ref{2.17}) can be written out as a quadratic function of
+\begin{equation}
+    \label{hansen_eq_2_19}
+    S\of{\ora{\b}} = \E\bs{Y^2} - 2 \ora{\b}^\prime \E\bs{\ora{X}Y} + \ora{\b}^\prime \E\bs{\ora{X}\ora{X}^\prime} \ora{\b}.
+\end{equation}
+The quadratic structure of $S\of{\ora{\b}}$ means that we can solve explicitly for the minimizer. The first-order condition for minimization is 
+\begin{equation}
+    \label{hansen_eq_2_20}
+    \ora{0} = \frac{\partial}{\partial \ora{\b}} S\of{\ora{\b}} = -2 \E\bs{\ora{X}Y} + 2 \E\bs{\ora{X}\ora{X}^\prime} \ora{\b}.
+\end{equation}
+Rewriting (\ref{hansen_eq_2_20}) as 
+\begin{equation}
+    \label{hansen_eq_2_21}
+    \ora{Q}_{XY} = \Qb_{XX} \ora{\b}
+\end{equation}
+where $\ora{Q}_{XY} = \E\bs{\ora{X}Y}$ is $k \times 1$ and $\Qb_{XX} = \E\bs{\ora{X}\ora{X}^\prime}$ is $k \times k$. The solution is 
+\begin{equation}
+    \label{hansen_eq_2_22}
+    \ora{\b} = \bp{\Qb_{XX}}^{-1} \ora{Q}_{XY} = \bp{\E\bs{\ora{X}\ora{X}^\prime}}^{-1} \E\bs{\ora{X}Y}.
+\end{equation}
+
+The \highlightB{projection error} is
+\begin{equation}
+    \label{hansen_eq_2_23}
+    \ve = Y - \ora{X}^\prime \ora{\b}.
+\end{equation}
+This equals the error (\ref{hansen_eq_2_9}) from the regression equation when (and only when) the conditional mean is linear in $\ora{X}$, otherwise they are distinct.
+
+Rewriting, we obtain a decomposition of $Y$ into linear predictor and error 
+\begin{equation}
+    \label{hansen_eq_2_24}
+    Y = \ora{X}^\prime \ora{\b} + \ve .
+\end{equation}
+
+An important property of the projection error is 
+\begin{equation}
+    \label{hansen_eq_2_25}
+    \E\bs{\ora{X}\ve} = \ora{0}.
+\end{equation}
+To see this, 
+\begin{equation}
+    \label{hansen_eq_2_26}
+    \begin{aligned}
+        \E\bs{\ora{X}\ve} & = \E\bs{\ora{X} \bp{Y - \ora{X}^\prime \ora{\b}}} \\ 
+        & = \E\bs{\ora{X}Y} - \E\bs{\ora{X}\ora{X}^\prime}\bp{\E\bs{\ora{X}\ora{X}^\prime}}^{-1} \E\bs{\ora{X}Y} \\
+        & = \ora{0}.
+    \end{aligned}
+\end{equation}
+
+Equation (\ref{hansen_eq_2_25}) is a set of $k$ equations, one for each regressor. In other words, (\ref{hansen_eq_2_25}) is equivalent to 
+\begin{equation}
+    \label{hansen_eq_2_27}
+    \E\bs{X_j \ve} = 0, \text{ for } j = 1, \ldots, k.
+\end{equation}
+As in (\ref{2.12}), the regressor vector $\ora{X}$ typically contains a constant, e.g., $X_k = 1$. In this case, the $k$th equation is 
+\begin{equation}
+    \label{hansen_eq_2_28}
+    \E\bs{\ve} = 0.
+\end{equation}
+\highlightR{Thus the projection error has a mean of zero when the regressor vector contains a constant.}
+
+It is also useful to observe that since $\cov\of{X_j, \ve} = \E\bs{X_j \ve} - \E\bs{X_j}\E\bs{\ve}$, then (\ref{hansen_eq_2_27})-(\ref{hansen_eq_2_28}) together imply that the variables $X_j$ and $\ve$ are uncorrelated.
+
+We summarize some of the most important properties.
+
+\begin{theorem}[Properties of Linear Projection Model]
+    \label{hansen_thm_2_9}
+    
+    Under Assumption \ref{hansen_ass_2_1}, 
+    \begin{enumerate}[topsep=10pt, leftmargin=20pt, itemsep=0pt, label=(\arabic*)]
+        \setlength{\parskip}{10pt} 
+        \item The moments $\E\bs{\ora{X}\ora{X}^\prime}$ and $\E\bs{\ora{X}Y}$ exist with finite elements.
+        \item The linear projection coefficient (\ref{hansen_eq_2_18}) exists, is unique, and equals 
+        $$\ora{\b} = \bp{\E\bs{\ora{X}\ora{X}^\prime}}^{-1} \E\bs{\ora{X}Y}.$$
+        \item The best linear predictor of $y$ given $\ora{x}$ is 
+        $$\mathcal{P}\bs{Y \mid \ora{X}} = \ora{X}^\prime \bp{\E\bs{\ora{X}\ora{X}^\prime}}^{-1} \E\bs{\ora{X}Y}.$$
+        \item The projection error $\ve = Y - \ora{X}^\prime \ora{\b}$ exists. It satisfies $\E\bs{\ve^2} < \infty$ and $\E\bs{\ora{X}\ve} = 0$. 
+        \item If $\ora{X}$ contains a constant, then $\E\bs{\ve} = 0$.
+        \item If $\E\bs{\abs{Y}^r} < \infty$ and $\E\bs{\norm{X}^r} < \infty$ for $r \geq 2$ then $\E\bs{\abs{\ve}^r} < \infty$.
+    \end{enumerate}
+\end{theorem}
+
+It is useful to reflect on the generality of Theorem \ref{hansen_thm_2_9}. The only restriction is Assumption \ref{hansen_ass_2_1}. Thus for any random variables $\bp{Y, \ora{X}}$ with finite variances we can define a linear equation (\ref{hansen_eq_2_24}) with the properties listed in Theorem \ref{hansen_thm_2_9}. Stronger assumptions (such as the linear CEF model) are not necessary. In this sense the linear model (\ref{hansen_eq_2_24}) exists quite generally. However, it is important not to misinterpret the generality of this statement. \highlightP{The linear equation (\ref{hansen_eq_2_24}) is defined as the best linear predictor. It is not necessarily a conditional mean, nor a parameter of a structural or causal economic model.}
+
+To summarize, a linear projection model is 
+\begin{equation}
+    \notag 
+    \begin{aligned}
+        & Y = \ora{X}^{\prime} \ora{\b} + e, \\
+        & \E\bs{\ora{X} e} = \ora{0}, \\
+        & \ora{\b} = \bp{\E\bs{\ora{X}\ora{X}^{\prime}}}^{-1} \E\bs{\ora{X} Y}.
+    \end{aligned}
+\end{equation}
+
+% \section{Illustrations of Best Linear Predictor}
+
+\setcounter{section}{19}
+\section{Linear Predictor Error Variance}
+\setcounter{equation}{35}
+
+As in the CEF model, we define the error variance as $\varsigma^2 = \E\bs{\ve^2}$. Setting $Q_{YY} = \E\bs{Y^2}$ and $\ora{Q}_{YX} = \E\bs{Y \ora{X}^\prime}$, we can write $\varsigma^2$ as 
+\begin{equation}
+    \label{hansen_eq_2_36}
+    \begin{aligned}
+        \varsigma^2 & = \E\bs{\bp{Y - \ora{X}^\prime \ora{\b}}^2} \\
+        & = \E\bs{Y^2} - 2\E\bs{Y \ora{X}^\prime} \ora{\b} + \ora{\b}^\prime \E\bs{\ora{X}\ora{X}^\prime}\ora{\b} \\
+        & = Q_{YY} - 2 \ora{Q}_{YX}\Qb_{XX}^{-1}\ora{Q}_{XY} + \ora{Q}_{YX}\Qb_{XX}^{-1}\Qb_{XX}\Qb_{XX}^{-1}\ora{Q}_{XY} \\
+        & =  Q_{YY} - \ora{Q}_{YX}\Qb_{XX}^{-1}\ora{Q}_{XY} \\
+        & \eqqcolon Q_{YY \cdot X}.
+    \end{aligned}
+\end{equation}
+One useful feature of this formula is that it shows that $Q_{YY \cdot X} = Q_{YY} - \ora{Q}_{YX}\Qb_{XX}^{-1}\ora{Q}_{XY}$ equals the variance of the error from the linear projection of $Y$ on $\ora{X}$.
+
+\section{Regression Coefficients}
+
+Sometimes it is useful to separate the constant from the other regressors and write the linear projection equation in the format
+\begin{equation}
+    \label{hansen_eq_2_37}
+    Y = \ora{X}^\prime \ora{\b} + \a + \ve
+\end{equation}
+where $\a$ is the intercept and $\ora{X}$ does not contain a constant.
+
+Taking expectations of this equation, we find 
+\begin{equation}
+    \notag
+    \E\bs{Y} = \E\bs{\ora{X}^\prime \ora{\b}} + \E\bs{\a} + \E\bs{\ve}
+\end{equation}
+or $\mu_Y = \ora{\mu_X}\ora{\b} + \a$, where $\mu_Y = \E\bs{Y}$ and $\ora{\mu_X} = \E\bs{\ora{X}}$, since $\E\bs{\ve} = 0$ from (\ref{hansen_eq_2_28}).Substituting $\a$ from (\ref{hansen_eq_2_37}), we find 
+\begin{equation}
+    \label{hansen_eq_2_38}
+    Y - \mu_Y = \bp{\ora{X} - \ora{\mu_X}}^\prime \ora{\b} + \ve,
+\end{equation}
+a linear equation between the centered variables $Y - \mu_Y$ and $\ora{X} - \ora{\mu_X}$. They are centered at their means so are mean-zero random variables. Because $\ora{X} - \ora{\mu_X}$ is uncorrelated with $\ve$, (\ref{hansen_eq_2_38}) is also a linear projection. Thus by the formula for the linear projection model, 
+\begin{equation}
+    \notag
+    \begin{aligned}
+        \ora{\b} & = \bp{\bp{\ora{X} - \ora{\mu_X}} \bp{\ora{X} - \ora{\mu_X}}^\prime }^{-1} \E\bs{\bp{\ora{X} - \ora{\mu_X}} \bp{Y - \mu_Y}} \\
+        & = \bp{\var\bs{\ora{X}}}^{{-1}} \cov\of{\ora{X}, Y}
+    \end{aligned}
+\end{equation}
+a function only of the covariances of $\ora{X}$ and $Y$.
+
+\begin{theorem}
+    \label{hansen_thm_2_10}
+    In the linear projection model $Y = \ora{X}^\prime \ora{\b} + \a + \ve$, 
+    \begin{equation}
+        \label{hansen_eq_2_39}
+        \a = \mu_Y - \ora{\mu_X}^\prime \ora{\b}
+    \end{equation}
+    and 
+    \begin{equation}
+        \label{hansen_eq_2_40}
+        \ora{\b} = \bp{\var\bs{\ora{X}}}^{{-1}} \cov\of{\ora{X}, Y}.
+    \end{equation}
+\end{theorem}
+
+\section{Regression Sub-Vectors} \label{hansen_sec_2_22}
+
+\highlightPP{The partitioned matrix operations should be summarized in the appendix!}
+
+Let the regressors be partitioned as 
+\begin{equation}
+    \label{hansen_eq_2_41}
+    \ora{X} = \left(\begin{array}{c}
+        \ora{X}_1 \\
+        \ora{X}_2
+    \end{array}\right).
+\end{equation}
+We can write the projection of $Y$ on $\ora{X}$ as 
+\begin{equation}
+    \label{hansen_eq_2_42}
+    \begin{aligned}
+        Y & = \ora{X}^{\prime} \ora{\b} + e \\
+        & = \ora{X}_1^{\prime} \ora{\b}_1 + \ora{X}_2^{\prime} \ora{\b}_2 + e \\
+        & \E\bs{\ora{X} e} = \ora{0}.
+    \end{aligned}
+\end{equation}
+In this section we derive formula for the sub-vectors $\ora{\b}_1$ and $\ora{\b}_2$.
+
+Partion $\Qb_{XX}$ conformably with $\ora{X}$
+\begin{equation}
+    \notag 
+    \boldsymbol{Q}_{X X}=\left[\begin{array}{ll}
+    \boldsymbol{Q}_{11} & \boldsymbol{Q}_{12} \\
+    \boldsymbol{Q}_{21} & \boldsymbol{Q}_{22}
+    \end{array}\right]\coloneqq\left[{\setstretch{1.5}\begin{array}{cc}
+    \mathbb{E}\left[\ora{X}_1 \ora{X}_1^{\prime}\right] & \mathbb{E}\left[\ora{X}_1 \ora{X}_2^{\prime}\right] \\
+    \mathbb{E}\left[\ora{X}_2 \ora{X}_1^{\prime}\right] & \mathbb{E}\left[\ora{X}_2 \ora{X}_2^{\prime}\right]
+    \end{array}}\right],
+\end{equation}  
+and similarly 
+\begin{equation}
+    \notag 
+    \ora{Q}_{XY} = \left[\begin{array}{c}
+        \ora{Q}_{1Y} \\
+        \ora{Q}_{2Y}
+    \end{array}\right] \coloneqq \left[{\setstretch{1.5}\begin{array}{c}
+        \E\bs{\ora{X}_1 Y} \\
+        \E\bs{\ora{X}_2 Y}
+    \end{array}}\right].
+\end{equation}
+By the partitioned matrix inversion formula, 
+\begin{equation}
+    \label{hansen_eq_2_43}
+    \boldsymbol{Q}_{X X}^{-1}=\left[\begin{array}{ll}
+    \boldsymbol{Q}_{11} & \boldsymbol{Q}_{12} \\
+    \boldsymbol{Q}_{21} & \boldsymbol{Q}_{22}
+    \end{array}\right]^{-1} \coloneqq \left[\begin{array}{ll}
+    \boldsymbol{Q}^{11} & \boldsymbol{Q}^{12} \\
+    \boldsymbol{Q}^{21} & \boldsymbol{Q}^{22}
+    \end{array}\right]=\left[\begin{array}{cc}
+    \boldsymbol{Q}_{11 \cdot 2}^{-1} & -\boldsymbol{Q}_{11 \cdot 2}^{-1} \boldsymbol{Q}_{12} \boldsymbol{Q}_{22}^{-1} \\
+    -\boldsymbol{Q}_{22 \cdot 1}^{-1} \mathbf{Q}_{21} \boldsymbol{Q}_{11}^{-1} & \boldsymbol{Q}_{22 \cdot 1}^{-1}
+    \end{array}\right]
+\end{equation}
+where 
+\begin{equation}
+    \notag 
+    \bds{Q}_{11 \cdot 2} \coloneqq \bds{Q}_{11} - \bds{Q}_{12} \bds{Q}_{22}^{-1} \bds{Q}_{21}, \quad \bds{Q}_{22 \cdot 1} \coloneqq \bds{Q}_{22} - \bds{Q}_{21} \bds{Q}_{11}^{-1} \bds{Q}_{12}.
+\end{equation}
+Thus, 
+\begin{equation}
+    \notag 
+    \begin{aligned}
+    \beta & =\binom{\ora{\beta}_1}{\ora{\beta}_2} \\
+    & =\left[\begin{array}{cc}
+    \boldsymbol{Q}_{11 \cdot 2}^{-1} & -\boldsymbol{Q}_{11 \cdot 2}^{-1} \boldsymbol{Q}_{12} \boldsymbol{Q}_{22}^{-1} \\
+    -\boldsymbol{Q}_{22 \cdot 1}^{-1} \boldsymbol{Q}_{21} \boldsymbol{Q}_{11}^{-1} & \boldsymbol{Q}_{22 \cdot 1}^{-1}
+    \end{array}\right]\left[\begin{array}{c}
+    \boldsymbol{Q}_{1 Y} \\
+    \boldsymbol{Q}_{2 Y}
+    \end{array}\right] \\
+    & =\binom{\boldsymbol{Q}_{11 \cdot 2}^{-1}\left(\boldsymbol{Q}_{1 Y}-\boldsymbol{Q}_{12} \boldsymbol{Q}_{22}^{-1} \boldsymbol{Q}_{2 Y}\right)}{\boldsymbol{Q}_{22 \cdot 1}^{-1}\left(\boldsymbol{Q}_{2 Y}-\boldsymbol{Q}_{21} \boldsymbol{Q}_{11}^{-1} \boldsymbol{Q}_{1 Y}\right)} \\
+    & =\binom{\boldsymbol{Q}_{11 \cdot 2}^{-1} \boldsymbol{Q}_{1 Y \cdot 2}}{\boldsymbol{Q}_{22 \cdot 1}^{-1} \boldsymbol{Q}_{2 Y \cdot 1}} .
+    \end{aligned}
+\end{equation}
+
+\section{Coefficient Decomposition}
+\setcounter{equation}{43}
+
+In the previous section we derived formulae for the coefficient sub-vectors $\ora{\b}_1$ and $\ora{\b}_2$. We now use these formulae to give a useful interpretation of the coefficients in terms of an iterated projection.
+
+Take equation (\ref{hansen_eq_2_42}) for the case $\dim\of{X_1} = 1$ so that $\b_1 \in \R$.
+\begin{equation}
+    \label{hansen_eq_2_44}
+    Y = X_1 \b_1 + \ora{X}_2^{\prime} \ora{\b}_2 + e.
+\end{equation}
+Now consider the projection of $X_1$ on $\ora{X_2}$:
+\begin{equation}
+    \notag 
+    \begin{aligned}
+        & X_1 = \ora{X}_2^{\prime} \ora{\g}_2 + u_1 \\
+        & \E\bs{\ora{X}_2 u_1} = 0.
+    \end{aligned}
+\end{equation}
+From (\ref{hansen_eq_2_22}) and (\ref{hansen_eq_2_36}), $\ora{\g}_2 = \bds{Q}_{22}^{-1} \ora{Q}_{21}$ and $\E\bs{u_1^2} = Q_{11 \cdot 2} = Q_{11} - \ora{Q}_{12} \bds{Q}_{22}^{-1} \ora{Q}_{21}$. We can also calculate that 
+\begin{equation}
+    \notag 
+    \E\bs{u_1 Y} = \E\bs{\bp{X_1 - \ora{\g}_2^{\prime} \ora{X}_2} Y} = \E\bs{X_1 Y} - \ora{\g}_2^{\prime} \E\bs{\ora{X}_2 Y} = Q_{1Y} - \ora{Q}_{12} \bds{Q}_{22}^{-1} \ora{Q}_{2Y} = Q_{1Y \cdot 2}.
+\end{equation}
+We have found that 
+\begin{equation}
+    \notag 
+    \b_1 = Q_{11 \cdot 2}^{-1} Q_{1Y \cdot 2} = \frac{\E\bs{u_1 Y}}{\E\bs{u_1^2}},
+\end{equation}
+the coefficient from the simple regression of $Y$ on $u_1$.
+
+\highlightP{What this means is that in the multivariate projection equation (\ref{hansen_eq_2_44}), the coefficient $\b_1$ equals the projection coefficient from a regression of $Y$ on $u_1$, the error from a projection of $X_1$ on the other regressors $\ora{X}_2$.} The error $u_1$ can be thought of as the component of $X_1$ which is not linearly explained by the other regressors. Thus the coefficient $\b_1$ equals the linear effect of $X_1$ on $Y$ after stripping out the effects of the other variables.
+
+There was nothing special in the choice of the variable $X_1$. This derivation applies symmetrically to all coefficients in a linear projection. Each coefficient equals the simple regression of $Y$ on the error from a projection of that regressor on all the other regressors. Each coefficient equals the linear effect of that variable on $Y$ after linearly controlling for all the other regressors.
+
+\section{Omitted Variable Bias}
+
+Again, let the regressors be partitioned as in (\ref{hansen_eq_2_41}). Consider the projection of $Y$ on $\ora{X}_1$ only. Perhaps this is done because the variables $\ora{X}_2$ are not observed. This is the equation 
+\begin{equation}
+    \label{hansen_eq_2_45}
+    \begin{aligned}
+        & Y = \ora{X}_1^{\prime} \ora{\g}_1 + u. \\
+        & \E\bs{\ora{X}_1 u} = \ora{0}.
+    \end{aligned}
+\end{equation}
+Notice that we have written the coefficient as $\ora{\g}_1$ rather than $\ora{\b}_1$ and the error as $u$ rather than $e$. This is because (\ref{hansen_eq_2_45}) is different than (\ref{hansen_eq_2_42}). Sometimes (\ref{hansen_eq_2_42}) is labelled as \highlightB{long regression} and (\ref{hansen_eq_2_45}) as \highlightB{short regression}.
+
+Typically, $\ora{\b}_1 \neq \ora{\g}_1$, except in special cases. To see this, we calculate 
+\begin{equation}
+    \notag 
+    \begin{aligned}
+        \ora{\g}_1 & = \bp{\E\bs{\ora{X}_1 \ora{X}_1^{\prime}}}^{-1} \E\bs{\ora{X}_1 Y} \\
+        & = \bp{\E\bs{\ora{X}_1 \ora{X}_1^{\prime}}}^{-1} \E\bs{\ora{X}_1 \bp{\ora{X}_1^{\prime} \ora{\b}_1 + \ora{X}_2^{\prime} \ora{\b}_2 + e}} \\
+        & = \ora{\b}_1 + \bp{\E\bs{\ora{X}_1 \ora{X}_1^{\prime}}}^{-1} \E\bs{\ora{X}_1 \ora{X}_2^{\prime}} \ora{\b}_2 \\
+        & = \ora{\b}_1 + \bds{\G}_{12} \ora{\b}_2,
+    \end{aligned}
+\end{equation}
+where $\bds{\G}_{12} \coloneqq \bds{Q}_{11}^{-1} \Qb_{12}$ is the coefficient matrix from a projection of $\ora{X}_2$ on $\ora{X}_1$.
+
+Observe that $\ora{\g}_1 = \ora{\b}_1 + \bds{\G}_{12} \ora{\b}_2 \neq \ora{\b}_1$ unless $\bds{\G}_{12} = \bds{0}$ or $\ora{\b}_2 = \ora{0}$. Thus the short and long regressions have different coefficients. They are the same only under one of two conditions. First, if the projection of $\ora{X}_2$ on $\ora{X}_1$ yields a set of zero coefficients (they are uncorrelated), or second, if the coefficient on $\ora{X}_2$ in (\ref{hansen_eq_2_42}) is zero. The difference $\bds{\G}_{12} \ora{\b}_2$ between $\ora{\g}_1$ and $\ora{\b}_1$ is known as the \highlightB{omitted variable bias}.  It is the consequence of omission of a relevant correlated variable.
+
+\section{Best Linear Approximation}
+
+There are alternative ways we could construct a linear approximation $\ora{X}^{\prime} \ora{\b}$ to the conditional mean $m\of{\ora{X}}$. In this section we show that one alternative approach turns out to yield the same answer as the best linear predictor.
+
+We start by defining the mean-square approximation error of $\ora{X}^{\prime} \ora{\b}$ to $m\of{\ora{X}}$ as the expected squared difference between $\ora{X}^{\prime} \ora{\b}$ and the conditional mean $m\of{\ora{X}}$
+\begin{equation}
+    \notag 
+    d\of{\ora{\b}} = \E\bs{\bp{m\of{\ora{X}} - \ora{X}^{\prime} \ora{\b}}^2}.
+\end{equation}
+The function $d\of{\ora{\b}}$ is a measure of the deviation of $\ora{X}^{\prime} \ora{\b}$ from $m\of{\ora{X}}$. We can also view the mean-square difference $d\of{\ora{\b}}$ as a density-weighted average function $\bp{m\of{\ora{X}} - \ora{X}^{\prime} \ora{\b}}^2$ since 
+\begin{equation}
+    \notag 
+    d\of{\ora{\b}} = \int_{\R^{k}}{\bp{m\of{\ora{X}} - \ora{X}^{\prime} \ora{\b}}^2} f_X\of{\ora{x}} \mathrm{d} \ora{x},
+\end{equation}
+where $f_X\of{\ora{x}}$ is the marginal density of $\ora{X}$.
+
+We can then define the best linear approximation to $m\of{\ora{X}}$ as the function $\ora{X}^{\prime}\ora{\b}$ obtained by selecting $\ora{\b}$ to minimize $d\of{\ora{\b}}$:
+\begin{equation}
+    \label{hansen_eq_2_46} 
+    \ora{\b} = \argmin_{\ora{b} \in \R^k} d\of{\ora{b}}.
+\end{equation}
+Similar to the best linear predictor we are measuring accuracy by expected squared error. The difference is that the best linear predictor (\ref{hansen_eq_2_18}) selects $\ora{\b}$ to minimize the expected squared prediction error, while the best linear approximation (\ref{hansen_eq_2_46}) selects $\ora{\b}$ to minimize the expected squared approximation error.
+
+Despite the different definitions, it turns out that the best linear predictor and the best linear approximation are identical. By the same steps as in (\ref{hansen_eq_2_18}) plus an application of conditional expectations we can find that 
+\begin{equation}
+    \label{hansen_eq_2_47}
+    \ora{\b} = \bp{\E\bs{\ora{X}\ora{X}^{\prime}}}^{-1} \E\bs{\ora{X} m\of{\ora{X}}}.
+\end{equation}
+This is exactly 
+\begin{equation}
+    \label{hansen_eq_2_48}
+    \ora{\b} = \bp{\E\bs{\ora{X}\ora{X}^{\prime}}}^{-1} \E\bs{\ora{X} Y},
+\end{equation}
+Thus (\ref{hansen_eq_2_46}) equals (\ref{hansen_eq_2_18}). We conclude that the definition (\ref{hansen_eq_2_46}) can be viewed as an alternative motivation for the linear projection coefficient.
+
+\section{Regression to the Mean}
+
+To understand the origin of the name ``regression,'' consider the simple linear regression
+\begin{equation}
+    \label{hansen_eq_2_49}
+    Y = X \b + \a + e,
+\end{equation}
+where $Y$ equals the height of the child and $X$ equals the height of the parent. Assume that $Y$ and $X$ have the same mean so that $\mu_Y = \mu_X = \mu$. When the height distribution is stable across generations so that $\var\bs{X} = \var\bs{Y}$, then the slope is the simple correlation between $X$ and $Y$. Using (\ref{hansen_eq_2_39}), $\a = \bp{1-\b} \mu$ so we can write the linear projection (\ref{hansen_eq_2_49}) as 
+\begin{equation}
+    \notag 
+    \Pc\of{Y \mid X} = \bp{1-\b} \mu + X \b.
+\end{equation}
+If we exclude the degenerate case when $Y = X$, $\b$ is strictly less than $1$. This shows that the projected height of the child is a weighted average of the population average height $\mu$ and the parent's height $X$ with the weight equal to $\b$. Using (\ref{hansen_eq_2_40}), 
+\begin{equation}
+    \notag 
+    \b = \frac{\cov\of{X, Y}}{\var\bs{X}} = \corr{X, Y}.
+\end{equation}
+This means that on average a child's height is more mediocre (closer to the population average) than the parent's.
+
+A common error -- known as the \highlightB{regression fallacy} -- is to infer from $\b < 1$ that the population is converging meaning that its variance is declining towards zero. This is a fallacy because we derived the implication $\b < 1$ under the assumption of constant means and variances. So certainly $\b < 1$ does not imply that the variance $Y$ is less than than the variance of $X$.
+
+Another way of seeing this is to examine the conditions for convergence in the context of equation (\ref{hansen_eq_2_49}). Since $X$ and $e$ are uncorrelated, it follows that 
+\begin{equation}
+    \notag 
+    \var\bs{Y} = \b^2 \var\bs{X} + \var\bs{e}.
+\end{equation}
+Then $\var\bs{X} < \var\bs{Y}$ if and only if 
+\begin{equation}
+    \notag 
+    \b^2 > 1 - \frac{\var\bs{e}}{\var\bs{X}},
+\end{equation}
+which is not implied by the simple condition $\abs{\b} < 1$.
+
+
+% \section{Reverse Regression}
+
+% \section{Limitations of the Best Linear Projection}
+
+\setcounter{section}{28}
+
+\section{Random Coefficient Model}
+
+A model which is notationally similar to but conceptually distinct from the linear CEF model is the linear random coefficient model. It takes the form $Y = \ora{X}^{\prime} \ora{\eta}$ where the individual-specific coefficient $\ora{\eta}$ is random and independent of $\ora{X}$. 
+
+For example, if $X$ is years of schooling and $Y$ is log wages, then $\eta$ is the individual-specific returns to schooling. If a person obtains an extra year of schooling, $\eta$ is the actual change in their wage. The random coefficient model allows the returns to schooling to vary in the population. Some individuals might have a high return to education (a high $\eta$) and others a low return, possibly $0$, or even negative.
+
+In the linear CEF model the regressor coefficient equals the regression derivative -- the change in the conditional mean due to a change in the regressors, 
+$$\ora{\b} = \overrightarrow{\nabla m\of{\overrightarrow{X}}}.$$ 
+\highlightP{This is not the effect on a given individual, it is the effect on the population average.} \highlightP{In contrast, in the random coefficient model the random vector}
+$$\ora{\eta} = \overrightarrow{\nabla \bp{\overrightarrow{X}^{\prime} \overrightarrow{\eta}}}$$
+\highlightP{is the true causal effect -- the change in the response variable $Y$ itself due to a change in the regressors.}
+
+It is interesting, however, to discover that the linear random coefficient model implies a linear CEF. To see this, let $\ora{\b} = \E\bs{\ora{\eta}}$ and $\bds{\S} = \var\bs{\ora{\eta}}$ denote the mean and covariance matrix of $\ora{\eta}$ and then decompose the random coefficient as $\ora{\eta} = \ora{\b} + \ora{u}$ where $\ora{u}$ is distributed independently of $\ora{X}$ with mean zero and covariance matrix $\bds{\S}$. Then we can write
+\begin{equation}
+    \notag 
+    \E\bs{Y \mid \ora{X}} = \ora{X}^{\prime} \E\bs{\ora{\eta} \mid \ora{X}} = \ora{X}^{\prime} \ora{\eta} = \ora{X}^{\prime} \ora{\b},
+\end{equation}
+so the CEF is linear in $\ora{X}$, and the coefficient $\ora{\b}$ equals the mean of the random coefficient $\ora{\eta}$. 
+
+We can thus write the equation as a linear CEF $Y = \ora{X}^{\prime}\ora{\b} + e$ where $e = \ora{X}^{\prime} \ora{u}$ and $\ora{u} = \ora{\eta} - \ora{\b}$. The error is conditionally mean zero: $\E\bs{{e} \mid \ora{X}} = {0}$. Furthermore, 
+\begin{equation}
+    \notag 
+    \var\bs{{e} \mid \ora{X}} = \ora{X}^{\prime} \bds{\S} \ora{X},
+\end{equation}
+so the error is conditionally heteroskedastic with its variance a quadratic function of $\ora{X}$.
+
+\begin{theorem}
+    \label{hansen_thm_2_11}
+    In the linear random coefficient model $Y = \ora{X}^{\prime} \ora{\eta}$ with $\ora{\eta}$ independent of $\ora{X}$, $\E\bs{\norm{\ora{X}}^2} < \infty$, and $\E\bs{\norm{\ora{\eta}}^2} < \infty$, then 
+    \begin{equation}
+        \notag 
+        \begin{aligned}
+            & \E\bs{Y \mid \ora{X}} = \ora{X}^{\prime} \ora{\b} \\
+            & \var\bs{Y \mid \ora{X}} = \ora{X}^{\prime} \bds{\S} \ora{X}.
+        \end{aligned}
+    \end{equation}
+    where 
+    $$
+    \ora{\b} \coloneqq \E\bs{\ora{\eta}} \quad \text{and} \quad \bds{\S} \coloneqq \var\bs{\ora{\eta}}.
+    $$
+\end{theorem}
+
+\section{Causal Effects}
+\setcounter{equation}{51}
+\setcounter{definition}{5}
+
+Let $Y$ be a scalar outcome (for example, wages) and $D$ be a binary treatment (for example, college attendance). The specification of treatment as binary is not essential but simplifies the
+notation. A flexible model describing the impact of the treatment on the outcome is 
+\begin{equation}
+    \label{2.52}
+    Y = h\of{D, \ora{U}}
+\end{equation}
+where $\ora{U}$ is an $\ell \times 1$ unobserved random factor and $h$ is a functional relationship. It is also common to use the simplified notation $$Y\of{0} = h\of{0, \ora{U}}$$ and $$Y\of{1} = h\of{1, \ora{U}}$$ for the potential outcomes associated with non-treatment and treatment, respectively. The notation implicitly holds $\ora{U}$ fixed. The potential outcomes are specific to each individual as they depend on $\ora{U}$.
+
+Rubin described the effect as causal when we vary $D$ while holding $\ora{U}$ constant. In our example this means changing an individual's education while holding constant their other attributes.
+
+\begin{definition}
+    In the model (\ref{2.52}) the \highlightB{causal effect} of $D$ on $Y$ is 
+    \begin{equation}
+        \label{2.53}
+        C\of{\ora{U}} = Y\of{1} - Y\of{0} = h\of{1, \ora{U}} - h\of{0, \ora{U}},
+    \end{equation}
+    the change in $Y$ due to treatment while holing $\ora{U}$ constant.
+\end{definition}
+Perhaps it would be more appropriate to label (\ref{2.53}) as a structural effect (the effect within the structural model).
+
+The causal effect of treatment $C\of{\ora{U}}$ defined in (\ref{2.53}) is heterogeneous and random as the potential outcomes $Y\of{0}$ and $Y\of{1}$ vary across individuals. We do not observe both $Y\of{0}$ and $Y\of{1}$ for a given individual but rather only the realized value 
+\begin{equation}
+    \notag
+    Y = \begin{cases}
+        Y\of{0} \text{ if } D = 0 \\
+        Y\of{1} \text{ if } D = 1 \\
+    \end{cases}
+\end{equation}
+
+\begin{definition}
+    In the model (\ref{2.52}) the \highlightB{average causal effect} of $D$ on $Y$ is 
+    \begin{equation}
+        \notag
+        \operatorname{ACE} = \E\bs{C\of{\ora{U}}} = \int_{\R^\ell} C\of{{\ora{u}}} f\of{\ora{u}} d\ora{u},
+    \end{equation}
+    where $f\of{\ora{u}}$ is the density of $\ora{U}$.
+\end{definition}
+
+To estimate the ACE a reasonable starting place is to compare average $Y$ for treated and untreated individuals. This is the same as the coefficient in a regression of the outcome $Y$ on the
+treatment $D$. Does this equal the ACE?
+
+The answer depends on the relationship between treatment $D$ and the unobserved component $\ora{U}$. If $D$ is randomly assigned as in an experiment then $D$ and $\ora{U}$ are independent and the regression coefficient equals the ACE. However, if $D$ and $\ora{U}$ are dependent then the regression coefficient and ACE are different. To see this, observe that the difference between the average outcomes of the treated and untreated populations are
+\begin{equation}
+    \notag
+    \E\bs{Y \mid D = 1} - \E\bs{Y \mid D = 0} = \int_{\R^\ell} h\of{1, \ora{u}} f\of{\ora{u} \mid D = 1} d\ora{u} - \int_{\R^\ell} h\of{0, \ora{u}} f\of{\ora{u} \mid D = 0} d\ora{u}
+\end{equation}
+where $f\of{\ora{u} \mid D}$ is the conditional density of $\ora{U}$ given $D$. If $\ora{U}$ is independent of $D$ then $f\of{\ora{u} \mid D} = f\of{\ora{u}}$ and the above expression equals to ACE. However, if $D$ and $\ora{U}$ are dependent this equality fails.
+
+Suppose that the observables include a set of covariates $\ora{X}$ in addition to the outcome $Y$ and treatment $D$. We extend the potential outcomes model (\ref{2.52}) to include $\ora{X}$:
+\begin{equation}
+    \label{2.54}
+    Y = h\of{D, \ora{X}, \ora{U}}.
+\end{equation}
+We also extend the definition of a causal effect to allow conditioning on $\ora{X}$.
+
+\begin{definition}
+    In the model (\ref{2.54}) the \highlightB{causal effect} of $D$ on $Y$ is 
+    \begin{equation}
+        \notag
+        C\of{\ora{X}, \ora{U}} = h\of{1, \ora{X}, \ora{U}} - h\of{0, \ora{X}, \ora{U}},
+    \end{equation}
+    the change in $Y$ due to treatment holding $\ora{X}$ and $\ora{U}$ constant.
+
+    The \highlightB{conditional average causal effect} of $D$ on $Y$ conditional on $\ora{X} = \ora{x}$ is
+    \begin{equation}
+        \notag
+        \operatorname*{ACE}\of{\ora{x}} = \E\bs{C\of{\ora{X}, \ora{U}} \mid \ora{X} = \ora{x}} = \int_{\R^\ell} C\of{\ora{x}, \ora{u}} f\of{\ora{u} \mid \ora{x}} d \ora{u},
+    \end{equation}
+    where $f\of{\ora{u} \mid \ora{x}}$ is the conditional density of $\ora{U}$ given $\ora{X}$.
+
+    The \highlightB{unconditional average causal effect} of $D$ on $Y$ is 
+    \begin{equation}
+        \notag
+        \operatorname{ACE} = \E\bs{C\of{\ora{X}, \ora{U}}} = \int \operatorname*{ACE}\of{\ora{x}} f\of{\ora{x}} d\ora{x}
+    \end{equation}
+    where $f\of{\ora{x}}$ is the density of $\ora{X}$.
+\end{definition}
+
+The conditional average causal effect $operatorname*{ACE}\of{\ora{x}}$ is the ACE for the sub-population with characteristics $\ora{X} = \ora{x}$.
+
+\begin{definition}[Conditional Independence Assumption (CIA)]
+    Conditional on $\ora{X}$ the random variables $D$ and $\ora{U}$ are statistically independent.
+\end{definition}
+
+The CIA implies that the conditional density of $\ora{U}$ given $\bp{D, \ora{X}}$ only depends on $\ora{X}$, thus $$f\of{\ora{u} \mid D, \ora{X}} = f\of{\ora{u} \mid \ora{X}}.$$ This implies that the regression of $Y$ on $\bp{D, \ora{X}}$ equals
+\begin{equation}
+    \notag
+    \begin{aligned}
+        m\of{d, \ora{x}} & = \E\bs{Y \mid D = d, \ora{X} = \ora{x}} \\ 
+        & = \E\bs{h\of{D, \ora{X}, \ora{U}} \mid D = d, \ora{X} = \ora{x}} \\
+        & = \int h\of{d, \ora{x}, \ora{u}} f\of{\ora{u} \mid \ora{x}} d\ora{u}
+    \end{aligned}
+\end{equation}
+
+Under the CIA the treatment effect measured by the regression is
+\begin{equation}
+    \label{2.55}
+    \begin{aligned}
+        \nabla m\of{d, \ora{x}} & = m\of{1, \ora{x}} - m\of{0, \ora{x}} \\
+        & = \int h\of{1, \ora{x}, \ora{u}} f\of{\ora{u} \mid \ora{x}} d\ora{u} - \int h\of{0, \ora{x}, \ora{u}} f\of{\ora{u} \mid \ora{x}} d\ora{u} \\
+        & = \int C\of{\ora{x}, \ora{u}} f\of{\ora{u} \mid \ora{x}} d\ora{u} \\
+        & = \operatorname*{ACE}\of{\ora{x}}.
+    \end{aligned}
+\end{equation}
+This is the conditional ACE. Thus under the CIA the regression coefficient equals the ACE.
+
+We deduce that the regression of $Y$ on $\bp{D, \ora{X}}$ reveals the causal impact of treatment when the CIA holds. This means that regression analysis can be interpreted causally when we can make the case that the regressors $\ora{X}$ are sufficient to control for factors which are correlated with treatment.
+
+\begin{theorem}
+    In the structural model (\ref{2.54}), the Conditional Independence Assumption implies $\nabla m\of{d, \ora{x}} = \operatorname*{ACE}\of{\ora{x}}$, that the regression derivative with respect to treatment equals the conditional ACE.
+\end{theorem}
+
+This is a fascinating result. It shows that whenever the unobservable is independent of the treatment variable after conditioning on appropriate regressors, the regression derivative equals the conditional causal effect. This means the CEF has causal economic meaning, giving strong justification to estimation of the CEF.
+

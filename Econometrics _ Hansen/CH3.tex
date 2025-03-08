@@ -1,0 +1,884 @@
+% !TEX root = Econometrics.tex
+
+\chapter{The Algebra of Least Squares}
+
+
+% \section{Introduction}
+
+\setcounter{section}{1}
+\section{Samples}
+
+
+In Section \ref{hansen_sec_2_18} we derived and discussed the best linear predictor of $Y$ given $\ora{X}$ for a pair of random variables $\bp{Y, \ora{X}} \in \R \times \R^k$ can called this the linear projection model. We are now interested in estimating the parameters of the linear projection model, in particular the projection coefficient
+\begin{equation}
+    \label{hansen_eq_3_1}
+    \ora{\b} = \bp{\E\bs{\ora{X}\ora{X}^\prime}}^{-1} \E\bs{\ora{X}Y}.
+\end{equation}
+
+Notationally we wish to distinguish observations (realizations) from the underlying random variables. The random variables are $\bp{Y, \ora{X}}$. THe observations are $\bp{Y_i, \ora{X}_i}$. From the vantage of the researcher the latter are numbers. From the vantage of statistical theory we view them as realizations of random variables. For individual observations we append a subscript $i$ which runs from $1$ to $n$, thus the $i$th observation is $\bp{Y_i, \ora{X}_i}$. 
+
+The individual observations could be draws from a common (homogeneous) distribution or could be draws from heterogeneous distributions. The simplest approach is to assume homogeneity -- that the observations are realizations from an identical underlying population $F$.
+
+\setcounter{assumption}{0}
+\begin{assumption} \label{hansen_ass_3_1}
+    The random variables $\left\{(Y_1, \ora{X_1}), \ldots, (Y_i, \ora{X_i}), \ldots, (Y_n, \ora{X_n})\right\}$ are identically distributed; they are draws from a common distribution $F$.
+\end{assumption}
+
+The assumption does not need to be viewed as literally true. Rather it is a useful modeling device so that parameters such as $\ora{\b}$ are well defined. This assumption should be interpreted as how we view an observation a priori, before we actually observe it. In econometric theory we refer to the underlying common distribution $F$ as the \highlightB{population}. Some authors prefer the label the \highlightB{data-generating-process (DGP)}. You can think of it as a theoretical concept or an infinitely-large potential population. In contrast, we refer to the observations available to us $\bc{\bp{Y_i, \ora{X_i}}: i=1,\ldots,n}$ as the \highlightB{dataset} or \highlightB{sample}.
+
+The linear projection model, which applies to the random variables $\bp{Y, \ora{X}}$, is 
+\begin{equation}
+    \label{hansen_eq_3_2}
+    Y = \ora{X}^\prime \ora{\b} + e
+\end{equation}
+where the linear projection coefficient $\ora{\b}$ is defined as 
+\begin{equation}
+    \label{hansen_eq_3_3}
+    \ora{\b} = \argmin_{\overrightarrow{b} \in \R^k} S\of{\ora{b}},
+\end{equation}
+the minimizer of the expected squared error 
+\begin{equation}
+    \label{hansen_eq_3_4}
+    S\of{\ora{b}} = \E\bs{\bp{Y - \ora{X}^\prime \ora{\b}}^2}.
+\end{equation}
+The coefficient has the explicit solution (\ref{hansen_eq_3_1}).
+
+\section{Moment Estimators}
+
+We want to estimate the coefficient $\ora{\b}$ defined in (\ref{hansen_eq_3_1}) from the sample of observations. Notice that $\ora{\b}$ is written as a function of certain population expectations. In this context an appropriate estimator is the same function of the sample moments. 
+
+To start, suppose that we are interested in the population mean $\mu$ of a random variable $Y$ with distribution function $F$,
+\begin{equation}
+    \label{hansen_eq_3_5}
+    \mu = \E\bs{Y} = \int_{-\infty}^{\infty} y dF\of{y}.
+\end{equation}
+The expectation $\mu$ is a function of the distribution $F$. To estimate $\mu$ given $n$ random variables $Y_i$ from $F$, a natural estimator is the sample mean
+\begin{equation}
+    \notag
+    \wh{\mu} = \ol{Y} = \frac{1}{n} \sum_{i=1}^n Y_i.
+\end{equation}
+
+Now suppose that we are interested in a set of population expectations of possibly nonlinear functions of a random vector $\ora{Y}$, say $\ora{\mu} = \E\bs{h\of{\ora{Y}}}$. In this case the natural estimator is the vector of sample means
+\begin{equation}
+    \notag
+    \wh{\oras{\mu}} = \frac{1}{n} \sum_{i=1}^n h\of{\ora{Y}}.
+\end{equation}
+We call $\wh{\oras{\mu}}$ the \highlightB{moment estimator} for $\ora{\mu}$. For example, if $h\of{y} = \bp{y, y^2}^\prime$, then $\wh{\mu}_1 = \frac{1}{n} \sum_{i=1}^n Y_i$ and $\wh{\mu}_2 = \frac{1}{n} \sum_{i=1}^n Y_i^2$.
+
+Now suppose that we are interested in a nonlinear function of a set of moments. For example, consider the variance of $Y$
+\begin{equation}
+    \notag
+    \s^2 = \var\bs{Y} = \E\bs{Y^2} - \bp{\E\bs{Y}}^2.
+\end{equation}
+In general, many parameters of interest can be written as a function of moments of $Y$. Notationally, $\b = g\of{\mu}$ and $\mu = \E\bs{h\of{\ora{Y}}}$. Here, $Y$ are the random variables, $h\of{Y}$ are functions (transformations) of the random variables, and $\mu$ is the expectation of these functions. $\b$ is the parameter of interest, and is the (nonlinear) function $g\of{\cdot}$ of these expectations.
+
+In this context a natural estimator of $\b$ is obtained by replacing $\mu$ with $\wh{\mu}$. Thus $\wh{\b} = g\of{\wh{\mu}}$. The estimator $\wh{\b}$ is often called a \highlightB{plug-in estimator}. We also call $\wh{\b}$ a moment, or moment-based, estimator of $\b$ since it is a natural extension of the moment estimator $\wh{\mu}$.
+
+Take the example of the variance $\s^2 = \var\bs{Y}$. Its moment estimator is 
+\begin{equation}
+    \notag
+    \wh{\s}^2 = \wh{\mu}_2 - \wh{\mu}_1^2 = \frac{1}{n} \sum_{i=1}^n Y_i^2 - \bp{\frac{1}{n} \sum_{i=1}^n Y_i}^2.
+\end{equation}
+\highlightP{This is not the only possible estimator for $\s^2$ (there is also the well-known bias-corrected estimator) but $\wh{\s}^2$ is a straightforward and simple choice.}
+
+
+\section{Least Squares Estimator}
+
+The linear projection coefficient $\ora{\b}$ is defined in (\ref{hansen_eq_3_3}) as the minimizer of the expected squared error $S\of{\ora{\b}}$ defined in (\ref{hansen_eq_3_4}). For a given $\ora{\b}$, the expected squared error is the expectation of the squared error $\bp{Y - \ora{X}^{\prime} \ora{\b}}^2$. The moment estimator of $S\of{\ora{\b}}$ is the sample average:
+\begin{equation}
+    \label{hansen_eq_3_6}
+    \wh{S}\of{\ora{\b}} = \frac{1}{n} \sum_{i=1}^n \bp{Y_i - \ora{X_i}^\prime\ora{\b}}^2 = \frac{1}{n} \operatorname*{SSE}\of{\ora{\b}}
+\end{equation}
+where 
+\begin{equation}
+    \notag
+    \operatorname*{SSE}\of{\ora{\b}} = \sum_{i=1}^n \bp{Y_i - \ora{X_i}^\prime\ora{\b}}^2
+\end{equation}
+is called the \highlightB{sum of squared errors} function.
+
+\begin{definition}
+    The \highlightB{least squares estimator} is $\wh{\oras{\b}} = \argmin\limits_{\oras{\b} \in \R^k} \wh{S}\of{\ora{\b}}$, where $$\wh{S}\of{\ora{\b}} = \frac{1}{n} \sum_{i=1}^n \bp{Y_i - \ora{X_i}^\prime\ora{\b}}^2.$$
+\end{definition}
+
+As $\wh{S}\of{\ora{\b}}$ is a scale multiple of $\operatorname*{SSE}\of{\ora{\b}}$ we may equivalently define $\wh{\oras{\b}}$ as the minimizer of $\operatorname*{SSE}\of{\ora{\b}}$. Hence $\wh{\oras{\b}}$ is commonly called the \highlightB{least squares (LS) estimator} of $\ora{\b}$. The estimator is also commonly referred to as the \highlightB{ordinary least squares (OLS) estimator}. 
+
+
+\section{Solving for Least Squares with One Regressor}
+
+For simplicity, we start by considering the case $k = 1$ so that there is a scalar regressor $X$ and a scalar coefficient $\b$.
+
+The sum of squared errors is the function
+\begin{equation}
+    \notag
+    \operatorname*{SSE}\of{\b} = \sum_{i=1}^n \bp{Y_i - X_i \b}^2 = \bp{\sum_{i=1}^n Y_i^2} - 2\b \bp{\sum_{i=1}^n X_i Y_i} + \b^2 \bp{\sum_{i=1}^n X_i^2}.
+\end{equation}
+
+The OLS estimator $\wh{\b}$ minimizes this function. The minimizer of $\operatorname*{SSE}\of{\b}$ is 
+\begin{equation}
+    \label{hansen_eq_3_7}
+    \wh{\b} = \frac{\sum_{i=1}^n X_i Y_i}{\sum_{i=1}^n X_i^2}.
+\end{equation}
+
+The intercept-only model is the special case $X_i = 1$. In this case, we find
+\begin{equation}
+    \label{hansen_eq_3_8}
+    \wh{\b} = \frac{1}{n} \sum_{i=1}^n Y_i = \ol{Y},
+\end{equation}
+the sample mean of $Y_i$.
+
+\section{Solving for Least Squares with Multiple Regressors}
+
+We now consider the case with $k > 1$ so that the coefficient $\ora{\b} \in \R^k$ is a vector.
+
+The sum of squared errors can be written as
+\begin{equation}
+    \notag
+    \operatorname*{SSE}\of{\ora{\b}} = \sum_{i=1}^n \bp{Y_i - \ora{X_i}^\prime \ora{\b}}^2 = \bp{\sum_{i=1}^n Y_i^2} - 2\ora{\b}^\prime \bp{\sum_{i=1}^n \ora{X_i} Y_i} + \ora{\b}^\prime \bp{\sum_{i=1}^n \ora{X_i} \ora{X_i}^\prime}\ora{\b}.
+\end{equation}
+As in the single regressor case this is a quadratic function in $\ora{\b}$.
+
+The first-order conditions are 
+\begin{equation}
+    \label{hansen_eq_3_9}
+    0 = \frac{\partial}{\partial \ora{\b}} \operatorname*{SSE}\of{\ora{\b}} = -2 \bp{\sum_{i=1}^n \ora{X_i} Y_i} + 2 \bp{\sum_{i=1}^n \ora{X_i} \ora{X_i}^\prime}\ora{\b}.
+\end{equation}
+Dividing (\ref{hansen_eq_3_9}) by 2, we obtain
+\begin{equation}
+    \label{hansen_eq_3_10}
+    \bp{\sum_{i=1}^n \ora{X_i} \ora{X_i}^\prime}\ora{\b} = \bp{\sum_{i=1}^n \ora{X_i} Y_i} .
+\end{equation}
+Then, we can find an explicit formula for the least squares estimator
+\begin{equation}
+    \label{hansen_eq_3_11}
+    \wh{\oras{\b}} = \bp{\sum_{i=1}^n \ora{X_i} \ora{X_i}^\prime}^{-1} \bp{\sum_{i=1}^n \ora{X_i} Y_i}.
+\end{equation}
+
+To be complete we should verify the second-order conditions. We calculate that
+\begin{equation}
+    \notag
+    \frac{\partial ^2}{\partial \oras{\b} \partial \oras{\b}^\prime} \operatorname*{SSE}\of{\ora{\b}} = 2 \bp{\sum_{i=1}^n \ora{X_i} \ora{X_i}^\prime} > 0
+\end{equation}
+which is a positive definite matrix.
+
+Alternatively, equation (\ref{hansen_eq_3_1}) writes the projection coefficient $\ora{\b}$ as an explicit function of the population moments $\Qb_{XY}$ and $\Qb_{XX}$. Their moment estimators are the sample moments
+\begin{equation}
+    \notag
+    \begin{aligned}
+        \wh{\Qb}_{XY} & = \frac{1}{n} \sum_{i=1}^n \ora{X_i} Y_i \\ 
+        \wh{\Qb}_{XX} & = \frac{1}{n} \sum_{i=1}^n \ora{X_i} \ora{X_i}^\prime .
+    \end{aligned}
+\end{equation}
+The moment estimator of $\ora{\b}$ replaces the population moments in (\ref{hansen_eq_3_1}) with the sample moments:
+\begin{equation}
+    \wh{\oras{\b}} = \wh{\Qb}_{XX}^{-1}\wh{\Qb}_{XY} = \bp{\sum_{i=1}^n \ora{X_i} \ora{X_i}^\prime}^{-1} \bp{\sum_{i=1}^n \ora{X_i} Y_i},
+\end{equation}
+which is identical with (\ref{hansen_eq_3_11}).
+
+Technically, the estimator $\wh{\oras{\b}}$ is unique and equals (\ref{hansen_eq_3_11}) only if the inverted matrix is actually invertible, which holds if (and only if) this matrix is positive definite. This excludes the case that $X_i$ contains redundant regressors. 
+\begin{theorem} \label{hansen_thm_3_1}
+    If $\sum_{i=1}^n \ora{X_i} \ora{X_i}^\prime > \bds{0}$, the least squares estimator is unique and equals
+    \begin{equation}
+        \notag
+        \wh{\oras{\b}} = \bp{\sum_{i=1}^n \ora{X_i} \ora{X_i}^\prime}^{-1} \bp{\sum_{i=1}^n \ora{X_i} Y_i}.
+    \end{equation}
+\end{theorem}
+
+% \section{Illustration}
+
+\setcounter{section}{7}
+\section{Least Squares Residuals}
+\setcounter{equation}{13}
+
+As a by-product of estimation we define the \highlightB{fitted value} $\wh{Y}_i = \ora{X_i}^\prime \wh{\oras{\b}}$ and the \highlightB{residual}
+\begin{equation}
+    \label{hansen_eq_3_14}
+    \wh{e}_i = Y_i - \wh{Y}_i = Y_i - \ora{X_i}^\prime \wh{\oras{\b}}.
+\end{equation}
+
+Note that $Y_i = \wh{Y}_i + \wh{e}_i$ and
+\begin{equation}
+    \label{hansen_eq_3_15}
+    Y_i = \ora{X_i}^\prime \wh{\oras{\b}} + \wh{e}_i.
+\end{equation}
+We make a distinction between the \highlightB{error} $e_i$ and the \highlightB{residual} $\wh{e}_i$. \highlightP{The error $e_i$ is unobservable while the residual $\wh{e}_i$ is an estimator.} These two variables are frequently mislabeled which can cause confusion.
+
+Equation (\ref{hansen_eq_3_9}) implies that 
+\begin{equation}
+    \label{hansen_eq_3_16}
+    \sum_{i=1}^n \ora{X_i} \wh{e}_i = \ora{0}.
+\end{equation}
+To see this by a direct calculation, using (\ref{hansen_eq_3_14}) and (\ref{hansen_eq_3_11}),
+\begin{equation}
+    \notag
+    \begin{aligned}
+        \sum_{i=1}^n \ora{X_i} \wh{e}_i & = \sum_{i=1}^{n} \ora{X_i} \bp{Y_i - \ora{X_i}^\prime \wh{\oras{\b}}} \\
+        & = \sum_{i=1}^{n}\ora{X_i}Y_i - \sum_{i=1}^{n} \ora{X_i}\ora{X_i}^\prime \wh{\oras{\b}} \\
+        & = \sum_{i=1}^{n}\ora{X_i}Y_i - \sum_{i=1}^{n} \ora{X_i}\ora{X_i}^\prime \bs{\bp{\sum_{i=1}^n \ora{X_i} \ora{X_i}^\prime}^{-1} \bp{\sum_{i=1}^n \ora{X_i} Y_i}} \\
+        & = \sum_{i=1}^{n}\ora{X_i}Y_i - \sum_{i=1}^{n}\ora{X_i}Y_i = \ora{0}.
+    \end{aligned}
+\end{equation}
+
+When $\ora{X_i}$ contains a constant an implication of (\ref{hansen_eq_3_16}) is 
+\begin{equation}
+    \label{hansen_eq_3_17}
+    \frac{1}{n} \sum_{i=1}^n \wh{e}_i = 0.
+\end{equation}
+\highlightR{Thus the residuals have a sample mean of $0$ and the sample correlation between the regressors and the residual is $0$.}
+
+
+\section{Demeaned Regressors}
+
+Sometimes it is useful to separate the constant from the other regressors and write the linear projection equation in the format
+\begin{equation}
+    \notag
+    Y_i = \ora{X_i}^\prime \ora{\b} + \a + e_i
+\end{equation}
+where $\a$ is the intercept and $\ora{X_i}$ does not contain a constant.
+
+In this case (\ref{hansen_eq_3_16}) can be written as the equation system 
+\begin{equation}
+    \notag 
+    \begin{aligned}
+        & \sum_{i=1}^n \bp{Y_i - \ora{X}_i^{\prime} \wh{\oras{\b}} - \wh{\a}} = 0 \\
+        & \sum_{i=1}^n \ora{X}_i \bp{Y_i - \ora{X}_i^{\prime} \wh{\oras{\b}} - \wh{\a}} = \ora{0}.
+    \end{aligned}
+\end{equation}
+The first equation implies 
+\begin{equation}
+    \notag 
+    \wh{\a} = \ol{Y} - \ol{\oras{X}}^\prime \wh{\oras{\b}}.
+\end{equation}
+Subtracting from the second we obtain 
+\begin{equation}
+    \notag 
+    \sum_{i=1}^{n} \ora{X_i} \bs{\oras{\b} \bp{Y_i - \ol{Y}} - \bp{\ora{X}_i - \ol{\oras{X}}}^{\prime}} = \ora{0}.
+\end{equation}
+
+We can solve for $\wh{\oras{\b}}$ as 
+\begin{equation}
+    \label{hansen_eq_3_18}
+    \wh{\oras{\b}} = \bs{\sum_{i=1}^n \bp{\ora{X_i} - \ol{\oras{X}}} \bp{\ora{X_i} - \ol{\oras{X}}}^\prime}^{-1} \bs{\sum_{i=1}^n \bp{\ora{X_i} - \ol{\oras{X_i}}} \bp{Y_i - \ol{Y}}}.
+\end{equation}
+Thus the OLS estimator for the slope coefficients is OLS with demeaned data and no intercept.
+
+The representation (\ref{hansen_eq_3_18}) is known as the demeaned formula for the least squares estimator.
+
+
+\section{Model in Matrix Notation}
+
+We can stack these $n$ equations together as
+\begin{equation}
+    \label{3.19}
+    \ora{Y} = \Xb \ora{\b} + \ora{e}.
+\end{equation}
+
+Sample sums can be written in matrix notation. For example
+\begin{equation}
+    \notag
+    \begin{aligned}
+        \sum_{i=1}^n \ora{X_i} \ora{X_i}^\prime & = \Xb^\prime \Xb \\
+        \sum_{i=1}^n \ora{X_i} Y_i & =  \Xb^\prime \ora{Y}.
+    \end{aligned}
+\end{equation}
+Therefore the least squares estimator can be written as
+\begin{equation}
+    \notag
+    \wh{\oras{\b}} = \bp{\Xb^\prime \Xb}^{-1} \Xb^\prime \ora{Y}.
+\end{equation}
+
+\begin{theorem}[Important Matrix Expressions]
+    \begin{equation}
+        \notag
+        \begin{aligned}
+            & \wh{\oras{\b}} = \bp{\Xb^\prime \Xb}^{-1} \Xb^\prime \ora{Y} \\
+            & \wh{\oras{e}} = \ora{Y} - \Xb \wh{\oras{\b}} \\
+            & \Xb^\prime \wh{\oras{e}} = \ora{0}.
+        \end{aligned}
+    \end{equation}
+\end{theorem}
+
+\section{Projection Matrix}
+
+Define the matrix 
+\begin{equation}
+    \label{hansen_eq_3_20}
+    \Pb = \Xb \bp{\Xb^\prime \Xb}^{-1} \Xb^\prime.
+\end{equation}
+Observe that 
+\begin{equation}
+    \notag
+    \Pb \Xb = \Xb \bp{\Xb^\prime \Xb}^{-1} \Xb^\prime  \Xb =  \Xb.
+\end{equation}
+This is a property of a \highlightB{projection matrix}. More generally, for any matrix $\Zb$ which can be written as $\Zb = \Xb \bds{\Gamma}$ for some matrix $\bds{\G}$ (we say that $\Zb$ lies in the range space of $\Xb$), then
+\begin{equation}
+    \notag
+    \Pb \Zb = \Pb \Xb \bds{\G} = \Zb .
+\end{equation}
+
+The projection matrix $\Pb$ has the algebraic property that it is idempotent: $\Pb \Pb = \Pb$.
+
+\highlightR{The matrix $\Pb$ creates the fitted values in a least squares regression}:
+\begin{equation}
+    \notag
+    \Pb \ora{Y} = \Xb \bp{\Xb^{\prime} \Xb}^{-1} \Xb \ora{Y} = \Xb \wh{\oras{\b}} = \wh{\oras{Y}}.
+\end{equation}
+Because of this property $\Pb$ is also known as the \highlightB{hat matrix}.
+
+A special example of a projection matrix occurs when $\ora{X} = \ora{1}_n$ is an $n$-vector of ones. Then 
+\begin{equation}
+    \notag
+    \Pb = \ora{1}_n \bp{\ora{1}_n^\prime \ora{1}_n}^{-1}\ora{1}_n^\prime = \frac{1}{n} \ora{1}_n \ora{1}_n^\prime.
+\end{equation}
+Note that in this case,
+\begin{equation}
+    \notag
+    \Pb \ora{Y} = \ora{1}_n\ol{Y}
+\end{equation}
+creates an $n$-vector whose elements are the sample mean $\ol{Y}$.
+
+\begin{theorem}[Properties of the Projection Matrix]
+    The projection matrix 
+    $$
+    \Pb \coloneqq \Xb \bp{\Xb^\prime \Xb}^{-1} \Xb^\prime
+    $$ 
+    for any $n \times k$ $\Xb$ with $n \geq k$ has the following algebraic properties.
+
+    \begin{enumerate}[topsep=10pt, leftmargin=20pt, itemsep=0pt, label=(\arabic*)]
+        \setlength{\parskip}{10pt} 
+        \item $\Pb$ is symmetric ($\Pb^\prime = \Pb$).
+        \item $\Pb$ is idempotent ($\Pb \Pb = \Pb$).
+        \item $\operatorname*{tr} \Pb = k$.
+        \item The eigenvalues of $\Pb$ are 1 and 0. There are $k$ eigenvalues equalling 1 and $n-k$ equalling to 0.
+        \item $\operatorname*{rank}\of{\Pb} = k$.
+    \end{enumerate}
+\end{theorem}
+
+\highlightPP{Matrix decomposition results related to idempotent symmetric matrices should be in the appendix.}
+
+\section{Annihilator Matrix}
+
+Define 
+\begin{equation}
+    \notag
+    \Mb \coloneqq \Ib_n - \Pb = \Ib_n - \Xb \bp{\Xb^\prime \Xb}^{-1} \Xb^\prime
+\end{equation}
+where $\Ib_n$ is the $n \times n$ identity matrix. Note that
+\begin{equation}
+    \label{hansen_eq_3_21}
+    \Mb \Xb = \bds{0}.
+\end{equation}
+Thus $\Mb$ and $\Xb$ are orthogonal. We call $\Mb$ the annihilator matrix due to the property that for any matrix $\Zb$ in the range space of $\Xb$ (i.e., there exists a matrix $\bds{\G}$ such that $\Zb = \Xb \bds{\G}$) then
+\begin{equation}
+    \notag
+    \Mb \Zb = \bds{0}.
+\end{equation}
+
+The annihilator matrix $\Mb$ has similar properties with $\Pb$, including that $\Mb$ is symmetric ($\Mb^\prime = \Mb$) and idempotent ($\Mb \Mb = \Mb$). It is thus a projection matrix. Also,
+\begin{equation}
+    \label{hansen_eq_3_22}
+    \operatorname*{tr} \Mb = n - k.
+\end{equation}
+One implication is that the rank of $\Mb$ is $n-k$.
+
+\highlightR{While $\Pb$ creates fitted values, $\Mb$ creates least squares residuals}:
+\begin{equation}
+    \label{hansen_eq_3_23}
+    \Mb \Yb = \wh{\oras{e}}.
+\end{equation}
+
+As discussed in the previous section, a special example of a projection matrix occurs when $\ora{X} = \ora{1}_n$ is an $n$-vector of ones, so that $\Pb = \ora{1}_n \bp{\ora{1}_n^\prime \ora{1}_n}^{-1}\ora{1}_n^\prime$.The associated annihilator matrix is 
+\begin{equation}
+    \notag
+    \Mb = \Ib_n - \Pb = \bds{I}_n - \ora{1}_n \bp{\ora{1}_n^\prime \ora{1}_n}^{-1}\ora{1}_n^\prime.
+\end{equation}
+While $\Pb$ creates a vector of sample means, $\Mb$ creates demeaned values:
+\begin{equation}
+    \notag
+    \Mb \ora{Y} = \ora{Y} - \ora{1}_n \ol{Y}.
+\end{equation}
+For simplicity we will often write the right-hand side as $\ora{Y} - \ora{\ol{Y}}$. The $i$th element is $Y_i - \ol{Y}$, the demeaned value of $Y_i$.
+
+We can also use (\ref{hansen_eq_3_23}) to write an alternative expression for the residual vector.
+\begin{equation}
+    \label{hansen_eq_3_24}
+    \wh{\oras{e}} = \Mb \ora{Y} = \Mb \bp{\Xb \ora{\b} + \ora{e}} = \Mb \ora{e},
+\end{equation}
+which is free of dependence on the regression coefficient $\b$.
+
+\section{Estimation of Error Variance}
+
+The error variance $\s^2 = \E\bs{e^2}$ is a moment, so a natural estimator is a moment estimator. If $e_i$ were observed we would estimate $\s^2$ by 
+\begin{equation}
+    \label{hansen_eq_3_25}
+    \wt{\s}^2 = \frac{1}{n} \sum_{i=1}^n e_i^2.
+\end{equation}
+However, this is infeasible as $e_i$ is not observed. In this case it is common to take a two-step approach to estimation. The residuals $\wh{e}_i$ are calculate in the first step, and then we substitute $\wh{e}_i$ for $e_i$ in expression (\ref{hansen_eq_3_25}) to obtain the feasible estimator
+\begin{equation}
+    \label{hansen_eq_3_26}
+    \wh{\s}^2 = \frac{1}{n} \sum_{i=1}^n \wh{e}_i^2 .
+\end{equation}
+
+In matrix notation, we can write (\ref{hansen_eq_3_25}) and (\ref{hansen_eq_3_26}) as $\wt{\s}^2 = n^{-1} \ora{e}^\prime \ora{e}$ and 
+\begin{equation}
+    \label{hansen_eq_3_27}
+    \wh{\s}^2 = \frac{1}{n} \wh{\oras{e}}^\prime \wh{\oras{e}} .
+\end{equation}
+Recall the expressions $\wh{\oras{e}} = \Mb \ora{Y} = \Mb \ora{e}$ from (\ref{hansen_eq_3_23}) and (\ref{hansen_eq_3_24}). Applied to (\ref{hansen_eq_3_27}) we find
+\begin{equation}
+    \label{hansen_eq_3_28}
+    \wh{\s}^2 = \frac{1}{n} \wh{\oras{e}}^\prime \wh{\oras{e}} = \frac{1}{n} \ora{e}^\prime \Mb \ora{e}. 
+\end{equation}
+
+An interesting implication is that 
+\begin{equation}
+    \notag
+    \wt{\s}^2 - \wh{\s}^2 = \frac{1}{n} \bp{\ora{e}^\prime \ora{e} - \ora{e}^\prime \Mb \ora{e}} = \frac{1}{n} \ora{e}^\prime \Pb \ora{e} \geq 0.
+\end{equation}
+The final inequality holds because $P$ is positive semi-definite and $\ora{e}^\prime \Pb \ora{e}$ is a quadratic form. \highlightR{This shows that the feasible estimator $\wh{\s}^2$ is numerically smaller than the idealized estimator (\ref{hansen_eq_3_25}).}
+
+
+\section{Analysis of Variance}
+
+Another way of writing (\ref{hansen_eq_3_23}) is 
+\begin{equation}
+    \label{hansen_eq_3_29}
+    \ora{Y} = \Pb \ora{Y} + \Mb \ora{Y} = \wh{\oras{Y}} + \wh{\oras{e}} .
+\end{equation}
+This decomposition is \highlightB{orthogonal}, that is 
+\begin{equation}
+    \label{hansen_eq_3_30}
+    \wh{\oras{Y}}^\prime \wh{\oras{e}} = \bp{\Pb \ora{Y}}^\prime \bp{\Mb \ora{Y}} = \ora{Y}^\prime \Pb \Mb \ora{Y} = 0.
+\end{equation}
+It follows that 
+\begin{equation}
+    \notag
+    \ora{Y}^\prime\ora{Y} =  \wh{\oras{Y}}^\prime \wh{\oras{Y}} + 2 \wh{\oras{Y}}^\prime \wh{\oras{e}} + \wh{\oras{e}}^\prime \wh{\oras{e}} = \wh{\oras{Y}}^\prime \wh{\oras{Y}} + \wh{\oras{e}}^\prime \wh{\oras{e}}
+\end{equation}
+or 
+\begin{equation}
+    \notag
+    \sum_{i=1}^n Y_i^2 = \sum_{i=1}^n \wh{Y}_i^2 + \sum_{i=1}^n \wh{e}_i^2 .
+\end{equation}
+
+Subtracting $\ol{Y}$ from both sides of (\ref{hansen_eq_3_29}) we obtain
+\begin{equation}
+    \notag
+    \ora{Y} - \ora{1}_n \ol{Y} = \wh{\oras{Y}} - \ora{1}_n \ol{Y} + \wh{\oras{e}}.
+\end{equation}
+This decomposition is also orthogonal when $\Xb$ contains a constant, as 
+\begin{equation}
+    \notag
+    \bp{\wh{\oras{Y}} - \ora{1}_n \ol{Y}}^\prime \wh{\oras{e}} = \wh{\oras{Y}}^\prime \wh{\oras{e}} - \ol{Y} \ora{1}_n^\prime \wh{\oras{e}} = 0
+\end{equation}
+under (\ref{hansen_eq_3_17}). It follows that 
+\begin{equation}
+    \notag
+    \bp{\ora{Y} - \ora{1}_n \ol{Y}}^\prime \bp{\ora{Y} - \ora{1}_n \ol{Y}} = \bp{\wh{\oras{Y}} - \ora{1}_n \ol{Y}}^\prime\bp{\wh{\oras{Y}} - \ora{1}_n \ol{Y}} + \wh{\oras{e}}^\prime \wh{\oras{e}}
+\end{equation}
+or 
+\begin{equation}
+    \notag
+    \sum_{i=1}^n \bp{Y_i - \ol{Y}}^2 = \sum_{i=1}^n \bp{\wh{Y}_i - \ol{Y}}^2 + \sum_{i=1}^n \wh{e}_i^2 .
+\end{equation}
+This is commonly called the \highlightB{analysis-of-variance} formula for least squares regression.
+
+A commonly reported statistic is the \highlightB{coefficient of determination} or \highlightB{R-squared}:
+\begin{equation}
+    \notag
+    R^2 = \frac{\sum_{i=1}^n \bp{\wh{Y}_i - \ol{Y}}^2}{\sum_{i=1}^n \bp{Y_i - \ol{Y}}^2} = 1 - \frac{\sum_{i=1}^n \wh{e}_i^2}{\sum_{i=1}^n \bp{Y_i - \ol{Y}}^2}.
+\end{equation}
+\highlightP{It is often described as ``the fraction of the sample variance of $Y$ which is explained by the least squares fit''.} $R^2$ is a crude measure of regression fit. We have better measures of fit, but these require a statistical (not just algebraic) analysis and we will return to these issues later. One deficiency with $R^2$ is that it increases when regressors are added to a regression so the ``fit'' can be always increased by increasing the number of regressors.
+
+% \section{Projections}
+
+\setcounter{section}{15}
+\section{Regression Components}
+
+Partition $\Xb = \bs{\Xb_1\;\; \Xb_2}$ and $\ora{\b} = \bp{\ora{\b_1}, \ora{\b_2}}$. The regression model can be written as 
+\begin{equation}
+    \label{hansen_eq_3_31}
+    \ora{Y} = \Xb_1 \ora{\b_1} + \Xb_2 \ora{\b_2} + \ora{e}.
+\end{equation}
+The OLS estimator of $\ora{\b}$ is obtained by regression of $\ora{Y}$ on $\Xb = \bs{\Xb_1\;\; \Xb_2}$ and can be written as 
+\begin{equation}
+    \label{hansen_eq_3_32}
+    \ora{Y} = \Xb \wh{\oras{\b}} + \wh{\oras{e}} = \Xb_1 \wh{\oras{\b}}_1 + \Xb_2 \wh{\oras{\b}}_2 + \wh{\oras{e}}.
+\end{equation}
+We are interested in algebraic expressions for $\wh{\oras{\b}}_1$ and $\wh{\oras{\b}}_2$.
+
+Let's first focus on $\wh{\oras{\b}}_1$. The least squares estimator by definition is found by the joint minimization
+\begin{equation}
+    \label{hansen_eq_3_33}
+    \bp{\wh{\oras{\b}}_1, \wh{\oras{\b}}_2} = \argmin_{\oras{\b}_1, \oras{\b}_2} \operatorname*{SSE}\of{\oras{\b}_1, \oras{\b}_2}
+\end{equation}
+where 
+\begin{equation}
+    \notag
+    \operatorname*{SSE}\of{\ora{\b}_1, \ora{\b}_2} = \bp{\ora{Y} - \Xb_1 \ora{\b}_1 - \Xb_2 \ora{\b}_2}^\prime \bp{\ora{Y} - \Xb_1 \ora{\b}_1 - \Xb_2 \ora{\b}_2}.
+\end{equation}
+
+The solution (\ref{hansen_eq_3_33}) can be written as 
+\begin{equation}
+    \label{hansen_eq_3_34}
+    \wh{\oras{\b}}_1 = \argmin_{\oras{\b}_1} \bp{\argmin_{\oras{\b}_2} \operatorname*{SSE}\of{\oras{\b}_1, \oras{\b}_2}}.
+\end{equation}
+The inner expression minimizes over $\ora{\b}_2$ while holding $\ora{\b}_1$ fixed. it is the lowest possible sum of squared errors given $\ora{\b}_1$. The outer minimization finds the coefficient $\ora{\b}_1$ which minimizes the ``lowest possible sum of squared errors given $\ora{\b}_1$.'' 
+
+This means that $\wh{\oras{\b}}_1$ as defined in (\ref{hansen_eq_3_33}) and (\ref{hansen_eq_3_34}) are algebraically equivalent.
+
+Examine the inner minimization problem in (\ref{hansen_eq_3_34}). This is simply the least squares regression of $\ora{Y} - \Xb_1 \ora{\b}_1$ on $\Xb_2$. This has solution
+\begin{equation}
+    \notag
+    \argmin_{\oras{\b}_2} \operatorname*{SSE}\of{\ora{\b}_1, \ora{\b}_2} = \bp{\Xb_2^\prime \Xb_2}^{-1} \bp{\Xb_2^\prime \bp{\ora{Y} - \Xb_1 \ora{\b}_1}}
+\end{equation}
+with residuals
+\begin{equation}
+    \notag
+    \Mb_2 \bp{\ora{Y} - \Xb_1 \ora{\b}_1},
+\end{equation}
+where
+\begin{equation}
+    \label{hansen_eq_3_35}
+    \Mb_2 = \Ib_n - \Xb_2 \bp{\Xb_2^\prime \Xb_2}^{-1} \Xb_2^\prime
+\end{equation}
+is the annihilator matrix for $\Xb_2$. This means that the inner minimization problem has minimized value 
+\begin{equation}
+    \notag 
+    \min_{\oras{\b}_2}\operatorname*{SSE}\of{\ora{\b}_1, \ora{\b}_2} = \bp{\ora{Y} - \Xb_1 \ora{\b}_1}^\prime \Mb_2 \bp{\ora{Y} - \Xb_1 \ora{\b}_1}.
+\end{equation}
+Substituting this into (\ref{hansen_eq_3_34}) we find
+\begin{equation}
+    \notag
+    \wh{\oras{\b}}_1 = \argmin_{\oras{\b}_1} \bp{\ora{Y} - \Xb_1 \ora{\b}_1}^\prime \Mb_2 \bp{\ora{Y} - \Xb_1 \ora{\b}_1} = \bp{\Xb_1^\prime \Mb_2 \Xb_1}^{-1}  \bp{\Xb_1^\prime \Mb_2 \ora{Y}}.
+\end{equation}
+By a similar argument we find
+\begin{equation}
+    \notag
+    \wh{\oras{\b}}_2 = \bp{\Xb_2^\prime \Mb_1 \Xb_2}^{-1}  \bp{\Xb_2^\prime \Mb_1 \ora{Y}}
+\end{equation}
+where 
+\begin{equation}
+    \label{hansen_eq_3_36}
+    \Mb_1 = \Ib_n - \Xb_1 \bp{\Xb_1^\prime \Xb_1}^{-1} \Xb_1^\prime
+\end{equation}
+is the annihilator matrix for $\Xb_1$.
+
+\begin{theorem}{} 
+    \label{hansen_thm_3_4}
+    The least squares estimator $\bp{\wh{\oras{\b}}_1, \wh{\oras{\b}}_2}$ for (\ref{hansen_eq_3_32}) has the algebraic solution
+    \begin{equation}
+        \label{hansen_eq_3_37}
+        \wh{\oras{\b}}_1 = \bp{\Xb_1^\prime \Mb_2 \Xb_1}^{-1}  \bp{\Xb_1^\prime \Mb_2 \ora{Y}}
+    \end{equation}
+    \begin{equation}
+        \label{hansen_eq_3_38}
+        \wh{\oras{\b}}_2 = \bp{\Xb_2^\prime \Mb_1 \Xb_2}^{-1}  \bp{\Xb_2^\prime \Mb_1 \ora{Y}}
+    \end{equation}
+    where $\Mb_1$ and $\Mb_2$ are defined as follows,
+    \begin{equation}
+        \notag 
+        \begin{aligned}
+            & \Mb_1 = \Ib_n - \Xb_1 \bp{\Xb_1^\prime \Xb_1}^{-1} \Xb_1^\prime \\
+            & \Mb_2 = \Ib_n - \Xb_2 \bp{\Xb_2^\prime \Xb_2}^{-1} \Xb_2^\prime.
+        \end{aligned}
+    \end{equation}
+\end{theorem}
+
+\section{Regression Components (Alternative Derivation)}
+
+An alternative proof of Theorem \ref{hansen_thm_3_4} uses an algebraic argument based on the population calculations from Section \ref{hansen_sec_2_22}. Since this is a classic derivation we present it here for completeness.
+
+Partition $\wh{\Qb}_{XX}$ as 
+\begin{equation}
+    \notag
+    \widehat{\boldsymbol{Q}}_{X X}=\left[{\setstretch{2}\begin{array}{ll}
+        \widehat{\boldsymbol{Q}}_{11} & \widehat{\boldsymbol{Q}}_{12} \\
+        \widehat{\boldsymbol{Q}}_{21} & \widehat{\boldsymbol{Q}}_{22}
+        \end{array}}\right]=\left[{\setstretch{2}\begin{array}{cc}
+        \frac{1}{n} \boldsymbol{X}_1^{\prime} \boldsymbol{X}_1 & \frac{1}{n} \boldsymbol{X}_1^{\prime} \boldsymbol{X}_2 \\
+        \frac{1}{n} \boldsymbol{X}_2^{\prime} \boldsymbol{X}_1 & \frac{1}{n} \boldsymbol{X}_2^{\prime} \boldsymbol{X}_2
+    \end{array}}\right]
+\end{equation}
+and similarly $\wh{\Qb}_{XY}$ as 
+\begin{equation}
+    \notag
+    \wh{\Qb}_{XY} =\left[{\setstretch{2}\begin{array}{l}
+        \widehat{\boldsymbol{Q}}_{1Y} \\
+        \widehat{\boldsymbol{Q}}_{2Y} \end{array}}\right]=\left[{\setstretch{2}\begin{array}{l}
+            \frac{1}{n} \boldsymbol{X}_1^{\prime} \ora{Y} \\
+            \frac{1}{n} \boldsymbol{X}_2^{\prime} \ora{Y}
+        \end{array}}\right] .
+\end{equation}
+By the partitioned matrix inversion formula,
+\begin{equation}
+    \label{3.39}
+    \widehat{\mathbf{Q}}_{X X}^{-1}=\left[\begin{array}{cc}
+        \widehat{\boldsymbol{Q}}_{11} & \widehat{\mathbf{Q}}_{12} \\
+        \widehat{\mathbf{Q}}_{21} & \widehat{\mathbf{Q}}_{22}
+        \end{array}\right]^{-1} \stackrel{\text { def }}{=}\left[\begin{array}{cc}
+        \widehat{\boldsymbol{Q}}^{11} & \widehat{\boldsymbol{Q}}^{12} \\
+        \widehat{\boldsymbol{Q}}^{21} & \widehat{\boldsymbol{Q}}^{22}
+        \end{array}\right]=\left[\begin{array}{cc}
+        \widehat{\boldsymbol{Q}}_{11 \cdot 2}^{-1} & -\widehat{\mathbf{Q}}_{11 \cdot 2}^{-1} \widehat{\mathbf{Q}}_{12} \widehat{\mathbf{Q}}_{22}^{-1} \\
+        -\widehat{\boldsymbol{Q}}_{22 \cdot 1}^{-1} \widehat{\mathbf{Q}}_{21} \widehat{\boldsymbol{Q}}_{11}^{-1} & \widehat{\boldsymbol{Q}}_{22 \cdot 1}^{-1}
+        \end{array}\right] ,
+\end{equation}
+where $\wh{\Qb}_{11 \cdot 2} = \wh{\Qb}_{11} - \wh{\Qb}_{12}\wh{\Qb}_{22}^{-1}\wh{\Qb}_{21}$ and $\wh{\Qb}_{22 \cdot 1} = \wh{\Qb}_{22} - \wh{\Qb}_{21}\wh{\Qb}_{11}^{-1}\wh{\Qb}_{12}$. Thus
+\begin{equation}
+    \notag
+    \begin{aligned}
+        \widehat{\oras{\beta}} & =\left({\setstretch{2}\begin{array}{c}
+        \widehat{\oras{\beta}}_1 \\
+        \widehat{\oras{\beta}}_2
+        \end{array}}\right) \\
+        & =\left[{\setstretch{2}\begin{array}{cc}
+        \widehat{\boldsymbol{Q}}_{11 \cdot 2}^{-1} & -\widehat{\boldsymbol{Q}}_{11 \cdot 2}^{-1} \widehat{\boldsymbol{Q}}_{12} \widehat{\boldsymbol{Q}}_{22}^{-1} \\
+        -\widehat{\boldsymbol{Q}}_{22 \cdot 1}^{-1} \widehat{\boldsymbol{Q}}_{21} \widehat{\boldsymbol{Q}}_{11}^{-1} & \widehat{\boldsymbol{Q}}_{22 \cdot 1}^{-1}
+        \end{array}}\right]\left[{\setstretch{2}\begin{array}{c}
+        \widehat{\boldsymbol{Q}}_{1 Y} \\
+        \widehat{\boldsymbol{Q}}_{2 Y}
+        \end{array}}\right] \\
+        & =\left({\setstretch{2}\begin{array}{c}
+        \widehat{\boldsymbol{Q}}_{11 \cdot 2}^{-1} \widehat{\boldsymbol{Q}}_{1 Y \cdot 2} \\
+        \widehat{\boldsymbol{Q}}_{22 \cdot 1}^{-1} \widehat{\boldsymbol{Q}}_{2 Y \cdot 1}
+        \end{array}}\right) .
+        \end{aligned}
+\end{equation}
+
+Now
+\begin{equation}
+    \notag
+    \begin{aligned}
+        \widehat{\boldsymbol{Q}}_{11 \cdot 2} & =\widehat{\boldsymbol{Q}}_{11}-\widehat{\boldsymbol{Q}}_{12} \widehat{\boldsymbol{Q}}_{22}^{-1} \widehat{\boldsymbol{Q}}_{21} \\
+        & =\frac{1}{n} \boldsymbol{X}_1^{\prime} \boldsymbol{X}_1-\frac{1}{n} \boldsymbol{X}_1^{\prime} \boldsymbol{X}_2\left(\frac{1}{n} \boldsymbol{X}_2^{\prime} \boldsymbol{X}_2\right)^{-1} \frac{1}{n} \boldsymbol{X}_2^{\prime} \boldsymbol{X}_1 \\
+        & =\frac{1}{n} \boldsymbol{X}_1^{\prime} \boldsymbol{M}_2 \boldsymbol{X}_1
+    \end{aligned}
+\end{equation}
+and 
+\begin{equation}
+    \notag
+    \begin{aligned}
+        \widehat{\boldsymbol{Q}}_{1 Y \cdot 2} & =\widehat{\boldsymbol{Q}}_{1 Y}-\widehat{\boldsymbol{Q}}_{12} \widehat{\boldsymbol{Q}}_{22}^{-1} \widehat{\boldsymbol{Q}}_{2 Y} \\
+        & =\frac{1}{n} \boldsymbol{X}_1^{\prime} \ora{Y}-\frac{1}{n} \boldsymbol{X}_1^{\prime} \boldsymbol{X}_2\left(\frac{1}{n} \boldsymbol{X}_2^{\prime} \boldsymbol{X}_2\right)^{-1} \frac{1}{n} \boldsymbol{X}_2^{\prime} \ora{Y} \\
+        & =\frac{1}{n} \boldsymbol{X}_1^{\prime} \boldsymbol{M}_2 \ora{Y} .
+    \end{aligned}
+\end{equation}
+Equation (\ref{hansen_eq_3_38}) follows.
+
+
+\section{Residual Regression}
+
+Take (\ref{hansen_eq_3_38}). Since $\Mb_1$ is idempotent, $\Mb_1 = \Mb_1 \Mb_1$ and thus 
+\begin{equation}
+    \notag
+    \begin{aligned}
+        \wh{\oras{\b}}_2 & = \bp{\Xb_2^\prime \Mb_1 \Xb_2}^{-1}  \bp{\Xb_2^\prime \Mb_1 \ora{Y}} \\
+        & = \bp{\Xb_2^\prime \Mb_1 \Mb_1 \Xb_2}^{-1}  \bp{\Xb_2^\prime \Mb_1 \Mb_1 \ora{Y}} \\
+        & = \bp{\wt{\Xb}_2^\prime \wt{\Xb}_2}^{-1} \bp{\wt{\Xb}_2^\prime \wt{\oras{e}}_1}
+    \end{aligned}
+\end{equation}
+where $\wt{\Xb}_2 = \Mb_1 \Xb_2$ and $\wt{\oras{e}}_1 = \Mb_1 \ora{Y}$.
+
+\highlightR{Thus the coefficient estimator $\wh{\oras{\b}}_2$ is algebraically equal to the least squares regression of $\wt{\oras{e}}$ on $\wt{\Xb}_2$.} Notice that these two are $\ora{Y}$ and $\Xb_2$, respectively, premultiplied by $\Mb_1$. But we know that pre-multiplication by $\Mb_1$ creates least squares residuals. \highlightP{Therefore, $\wt{\oras{e}}_1$ is simply the least squares residual form a regression of $\ora{Y}$ on $\Xb_1$, and the columns of $\wh{\Xb}_2$ are the least squares residuals from the regresions of the columns of $\Xb_2$ on $\Xb_1$.}
+
+\begin{theorem}[Frisch-Waugh-Lovell (FWL)]
+    
+    In the model (\ref{hansen_eq_3_31}), the OLS estimator of $\ora{\b}_2$ and the OLS residuals $\wh{\oras{e}}$ may be computed by either the OLS regression (\ref{hansen_eq_3_32}) or via the following algorithm:
+    \begin{enumerate}[topsep=10pt, leftmargin=20pt, itemsep=0pt, label=(\arabic*)]
+        \setlength{\parskip}{10pt} 
+        \item Regress $\ora{Y}$ on $\Xb_1$, obtain residuals $\wh{\oras{e}}_1$;
+        \item Regress $\Xb_2$ on $\Xb_1$, obtain residuals $\wt{\Xb}_2$;
+        \item Regress $\wh{\oras{e}}_1$ on $\wt{\Xb}_2$, obtain OLS estimates $\wh{\oras{\b}}_2$ and residuals $\wh{\oras{e}}$.
+    \end{enumerate}
+\end{theorem}
+
+In some contexts (such as panel data models, to be introduced in Chapter 17), the FWL theorem can be used to greatly speed computation.
+
+A common application of the FWL theorem is the demeaning formula for regression obtained in (\ref{hansen_eq_3_18}). Partition $\Xb = \bs{\ora{X}_1 \Xb_2}$ where $\ora{X}_1 = \ora{1}_n$ is a vector of ones and $\Xb_2$ is a matrix of observed regressors. In this case, 
+$$\Mb_1 = \Ib_n - \ora{1}_n \bp{\ora{1}_n^\prime \ora{1}_n}^{-1} \ora{1}_n^\prime.$$
+Observe that 
+$$\wt{\Xb}_2 = \Mb_1 \Xb_2 = \Xb_2 - \ol{\Xb}_2$$
+and 
+$$\Mb_2 \ora{Y} = \ora{Y} - \ol{\oras{Y}}$$
+are the ``demeaned'' variables.
+
+\section{Leverage Values}
+
+\highlightPP{Derivations of the leverage values should be reviewed in the appendix.}
+
+The \highlightB{leverage values} for the regressor matrix $\Xb$ are the diagonal elements of the projection matrix $\Pb = \Xb \bp{\Xb^\prime \Xb}^{-1} \Xb^\prime$. There are $n$ leverage values, and are typically written as $h_{ii}$ for $i=1, \ldots, n$. Since
+\begin{equation}
+    \notag
+    \boldsymbol{P}=\left({\setstretch{2}\begin{array}{c}
+        \ora{X}_1^{\prime} \\
+        \ora{X}_2^{\prime} \\
+        \vdots \\
+        \ora{X}_n^{\prime}
+        \end{array}}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\begin{array}{llll}
+        \ora{X}_1 & \ora{X}_2 & \cdots & \ora{X}_n
+    \end{array}\right)
+\end{equation}
+they are 
+\begin{equation}
+    \label{hansen_eq_3_40}
+    h_{ii} = \ora{X}_i^{\prime} \left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \ora{X}_i .
+\end{equation}
+
+\highlightP{The leverage value $h_{ii}$ is a normalized length of the observed regressor vector $\ora{X}_i$.} They appear frequently in the algebraic and statistical analysis of least squares regression, including leave-one-out regression, influential observations, robust covariance matrix estimation, and cross-validation.
+
+\begin{theorem}[Properties of the Leverage Values] 
+    \label{hansen_thm_3_6}
+    \begin{enumerate}[topsep=10pt, leftmargin=20pt, itemsep=0pt, label=(\arabic*)]
+        \setlength{\parskip}{10pt} 
+        \item $0 \leq h_{ii} \leq 1$.
+        \item $h_{ii} \geq \frac{1}{n}$ if $\ora{X}$ includes an intercept.
+        \item $\sum_{i=1}^n h_{ii} = k$.
+    \end{enumerate}
+\end{theorem}
+
+\highlightP{The leverage value $h_{ii}$ measures how unusual the $i$th observation $X_i$ is relative to the other observations in the sample. A large $h_{ii}$ occurs when $X_i$ is quite different from the other sample values.} A measure of overall unusualness is the maximum leverage value
+\begin{equation}
+    \label{hansen_eq_3_41}
+    \ol{h} = \max_{1 \leq i \leq n} h_{ii}.
+\end{equation}
+
+It is common to say that a regression design is \highlightB{balanced} when the leverage values are all roughly equal to one another. We know that complete balance occurs when $h_{ii} = \ol{h} = k/n$. An example of complete balance is when the regressors are all orthogonal dummy variables, each of which have equal occurrance of 0's and 1's.
+
+A regression design is \highlightB{unbalanced} if some leverage values are highly unequal from the others. The most extreme case is $\ol{h} = 1$. An example where this occurs is when there is a dummy regressor which takes the value 1 for only one observation in the sample.
+
+\highlightP{Some inference procedures (such as robust covariance matrix estimation and cross-validation) are sensitive to high leverage values. We will return to these issues later.}
+
+\begin{proof}
+    We now prove Theorem \ref{hansen_thm_3_6}. For part (1), let $\ora{s_i}$ be an $n \times 1$ unit vector with a 1 in the $i$th place and zeros elsewhere so that $h_{ii} = \ora{s_i}^\prime \Pb \ora{s_i}$. Then we know 
+    $$h_{ii} = \ora{s_i}^\prime \Pb \ora{s_i} \leq \ora{s_i}^\prime \ora{s_i} \l_{\text{max}}\of{\Pb} = 1$$
+    as claimed.
+
+    For part (2), partition $\ora{X}_i = \bp{1, \ora{Z}_i^\prime}^\prime$. Without loss of generality we can replace $\ora{Z}_i$ with the demeaned values $\ora{Z}_i^* = \ora{Z}_i - \ol{\oras{Z}}_i$. Then since $\ora{Z}_i^*$ and the intercept are orthogonal
+    \begin{equation}
+        \notag 
+        \begin{aligned}
+            h_{i i} & =\left(1, \ora{Z}_i^{* \prime}\right)\left[\begin{array}{cc}
+            n & 0 \\
+            0 & \ora{Z}^{* \prime} \ora{Z}^*
+            \end{array}\right]^{-1}\left(\begin{array}{c}
+            1 \\
+            \ora{Z}_i^*
+            \end{array}\right) \\
+            & =\frac{1}{n}+\ora{Z}_i^{* \prime}\left(\boldsymbol{Z}^{* \prime} \boldsymbol{Z}^*\right)^{-1} \ora{Z}_i^* \geq \frac{1}{n} .
+        \end{aligned}
+    \end{equation}
+
+    For part (3), $\sum_{i=1}^{n} h_{ii} = \operatorname*{tr} \Pb = k$.
+\end{proof}
+
+\section{Leave-One-Out Regression}
+There are a number of statistical procedures -- residual analysis, jackknife variance estimation, cross-validation,
+two-step estimation, hold-out sample evaluation -- which make use of estimators constructed on sub-samples. Of particular importance is the case where we exclude a single observation and then repeat this for all observations. This is called \highlightB{leave-one-out (LOO)} regression.
+
+Specifically, the leave-one-out estimator of the regression coefficient $\ora{\b}$ is the least squares estimator constructed using the full sample excluding a single observation $i$. This can be written as 
+\begin{equation}
+    \label{hansen_eq_3_42}
+    \begin{aligned}
+        \wh{\oras{\b}}_{(-i)} & = \bp{\sum_{j \neq i}\ora{X}_j \ora{X}_j^\prime}^{-1} \bp{\sum_{j \neq i}\ora{X}_j Y_j} \\
+        & = \bp{\Xb^\prime \Xb- \ora{X}_i \ora{X}_i^\prime}^{-1} \bp{\Xb^\prime \ora{Y} - \ora{X}_i Y_i} \\
+        & = \bp{\Xb^\prime_{(-i)} \Xb_{(-i)}}^{-1} \bp{\Xb^\prime_{(-i)} \ora{Y}_{(-i)}}.
+    \end{aligned}
+\end{equation}
+Here, $\Xb_{(-i)}$ and $\ora{Y}_{(-i)}$ are the data matrices omitting the $i$th row. There is a leave-one-out estimator for each observation, $i = 1, \ldots, n$, so we have $n$ such estimators.
+
+The leave-one-out predicted value for $Y_i$ is $\wt{Y}_i = \ora{X_i}^\prime \wh{\oras{\b}}_{(-i)}$. This is the predicted value obtained by estimating $\ora{\b}$ on the sample without observation $i$ and then using the covariate vector $\ora{X}_i$ to predict $Y_i$. Notice that $\wt{Y}_i$ is an authentic prediction as $Y_i$ is not used to construct $\wt{Y}_i$. This is in contrast to the fitted values $\wh{Y}_i$ which are functions of $Y_i$.
+
+The \highlightB{leave-one-out residual, prediction error,} or \highlightB{prediction residual} is $\wt{e}_i = Y_i  -\wt{Y}_i$. The prediction errors may be used as estimators of the errors instead of the residuals. The prediction errors are better estimators than the residuals since the former are based on authentic predictions.
+
+\begin{theorem}
+    \label{hansen_thm_3_7}
+    The leave-one-out estimator and prediction error equal 
+    \begin{equation}
+        \label{hansen_eq_3_43}
+        \wh{\oras{\b}}_{(-i)} = \wh{\oras{\b}} - \bp{\Xb^\prime \Xb}^{-1} \ora{X}_i \wt{e}_i
+    \end{equation}
+    and 
+    \begin{equation}
+        \label{hansen_eq_3_44}
+        \wt{e}_i = (1 - h_{ii})^{-1} \wh{e}_i
+    \end{equation}
+    where $h_{ii}$ are the leverage values as defined in (\ref{hansen_eq_3_40}).
+\end{theorem}
+
+Equation (\ref{hansen_eq_3_43}) shows that the leave-one-out coefficients can be calculated by a simple linear operation and do not need to be calculated using $n$ separate regressions. Another interesting feature of equation (\ref{hansen_eq_3_44}) is that the prediction errors $\wt{e}_i$ are a simple scaling of the least squares residuals $\wh{e}_i$ with the scaling dependent on the leverage values $h_{ii}$. If $h_{ii}$ is small then $\wt{e}_i \simeq \wh{e}_i$. However, if $h_{ii}$ is large then $\wt{e}_i$ can be quite different from $\wh{e}_i$. Thus the difference between the residuals and predicted values depends on the leverage values, that is, how unusual is $X_i$.
+
+To write (\ref{hansen_eq_3_44}) in vector notation, define
+\begin{equation}
+    \notag
+    \Mb^* = \bp{\Ib_n - \operatorname*{diag}\of{h_{11}, \ldots, h_{nn}}}^{-1} = \operatorname*{diag}\of{\bp{1-h_{11}}^{-1}, \ldots, \bp{1-h_{nn}}^{-1}}.
+\end{equation}
+Then (\ref{hansen_eq_3_44}) is equivalent to 
+\begin{equation}
+    \label{hansen_eq_3_45}
+    \wt{\oras{e}} = \Mb^* \wh{\oras{e}}.
+\end{equation}
+
+One use of the prediction errors is to estimate the out-of-sample mean squared error:
+\begin{equation}
+    \label{hansen_eq_3_46}
+    \wt{\s}^2 = \frac{1}{n} \sum_{i=1}^{n} \wt{e}_i^2 = \frac{1}{n} \sum_{i=1}^{n} (1-h_{ii})^{-2} \wh{e}_i^2.
+\end{equation}
+This is known as the \highlightB{sample mean squared prediction error}. Its square root is the \highlightB{prediction standard error}.
+
+\begin{proof}
+    We complete the section with a proof of Theorem \ref{hansen_thm_3_7}. The leave-one-out estimator (\ref{hansen_eq_3_42}) can be written as 
+    \begin{equation}
+        \label{hansen_eq_3_47}
+        \wh{\oras{\b}}_{(-i)} = \bp{\Xb^\prime \Xb- \ora{X}_i \ora{X}_i^\prime}^{-1} \bp{\Xb^\prime \ora{Y} - \ora{X}_i Y_i}.
+    \end{equation}
+    Multiple (\ref{hansen_eq_3_47}) by $\bp{\Xb^\prime \Xb}^{-1} \bp{\Xb^\prime \Xb- \ora{X}_i \ora{X}_i^\prime}$. We obtain 
+    \begin{equation}
+        \notag
+        \wh{\oras{\b}}_{(-i)} - \bp{\Xb^\prime \Xb}^{-1}\ora{X}_i \ora{X}_i^\prime\wh{\oras{\b}}_{(-i)} = \bp{\Xb^\prime \Xb}^{-1}\bp{\Xb^\prime \ora{Y} - \ora{X}_i Y_i} = \wh{\oras{\b}} - \bp{\Xb^\prime \Xb}^{-1}\ora{X}_i Y_i.
+    \end{equation}
+    Rewriting 
+    \begin{equation}
+        \notag
+        \wh{\oras{\b}}_{(-i)} = \wh{\oras{\b}} - \bp{\Xb^\prime \Xb}^{-1} \ora{X}_i \bp{Y_i - \ora{X}_i^\prime\wh{\oras{\b}}_{(-i)}} = \wh{\oras{\b}} - \bp{\Xb^\prime \Xb}^{-1}\ora{X}_i \wt{e}_i
+    \end{equation}
+    which is (\ref{hansen_eq_3_43}). Premultiplying this expression by $\ora{X}_i^\prime$ and using the definition (\ref{hansen_eq_3_40}) we obtain 
+    \begin{equation}
+        \ora{X}_i^\prime\wh{\oras{\b}}_{(-i)} = \ora{X}_i \wh{\oras{\b}} - \ora{X}_i^\prime \bp{\Xb^\prime \Xb}^{-1}\ora{X}_i \wt{e}_i = \ora{X}_i \wh{\oras{\b}} - h_{ii} \wt{e}_i.
+    \end{equation}
+    Using the definitions for $\wh{e}_i$ and $\wt{e}_i$ we obtain $\wt{e}_i = \wh{e}_i + h_{ii} \wt{e}_i$. Rewriting we obtain (\ref{hansen_eq_3_44}).
+\end{proof}
+
+\section{Influential Observations}
+
+Another use of the leave-one-out estimator is to investigate the impact of \highlightB{influential observations}, sometimes called \highlightB{outliers}. \highlightP{We say that observation $i$ is influential if its omission from the sample induces a substantial change in a parameter estimate of interest.}
+
+From (\ref{hansen_eq_3_43}) we know that 
+\begin{equation}
+    \label{hansen_eq_3_48}
+    \wh{\oras{\b}} - \wh{\oras{\b}}_{(-i)} = \bp{\Xb^\prime \Xb}^{-1} \ora{X}_i \wt{e}_i.
+\end{equation}
+By direct calculation of this quantity for each observation $i$, we can directly discover if a specific observation $i$ is influential for a coefficient estimate of interest.
+
+For a general assessment, we can focus on the predicted values. The difference between the full-sample and leave-one-out predicted values is 
+\begin{equation}
+    \notag
+    \wh{Y}_i -\wt{Y}_i = \ora{X}_i^\prime\wh{\oras{\b}} - \ora{X}_i^\prime\wh{\oras{\b}}_{(-i)} = \ora{X}_i^\prime\bp{\Xb^\prime \Xb}^{-1} \ora{X}_i \wt{e}_i = h_{ii} \wt{e}_i,
+\end{equation}
+which is a simple function of the leverage values $h_{ii}$ and prediction errors $\wt{e}_i$. Observation $i$ is influential for the predicted value if $\abs{h_{ii} \wt{e}_i}$ is large, which requires that both $h_{ii}$ and $\abs{\wt{e}_i}$ are large.
+
+One way to think about this is that a large leverage value $h_{ii}$ gives the potential for observation $i$ to be influential. A large $h_{ii}$ means that observation $i$ is unusual in the sense that the regressor $\ora{X}_i$ is far from its sample mean. We call an observation with large $h_{ii}$ a \highlightB{leverage point}. A leverage point is not necessarily influential as the latter also requires that the prediction error $\wt{e}_i$ is large.
+
+If an observation is determined to be influential what should be done? As a common cause of influential observations is data error, the influential observations should be examined for evidence that the observation was mis-recorded. Perhaps the observation falls outside of permitted ranges, or some observables are inconsistent. If it is determined that an observation is incorrectly recorded, then the observation is typically deleted from the sample. This process is often called ``cleaning the data''. The decisions made in this process involve a fair amount of individual judgment. 
+
+% \section{CPS Data Set}
+
+% \section{Numerical Computation}
+
+\section{Collinearity Errors}
+
+How can we numerically check if a matrix $\Ab$ is singular? A  standard diagnostic is the \highlightB{}{reciprocal condition number}
+\begin{equation}
+    \notag
+    C = \frac{\l_{\min}\of{\Ab}}{\l_{\max}\of{\Ab}}.
+\end{equation}
+If $C=0$, then $\Ab$ is singular. If $C=1$, then $\Ab$ is perfectly balanced. If $C$ is extremely small we say that $\Ab$ is \highlightB{ill-conditioned}.

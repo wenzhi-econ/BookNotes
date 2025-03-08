@@ -1,0 +1,1106 @@
+% !TEX root = Econometrics.tex
+
+\chapter{Least Squares Regression}
+
+% \section{Introduction}
+
+\setcounter{section}{0}
+\section{Random Sampling}
+
+Assumption \ref{hansen_ass_3_1} specified that the observations have identical distributions. To derive the finite-sample properties of the estimators we will need to additionally specify the dependence structure across the observations. 
+
+The simplest context is when the observations are mutually independent in which case we say that they are \highlightB{independent and identically distributed} or \highlightB{i.i.d.} It is also common to describe i.i.d. observations as a \highlightB{random sample}.
+
+\begin{assumption}
+
+    The random variables $\left\{(Y_1, \ora{X}_1), \ldots, (Y_i, \ora{X}_i), \ldots, (Y_n, \ora{X}_n)\right\}$ are independent and identically distributed.
+
+    \label{hansen_ass_4_1}
+\end{assumption}
+
+For most of this chapter we will use Assumption \ref{hansen_ass_4_1} to derive properties of the OLS estimator. It means that if you take any two individuals $i \neq j$ in a sample, the values $\bp{Y_i, \ora{X}_i}$ are independent of the values $\bp{Y_j, \ora{X}_j}$ yet have the same distribution. Independence means that the decisions and choices of individual $i$ do not affect the decisions of individual $j$ and conversely.
+
+This assumption may be violated if individuals in the sample are connected in some way, for example, if they are neighbors, members of the same village, classmates at a school, or even firms within a specific industry. In this case it seems plausible that decisions may be inter-connected and thus mutually dependent rather than independent. Allowing for such interactions complicates inference and requires specialized treatment. A currently popular approach which allows for mutual dependence is known as \highlightB{clustered dependence} which assumes that observations are grouped into ``clusters'' (for example, schools). We will discuss clustering in more detail in Section 4.23.
+
+\setcounter{section}{1}
+\section{Sample Mean}
+
+We start with the simplest setting of the intercept-only model.
+\begin{equation}
+    \notag 
+    \begin{aligned}
+        & Y = \mu + e \\
+        & \E\bs{e} = 0,
+    \end{aligned}
+\end{equation}
+which is equivalent to the regression model with $k=1$ and $X_i=1$. In the intercept model $\mu = \E\bs{Y}$ is the expectation of $Y_i$. The least squares estimator $\wh{\mu} = \ol{Y}$ equals the sample mean as shown in equation (\ref{hansen_eq_3_8}).
+
+It is easy to calculate the expectation of the estimator $\ol{Y}$ under Assumption \ref{hansen_ass_4_1}.
+\begin{equation}
+    \notag 
+    \E\bs{\ol{Y}} = \mu.
+\end{equation}
+This shows that the expected value of the least squares estimator (the sample mean) equals the projection coefficient (the population expectation). An estimator with the property that its expectation equals the parameter it is estimating is called \highlightB{unbiased}.
+
+\setcounter{definition}{0}
+\begin{definition}
+    An estimator $\wh{\t}$ for $\t$ is unbiased if $\E\bs{\wh{\t}} = \t$.
+\end{definition}
+
+We next calculate the variance of the estimator $\ol{Y}$ under Assumption \ref{hansen_ass_4_1}. Making the substitution $Y_i = \mu + e_i$, we find 
+\begin{equation}
+    \notag 
+    \ol{Y} - \mu = \frac{1}{n} \sum_{i=1}^{n} e_i.
+\end{equation} 
+Then, 
+\begin{equation}
+    \notag 
+    \begin{aligned}
+        \var\bs{\ol{Y}} & = \E\bs{\bp{\ol{Y} - \mu}^2} \\
+        & = \E\bs{\bp{\frac{1}{n} \sum_{i=1}^{n} e_i} \bp{\frac{1}{n} \sum_{j=1}^{n} e_j}} \\
+        & = \frac{1}{n^2} \sum_{i=1}^{n} \sum_{j=1}^{n} \E\bs{e_i e_j} \\
+        & = \frac{1}{n^2} \sum_{i=1}^{n} \s^2 \\
+        & = \frac{1}{n} \s^2.
+    \end{aligned}
+\end{equation}
+The fourth equality is because $\E\bs{e_i e_j} = \s^2$ for $i=j$ yet $\E\bs{e_i e_j} = 0$ for $i \neq j$ due to independence.
+
+\section{Linear Regression Model}
+
+\begin{assumption}[Linear Regression Model] 
+    \label{hansen_ass_4_2}
+
+    The variables $\bp{Y, \ora{X}}$ satisfy the linear regression equation
+    \begin{equation} 
+        \label{hansen_eq_4_1}
+        Y = \ora{X}^\prime \ora{\b} + e
+    \end{equation}
+    \begin{equation} \label{hansen_eq_4_2}
+        \E\bs{e \mid \ora{X}} = 0.
+    \end{equation}
+    The variables have finite second moments
+    $$\E\bs{Y^2} < \infty,$$
+    $$\E\bs{\norm{\ora{X}}^2} < \infty,$$
+    and an invertible design matrix
+    $$\Qb_{XX} = \E\bs{\ora{X} \ora{X}^\prime} > 0.$$
+\end{assumption}
+
+We will consider both the general case of heteroskedastic regression where the conditional variance $\E\bs{e^2 \mid \ora{X}} = \s^2\of{\ora{X}}$ is unrestricted, and the specialized case of homoskedastic regression where the conditional variance is constant. In the latter case we add the following assumption.
+
+\begin{assumption}[Homoskedastic Linear Regression Model] 
+    \label{hansen_ass_4_3}
+
+    In addition to Assumption \ref{hansen_ass_4_2}, 
+    \begin{equation}  \label{hansen_eq_4_3}
+        \E\bs{e^2 \mid \ora{X}} = \s^2\of{\ora{X}} = \s^2
+    \end{equation}
+    is independent of $\ora{X}$.
+\end{assumption}
+
+\section{Expectation of Least Squares Estimator}
+
+Observe first that under (\ref{hansen_eq_4_1}) and (\ref{hansen_eq_4_2}),
+\begin{equation} \label{hansen_eq_4_4}
+    \E\bs{Y_i \mid \ora{X}_1, \ldots, \ora{X}_n} = \E\bs{Y_i \mid \ora{X}_i} = \ora{X}_i^\prime \ora{\b}.
+\end{equation}
+The first equality states that the conditional expectation of $Y_i$ given $\bc{\ora{X}_1, \ldots, \ora{X}_n}$ only depends on $\ora{X}_i$ since the observations are independent across $i$. The second equality is the assumption of a linear conditional expectation.
+
+Using definition (\ref{hansen_eq_3_11}), the conditioning theorem (Theorem \ref{hansen_thm_2_3}), the linearity of expectations, (\ref{hansen_eq_4_4}), and properties of the matrix inverse,
+\begin{equation}
+    \notag
+    \begin{aligned}
+        \E\bs{\wh{\b} \mid \ora{X}_1, \ldots, \ora{X}_n} & = \E \bs{\bp{\sum_{i=1}^n \ora{X}_i \ora{X}_i^\prime}^{-1} \bp{\sum_{i=1}^n \ora{X}_i Y_i} \mid \ora{X}_1, \ldots, \ora{X}_n} \\
+        & = \bp{\sum_{i=1}^n \ora{X}_i \ora{X}_i^\prime}^{-1} \E \bs{\bp{\sum_{i=1}^n \ora{X}_i Y_i} \mid \ora{X}_1, \ldots, \ora{X}_n} \\
+        & = \bp{\sum_{i=1}^n \ora{X}_i \ora{X}_i^\prime}^{-1} \sum_{i=1}^n \E \bs{ \ora{X}_i Y_i \mid \ora{X}_1, \ldots, \ora{X}_n} \\
+        & = \bp{\sum_{i=1}^n \ora{X}_i \ora{X}_i^\prime}^{-1} \sum_{i=1}^n \ora{X}_i \E\bs{Y_i \mid \ora{X}_i} \\
+        & = \bp{\sum_{i=1}^n \ora{X}_i \ora{X}_i^\prime}^{-1} \sum_{i=1}^n \ora{X}_i \ora{X}_i^\prime \ora{\b} \\
+        & = \ora{\b}.
+    \end{aligned}
+\end{equation}
+
+Now let's show the same result using matrix notation. (\ref{hansen_eq_4_4}) implies
+\begin{equation}
+    \label{hansen_eq_4_5}
+    \E\bs{\ora{Y} \mid \Xb} = \Xb \ora{\b}.
+\end{equation}
+Similarly, 
+\begin{equation}
+    \notag
+    \E\bs{\ora{e} \mid \Xb} = \ora{0}.
+\end{equation}
+
+Using $\wh{\oras{\b}} = \bp{\Xb^\prime \Xb}^{-1} \bp{\Xb^\prime \ora{Y}}$, the conditioning theorem, the linearity of expectations, (\ref{hansen_eq_4_5}), and the properties of the matrix inverse,
+
+Then we can get 
+\begin{equation}
+    \notag
+    \begin{aligned}
+        \E\bs{\wh{\oras{\b}} \mid \Xb} & = \E \bs{\bp{\Xb^\prime \Xb}^{-1} \Xb^\prime \ora{Y} \mid \Xb} \\
+        & = \bp{\Xb^\prime \Xb}^{-1} \Xb^\prime \E \bs{\ora{Y} \mid \Xb} \\
+        & = \bp{\Xb^\prime \Xb}^{-1} \Xb^\prime \Xb \ora{\b} \\
+        & = \ora{\b} .
+    \end{aligned}
+\end{equation}
+
+Another way to calculate the same result is as follows. Insert $\ora{Y} = \Xb \ora{\b} + e$ into the formula for $\wh{\oras{\b}}$ to obtain
+\begin{equation}
+    \label{hansen_eq_4_6}
+    \begin{aligned}
+        \wh{\oras{\b}} & = \bp{\Xb^\prime \Xb}^{-1} \bp{\Xb^\prime \bp{\Xb \ora{\b} + \ora{e}}} \\
+        & = \bp{\Xb^\prime \Xb}^{-1} \bp{\Xb^\prime \Xb} \ora{\b} + \bp{\Xb^\prime \Xb}^{-1} \Xb^\prime \ora{e}\\
+        & = \ora{\b} + \bp{\Xb^\prime \Xb}^{-1} \Xb^\prime \ora{e}.
+    \end{aligned}
+\end{equation}
+This is a useful linear decomposition of the estimator $\wh{\oras{\b}}$ into the true parameter $\ora{\b}$ and the stochastic component $\bp{\Xb^\prime \Xb}^{-1} \Xb^\prime \ora{e}$. Once again, we can calculate that 
+\begin{equation}
+    \notag
+    \begin{aligned}
+        \E\bs{\wh{\oras{\b}} - \ora{\b} \mid \Xb} & = \E\bs{ \bp{\Xb^\prime \Xb}^{-1} \Xb^\prime \ora{e} \mid \Xb} \\
+        & = \bp{\Xb^\prime \Xb}^{-1} \Xb^\prime \E\bs{\ora{e} \mid \Xb} = \ora{0}.
+    \end{aligned}
+\end{equation}
+
+\begin{theorem}[Expectation of Least Squares Estimator] 
+    \label{hansen_thm_4_1}
+
+    In the linear regression model (Assumption \ref{hansen_ass_4_2}) with i.i.d. sampling (Assumption \ref{hansen_ass_4_1}),
+    \begin{equation}
+        \label{hansen_eq_4_7}
+        \E\bs{\wh{\oras{\b}} \mid \Xb} = \ora{\b}.
+    \end{equation}
+\end{theorem}
+
+Equation (\ref{hansen_eq_4_7}) says that the estimator $\wh{\oras{\b}}$ is unbiased for $\ora{\b}$, conditional on $\Xb$. This means that the conditional distribution of $\wh{\oras{\b}}$ is centered at $\ora{\b}$. By ``conditional on $\Xb$'' this means that the distribution is unbiased (centered at $\ora{\b}$) for any realization of the regressor matrix $\Xb$. \highlightP{It is worth mentioning that Theorem \ref{hansen_thm_4_1}, and all finite sample results in this chapter, make the implicit assumption that $\Xb^\prime \Xb$ is full rank with probability one.}
+
+\section{Variance of Least Squares Estimator}
+
+For any $r \times 1$ random vector $\ora{Z}$ define the $r \times r$ covariance matrix,
+\begin{equation}
+    \notag
+    \var\bs{\ora{Z}} = \E\bs{\bp{\ora{Z} - \E\bs{\ora{Z}}} \bp{\ora{Z} - \E\bs{\ora{Z}}}^\prime} = \E\bs{\ora{Z} \ora{Z}^\prime} - \bp{\E\bs{\ora{Z}}} \bp{\E\bs{\ora{Z}}}^\prime
+\end{equation}
+and for any pair $\bp{\ora{Z}, X}$ define the conditional covariance matrix
+\begin{equation}
+    \notag
+    \var\bs{\ora{Z} \mid X} = \E\bs{\bp{\ora{Z} - \E\bs{\ora{Z} \mid X}} \bp{\ora{Z} - \E\bs{\ora{Z} \mid X}}^\prime \mid X}.
+\end{equation}
+We define 
+$$\Vb_{\wh{\oras{\b}}} \coloneqq \var\bs{\wh{\oras{\b}} \mid \Xb}$$
+as the conditional covariance matrix of the regression coefficient estimators.
+
+The conditional covariance matrix of the $n \times 1$ regression error $\ora{e}$ is the $n \times n$ matrix
+\begin{equation}
+    \notag
+    \var\bs{\ora{e} \mid \Xb} = \E\bs{\ora{e}\ora{e}^\prime \mid \Xb} \coloneqq \Db.
+\end{equation}
+The $i$th diagonal element of $\Db$ is 
+\begin{equation}
+    \notag
+    \E\bs{e_i^2 \mid \Xb} = \E\bs{e_i \mid X_i} = \s_i^2
+\end{equation}
+while the $ij$th off-diagonal element of $\Db$ is 
+\begin{equation}
+    \notag
+    \E\bs{e_ie_j \mid \Xb} = \E\bs{e_i \mid X_i} \E\bs{e_j \mid X_j} = 0,
+\end{equation}
+where the first equality uses independence of the observations (Assumption \ref{hansen_ass_4_1}) and the second is equation (\ref{hansen_eq_4_2}). Thus $\Db$ is a diagonal matrix with $i$th diagonal element $\s_i^2$:
+\begin{equation}
+    \label{hansen_eq_4_8}
+    \boldsymbol{D}=\operatorname{diag}\left(\sigma_1^2, \ldots, \sigma_n^2\right)=\left(\begin{array}{cccc}
+        \sigma_1^2 & 0 & \cdots & 0 \\
+        0 & \sigma_2^2 & \cdots & 0 \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \cdots & \sigma_n^2
+    \end{array}\right)
+\end{equation}
+In the special case of the linear homoskedastic regression model (Assumption \ref{hansen_ass_4_3}), $\Db = \Ib_n \s^2$. In general, however, $\Db$ need not necessarily take this simplified form.
+
+For any $n \times r$ matrix $\Ab = \Ab\of{\Xb}$,
+\begin{equation}
+    \label{hansen_eq_4_9}
+    \var\bs{\Ab^\prime \ora{Y} \mid \Xb} = \var\bs{\Ab^\prime \ora{e} \mid \Xb} = \Ab^\prime \Db \Ab.
+\end{equation}
+In particular, we can write $\wh{\oras{\b}} = \Ab^\prime \Yb$, where $\Ab = \Xb \bp{\Xb^\prime \Xb}^{-1}$ and thus 
+\begin{equation}
+    \notag
+    \Vb_{\wh{\oras{\b}}} = \var\bs{\wh{\oras{\b}} \mid \Xb} = \Ab^\prime \Db \Ab = \bp{\Xb^\prime \Xb}^{-1} \Xb^\prime \Db \Xb \bp{\Xb^\prime \Xb}^{-1}.
+\end{equation}
+It is useful to note that 
+\begin{equation}
+    \notag
+    \Xb^\prime \Db \Xb = \sum_{i=1}^n \ora{X}_i \ora{X}_i^\prime \s_i^2,
+\end{equation}
+a weighted version of $\Xb^\prime \Xb$.
+
+In the special case of the linear homoskedastic regression model, $\Db = \Ib_n \s^2$, so $\Xb^\prime \Db \Xb = \Xb^\prime \Xb \s^2$, and the covariance matrix simplifies to $\Vb_{\wh{\oras{\b}}} = \bp{\Xb^\prime \Xb}^{-1} \s^2$.
+
+\begin{theorem}[Variance of Least Squares Estimator]
+    \label{hansen_thm_4_2}
+
+    In the linear regression model (Assumption \ref{hansen_ass_4_2}) with i.i.d. sampling (Assumption \ref{hansen_ass_4_1}),
+    \begin{equation}
+        \label{hansen_eq_4_10}
+        \Vb_{\wh{\oras{\b}}} = \var\bs{\wh{\oras{\b}} \mid \Xb} = \bp{\Xb^\prime \Xb}^{-1} \bp{\Xb^\prime \Db \Xb} \bp{\Xb^\prime \Xb}^{-1}
+    \end{equation}
+    where $\Db$ is defined in (\ref{hansen_eq_4_8}), as 
+    \begin{equation}
+        \notag
+        \boldsymbol{D}=\operatorname{diag}\left(\sigma_1^2, \ldots, \sigma_n^2\right)=\left(\begin{array}{cccc}
+            \sigma_1^2 & 0 & \cdots & 0 \\
+            0 & \sigma_2^2 & \cdots & 0 \\
+            \vdots & \vdots & \ddots & \vdots \\
+            0 & 0 & \cdots & \sigma_n^2
+        \end{array}\right),
+    \end{equation}
+    where $\s_i^2 = \E\bs{e_i^2 \mid \ora{X}_i}$.  
+    
+    If in addition the error is homoskedastic (Assumption \ref{hansen_ass_4_3}) then (\ref{hansen_eq_4_10}) simplifies to 
+    $$\Vb_{\wh{\oras{\b}}} = \s^2 \bp{\Xb^\prime \Xb}^{-1}.$$
+\end{theorem}
+
+
+\section{Unconditional Moments}
+
+The previous sections derived the form of the conditional mean and variance of the least squares estimator where we conditioned on the regressor matrix $\Xb$. What about the unconditional mean and variance?
+
+Indeed, it is not obvious if $\wh{\oras{\b}}$ has a finite mean or variance. Take the case of a single dummy variable regressor $D_i$ with no intercept. Assume $\P\bs{D_i} = p < 1$. Then 
+\begin{equation}
+    \notag
+    \wh{\b} = \frac{\sum_{i=1}^n D_i Y_i }{\sum_{i=1}^n D_i} 
+\end{equation}
+is well defined if $\sum_{i=1}^n D_i > 0$. However, $\P\bs{\sum_{i=1}^n D_i = 0} = \bp{1-p}^n >0$. This means that with positive (but small) probability $\wh{\b}$ does not exist. Consequently, $\wh{\b}$ has no finite moments! We ignore this complication in practice but it does pose a conundrum for theory. This existence problem arises whenever there are discrete regressors.
+
+This dilemma is avoided when the regressors have continuous distributions. A clean statement was obtained by Kinal (1980) under the assumption of normal regressors and errors.
+
+\begin{theorem}[Kinal (1980)]
+    \label{hansen_thm_4_3}
+
+    In the linear regression model with i.i.d. sampling, if in addition $\bp{X, e}$ have a joint normal distribution then for any $r$, $\E\bs{\norm{\wh{\oras{\b}}}^r} < \infty$ if and only if $r < n - k + 1$.
+\end{theorem}
+
+This shows that when the errors and regressors are normally distributed that the least squares estimator possesses all moments up to $n-k$ which includes all moments of practical interest. The normality assumption is not critical for this result. What is key is the assumption that the regressors are continuously distributed.
+
+Therefore, if $n > k$, 
+\begin{equation}
+    \notag
+    \E\bs{\wh{\oras{\b}}} = \E\bs{\E\bs{\wh{\oras{\b}} \mid \Xb}} = \ora{\b}.
+\end{equation}
+Here $\wh{\oras{\b}}$ is unconditionally unbiased as asserted.
+
+Furthermore, if $n - k > 1$, then $\E\bs{\norm{\wh{\b}}^2} < \infty$ and $\wh{\b}$ has a finite unconditional variance. We can calculate explicitly that 
+\begin{equation}
+    \notag
+    \var\bs{\wh{\oras{\b}}} = \E\bs{\var\bs{\wh{\oras{\b}} \mid \Xb}} + \var\bs{\E\bs{\wh{\oras{\b}} \mid \Xb}} = \E\bs{\bp{\Xb^\prime \Xb}^{-1} \bp{\Xb^\prime \Db \Xb} \bp{\Xb^\prime \Xb}^{-1}},
+\end{equation}
+the second equality since $\E\bs{\wh{\oras{\b}} \mid \Xb} = \ora{\b}$ has zero variance. 
+
+In the homoskedastic case this simplifies to 
+\begin{equation}
+    \notag
+    \var\bs{\wh{\oras{\b}}} = \s^2 \E\bs{\bp{\Xb^\prime \Xb}^{-1}}.
+\end{equation}
+\highlightP{In both cases the expectation cannot pass through the matrix inverse since this is a nonlinear function. Thus there is not a simple expression for the unconditional variance, other than stating that is it the mean of the conditional variance.}
+
+
+\section{Gauss-Markov Theorem}
+
+Consider the class of estimators of $\ora{\b}$ which are linear functions of the vector $\ora{Y}$ and thus can be written as $\wt{\oras{\b}} = \Ab^\prime \ora{Y}$, where $\Ab$ is an $n \times k$ function of $\Xb$. As noted before, the least squares estimator is the special case obtained by setting $\Ab = \Xb \bp{\Xb^\prime \Xb}^{-1}$. What is the best choice of $\Ab$? \highlightP{The Gauss-Markov Theorem says that the least squares estimator is the best choice among linear unbiased estimators when the errors are homoskedastic, in the sense that the least squares estimator has the smallest variance among all unbiased linear estimators.}
+
+To see this, since $\E\bs{\ora{Y} \mid \Xb} = \Xb \ora{\b}$ then for any linear estimator $\wt{\oras{\b}} = \Ab^{\prime} \ora{Y}$ we have 
+\begin{equation}
+    \notag 
+    \E\bs{\wt{\oras{\b}} \mid \Xb} = \Ab^{\prime} \E\bs{\ora{Y} \mid \Xb} = \Ab^{\prime} \Xb \ora{\b},
+\end{equation}
+so $\wt{\oras{\b}}$ is unbiased if and only if $\Ab^{\prime} \Xb = \Ib_k$. Further more, we saw in (\ref{hansen_eq_4_9}) that 
+\begin{equation}
+    \notag 
+    \var\bs{\wt{\oras{\b}} \mid \Xb} = \var\bs{\Ab^{\prime} \ora{Y} \mid \Xb} = \Ab^{\prime} \Db \Ab = \s^2 \bp{\Ab^{\prime} \Ab},
+\end{equation}
+where the last equality using the homoskedasticity assumption $\Db = \I_n \s^2$. The ``best'' unbiased linear estimator is obtained by finding the matrix $\Ab_0$ satisfying 
+$$
+\Ab_0^{\prime} \Xb = \Ib_k,
+$$
+and $\Ab^{\prime} \Ab$ is minimized in the positive definite sense, which means that for any other matrix $\Ab$ satisfying $\Ab^{\prime} \Xb = \Ib_k$ then 
+$$
+\Ab^{\prime} \Ab - \Ab_0^{\prime} \Ab_0 \text{  is positive semi-definite}.
+$$
+
+\begin{theorem}[Gauss-Markov]
+    \label{hansen_thm_4_4}
+
+    In the homoskedastic linear regression model (Assumption \ref{hansen_ass_4_3}) with iid sampling (Assumption \ref{hansen_ass_4_1}), if $\wt{\oras{\b}}$ is a linear unbiased estimator of $\ora{\b}$ then 
+    \begin{equation}
+        \notag
+        \var\bs{\wt{\oras{\b}} \mid \Xb} \geq \s^2 \bp{\Xb^\prime \Xb}^{-1}.
+    \end{equation}
+\end{theorem}
+
+The Gauss-Markov theorem provides a lower bound on the covariance matrix of unbiased linear estimators under the assumption of homoskedasticity. It says that no unbiased linear estimator can have a variance matrix smaller (in the positive definite sense) than $\s^2 \bp{\Xb^\prime \Xb}^{-1}$. Since the variance of the OLS estimator is exactly equal to this bound this means that the OLS estimator is efficient in the class of linear unbiased estimators. This gives rise to the description of OLS as BLUE, standing for \highlightB{best linear unbiased estimator}. This is an efficiency justification for the least squares estimator. \highlightP{The justification is limited because the class of models is restricted to homoskedastic regressions and the class of potential estimators is restricted to linear unbiased estimators.} This latter restriction is particularly unsatisfactory as there is no sensible motivation for focusing on linear estimators.
+
+\begin{proof}
+    We complete this section with a proof of the Gauss-Markov theorem.
+
+    Let $\Ab$ be any $n \times k$ function of $\Xb$ such that $\Ab^\prime \Xb = \Ib_k$. This ensures that the estimator $\Ab^\prime \ora{Y}$ is unbiased for $\ora{\b}$. Also, this estimator has variance $\Ab^\prime \Ab \s^2$. Since the least squares estimator is unbiased and has variance $\bp{\Xb^\prime \Xb}^{-1} \s^2$, it is sufficient to show that the difference in the two variance matrices is positive semi-definite, or 
+    \begin{equation}
+        \label{4.11}
+        \Cb = \Ab^\prime \Ab - \bp{\Xb^\prime \Xb}^{-1} \geq 0.
+    \end{equation}
+
+    Let $\Db = \Ab^\prime - \bp{\Xb^\prime \Xb}^{-1}\Xb^\prime$ or $\Ab^\prime = \bp{\Xb^\prime \Xb}^{-1}\Xb^\prime + \Db$. Notice that $\Db \Xb = \Ab^\prime\Xb - \bp{\Xb^\prime \Xb}^{-1}\Xb^\prime\Xb = \Ib_k - \Ib_k = \bds{0}$.
+    
+    Then 
+    \begin{equation}
+        \notag
+        \begin{aligned}
+            \Cb & = \Ab^\prime \Ab - \bp{\Xb^\prime \Xb}^{-1} \\
+            & = \bp{\bp{\Xb^\prime \Xb}^{-1}\Xb^\prime + \Db}\bp{\bp{\Xb^\prime \Xb}^{-1}\Xb^\prime + \Db}^\prime - \bp{\Xb^\prime \Xb}^{-1} \\
+            & = \bp{\Xb^\prime \Xb}^{-1}\Xb^\prime\Xb\bp{\Xb^\prime \Xb}^{-1} + \bp{\Xb^\prime \Xb}^{-1}\Xb^\prime \Db^\prime + \Db \Xb \bp{\Xb^\prime \Xb}^{-1} + \Db \Db^\prime - \bp{\Xb^\prime \Xb}^{-1} \\
+            & = \Db \Db^\prime \geq \bds{0} .
+        \end{aligned}
+    \end{equation}
+    The final inequality states that the matrix $\Db \Db^\prime$ is positive semi-definite which is a property of quadratic forms.
+\end{proof}
+
+
+\section{Modern Gauss-Markov Theorem}
+
+\begin{theorem}[Modern Gauss-Markov]
+    \label{hansen_thm_4_5}
+
+    In the linear regression model with i.i.d. sampling, if $\E\bs{\wt{\oras{\b}} \mid \Xb} = \ora{\b}$ and Assumption \ref{hansen_ass_4_3} holds then $\var\bs{\wt{\oras{\b}} \mid \Xb} \geq \s^2 \bp{\Xb^\prime \Xb}^{-1}.$
+\end{theorem}
+
+\section{Generalized Least Squares}
+
+Take the liner regression model in matrix format
+\begin{equation}
+    \label{hansen_eq_4_12}
+    \ora{Y} = \Xb \ora{\b} + \ora{e}.
+\end{equation}
+Consider a generalized situation where the observation errors are possibly correlated and/or heteroskedastic. Specifically, suppose that
+\begin{equation}
+    \E\bs{\ora{e} \mid \Xb} = 0
+\end{equation}
+\begin{equation}
+    \var\bs{\ora{e} \mid \Xb} = \bds{\O}
+\end{equation}
+for some $n \times n$ covariance matrix $\bds{\O}$, possibly a function of $\Xb$. This includes the iid sampling framework where $\bds{\O} = \Db$ as defined in (\ref{hansen_eq_4_8}) but allows for non-diagonal covariance matrices as well. As a covariance matrix, $\bds{\O}$ is necessarily symmetric and positive semi-definite.
+
+Under these assumptions, by arguments similar to the previous section, we can calculate the mean and variance of the OLS estimator:
+\begin{equation}
+    \E\bs{\wh{\oras{\b}} \mid \Xb} = \ora{\b}
+\end{equation}
+\begin{equation} 
+    \label{hansen_eq_4_16}
+    \var\bs{\wh{\oras{\b}} \mid \Xb} = \bp{\Xb^\prime \Xb}^{-1} \bp{\Xb^\prime \bds{\O} \Xb} \bp{\Xb^\prime \Xb}^{-1}
+\end{equation}
+
+We have an analog of the Gauss-Markov Theorem.
+\begin{theorem}[Generalized Gauss-Markov] 
+    \label{hansen_thm_4_6}
+
+    In the linear regression model (Assumption \ref{hansen_ass_4_2}) and $\bds{\O} > 0$, if $\wt{\oras{\b}}$ is a linear unbiased estimator of $\b$ then
+    $$\var\bs{\wh{\oras{\b}} \mid \Xb} \geq \bp{\Xb^\prime \bds{\O}^{-1} \Xb}^{-1}.$$
+\end{theorem}
+
+The theorem provides a lower bound on the covariance matrix of unbiased linear estimators. \highlightP{The bound is different from the variance matrix of the OLS estimator as stated in (\ref{hansen_eq_4_16}) except when $\bds{\O} = \Ib_n\s^2$. The fact that the variance bound is different (and lower) than the least squares variance suggests that we can improve on the OLS estimator.} In the i.i.d. sampling case the variance lower bound is $\bp{\Xb^\prime {\Db}^{-1} \Xb}^{-1}$ since $\bds{\O} = \Db$.
+
+This is indeed the case when $\bds{\O}$ is known up to scale. That is, suppose that $\bds{\O} = c^2 \bds{\S}$ where $c^2 > 0$ is real and $\bds{\S}$ is $n \times n$ and known. Take the linear model (\ref{hansen_eq_4_12}) and pre-multiply by $\bds{\S}^{-1/2}$. This produces the equation 
+$$\wt{\oras{Y}} = \wt{\Xb}\ora{\b} + \wt{\oras{e}}$$
+where 
+$$\wt{\oras{Y}} = \bds{\S}^{-1/2} \ora{Y}, \wt{\Xb} = \bds{\S}^{-1/2} \Xb, \wt{\oras{e}} = \bds{\S}^{-1/2} \ora{e}.$$
+Consider OLS estimation of $\ora{\b}$ in this equation.
+
+\begin{equation}
+    \label{4.17}
+    \begin{aligned}
+        \widetilde{\beta}_{\mathrm{gls}} & =\left(\widetilde{\boldsymbol{X}}^{\prime} \widetilde{\boldsymbol{X}}\right)^{-1} \widetilde{\boldsymbol{X}}^{\prime} \widetilde{\ora{Y}} \\
+        & =\left(\left(\bds{\S}^{-1 / 2} \boldsymbol{X}\right)^{\prime}\left(\bds{\S}^{-1 / 2} \boldsymbol{X}\right)\right)^{-1}\left(\bds{\S}^{-1 / 2} \boldsymbol{X}\right)^{\prime}\left(\bds{\S}^{-1 / 2} \ora{Y}\right) \\
+        & =\left(\boldsymbol{X}^{\prime} \bds{\S}^{-1} \boldsymbol{X}\right)^{-1} \boldsymbol{X}^{\prime} \bds{\S}^{-1} \ora{Y}
+    \end{aligned}
+\end{equation}
+This is called the \highlightB{Generalized Least Squares (GLS) estimator} of $\ora{\b}$.
+
+It is easy to calculate that 
+\begin{equation}
+    \label{hansen_eq_4_18}
+    \E\bs{\wt{\oras{\b}}_{\text{gls}} \mid \Xb}= \ora{\b},
+\end{equation}
+\begin{equation}
+    \label{hansen_eq_4_19}
+    \var\bs{\wt{\oras{\b}}_{\text{gls}} \mid \Xb} = \bp{\Xb^\prime \bds{\O}^{-1} \Xb}^{-1}.
+\end{equation}
+This shows that the GLS estimator is unbiased and has a covariance matrix which equals the lower bound from Theorem \ref{hansen_thm_4_6}. This shows that the lower bound is sharp when $\bds{\S}$ is known. GLS is thus efficient in the class of linear unbiased estimators.
+
+In the linear regression model with independent observations and known conditional variances, so that $\bds{\O} = \bds{\S} = \Db = \operatorname{diag}\of{\s_1^2, \ldots, \s_n^2}$, the GLS estimator takes the form
+\begin{equation}
+    \notag
+    \begin{aligned}
+        \wt{\oras{\b}}_{\text{gls}} & = \bp{\Xb^\prime \Db^{-1} \Xb}^{-1} \Xb^\prime \Db^{-1} \ora{Y} \\
+        & = \bp{\sum_{i=1}^n \s_i^{-2} X_i X_i^\prime}^{-1} \bp{\sum_{i=1}^n \s_i^{-2} X_i Y_i}.
+    \end{aligned}
+\end{equation}
+The assumption $\bds{\O} > 0$ in this case reduces to $\s_i^2 > 0$ for $i=1, \ldots, n$.
+
+In practice, the covariance matrix $\bds{\O}$ is unknown so the GLS estimator as presented here is not feasible. However, the form of the GLS estimator motivates feasible versions, effectively by replacing $\bds{\O}$ with an estimator. We do not pursue this here as it is not common in current applied econometric practice.
+
+\section{Modern Generalized Gauss Markov Theorem}
+
+\begin{theorem}[Modern Generalized Gauss-Markov]
+    \label{hansen_thm_4_7}
+
+    In the linear regression model with i.i.d. sampling, if $\E\bs{\wt{\oras{\b}} \mid \Xb} = \b$ then $\var\bs{\wt{\oras{\b}} \mid \Xb} \geq \bp{\Xb^\prime \Db^{-1} \Xb}^{-1}$.
+\end{theorem}
+
+\section{Residuals}
+
+What are some properties of the residuals $\wh{e}_i = Y_i - \ora{X}_i^\prime \wh{\oras{\b}}$ and prediction errors $\wt{e}_i = Y_i - \ora{X}_i^\prime \wh{\oras{\b}}_{(-i)}$ in the context of the linear regression model?
+
+Recall from (\ref{hansen_eq_3_24}) that we can write the residuals in vector notation as $\wh{\oras{e}} = \Mb \ora{e}$ where $\Mb = \Ib_n - \Xb \bp{\Xb^\prime \Xb} \Xb^\prime$ is the orthogonal projection matrix. Using the properties of conditional expectation
+\begin{equation}
+    \notag
+    \E\bs{\wh{\oras{e}} \mid \Xb} = \E\bs{\Mb \ora{e} \mid \Xb} = \Mb \E\bs{\ora{e} \mid \Xb} = 0
+\end{equation}
+and 
+\begin{equation}
+    \label{hansen_eq_4_20}
+    \var\bs{\wh{\oras{e}} \mid \Xb} = \var\bs{\Mb \ora{e} \mid \Xb} = \Mb \var\bs{\ora{e} \mid \Xb} \Mb = \Mb \Db \Mb
+\end{equation}
+where $\Db$ is defined in (\ref{hansen_eq_4_8}) under i.i.d. sampling.
+
+We can simplify this expression under the assumption of conditional homoskedasticity
+\begin{equation}
+    \notag
+    \E\bs{e^2 \mid \ora{X}} = \s^2.
+\end{equation}
+In this case, (\ref{hansen_eq_4_20}) simplifies to 
+\begin{equation}
+    \label{hansen_eq_4_21}
+    \var\bs{\wh{\oras{e}} \mid \Xb} = \Mb \s^2.
+\end{equation}
+In particular, for a single observation $i$ we can find the variance of $\wh{e}_i$ by taking the $i$th diagonal element of (\ref{hansen_eq_4_21}). Since the $i$th element of $\Mb$ is $1 - h_{ii}$, we obtain,
+\begin{equation}
+    \label{hansen_eq_4_22}
+    \var\bs{\wh{e_i} \mid \Xb} = \E\bs{\wh{e}_i^2 \mid \Xb} = (1 - h_{ii}) \s^2.
+\end{equation}
+
+Similarly, the prediction errors $\wt{e}_i = (1-h_{ii})^{-1} \wh{e}_i$ can be written in vector notation as $\wt{\oras{e}} = \Mb^* \wh{\oras{e}}$ where $\Mb^*$ is a diagonal matrix with $i$th element $(1-h_{ii})^{-1}$. Thus, $\wt{\oras{e}} = \Mb^* \Mb \ora{e}$. We can calculate that 
+\begin{equation}
+    \notag
+    \E\bs{\wt{\oras{e}} \mid \Xb} = \Mb^* \Mb  \E\bs{\ora{e} \mid \Xb} = \ora{0}
+\end{equation}
+\begin{equation}
+    \notag
+    \var\bs{\wt{\oras{e}} \mid \Xb} = \Mb^* \Mb  \var\bs{\ora{e} \mid \Xb} \Mb \Mb^*= \Mb^* \Mb  \Db \Mb \Mb^*
+\end{equation}
+which simplifies under homoskedasticity to 
+\begin{equation}
+    \notag
+    \var\bs{\wt{\oras{e}} \mid \Xb} = \Mb^* \Mb  \Mb \Mb^* \s^2= \Mb^* \Mb   \Mb^* \s^2 .
+\end{equation}
+The variance of $i$th prediction error is then 
+\begin{equation}
+    \notag
+    \var\bs{\wt{e}_i \mid \Xb} = (1-h_{ii})^{-1} \s^2 .
+\end{equation}
+
+A residual with constant conditional variance can be obtained by rescaling. The \highlightB{standardized residuals} are
+\begin{equation}
+    \label{hansen_eq_4_23}
+    \ol{e}_i = (1-h_{ii})^{-1/2} \wh{e}_i,
+\end{equation}
+and in vector notation
+\begin{equation}
+    \label{hansen_eq_4_24}
+    \ol{\oras{e}} = \bp{\ol{e}_1, \ldots, \ol{e}_n}^\prime = \Mb^{*1/2} \Mb \ora{e}.
+\end{equation}
+From the above calculations, under homoskedasticity, 
+\begin{equation}
+    \notag
+    \var\bs{\ol{\oras{e}} \mid \Xb} = \Mb^{*1/2} \Mb \Mb^{*1/2} \s^2
+\end{equation}
+and 
+\begin{equation}
+    \notag
+    \var\bs{\ol{e}_i \mid \Xb} = \s^2
+\end{equation}
+and thus \highlightR{these standardized residuals have the same bias and variance as the original errors when the latter are homoskedastic}.
+
+\section{Estimation of Error Variance} \label{hansen_sec_4_13}
+
+The error variance $\s^2 = \E\bs{e^2}$ can be a parameter of interest even in a heteroskedastic regression or a projection model. $\s^2$ measures the variation in the ``unexplained'' part of the regression. Its method of moments estimator (MME) is the sample average of the squared residuals:
+\begin{equation}
+    \notag
+    \wh{\s}^2 = \frac{1}{n} \sum_{i=1}^n \wh{e}_i^2.
+\end{equation}
+
+In the linear regression model we can calculate the mean of $\wh{\s}^2$:
+\begin{equation}
+    \notag
+    \wh{\s}^2 = \frac{1}{n} \ora{e}^\prime \Mb \ora{e} = \frac{1}{n} \operatorname*{tr}\of{\ora{e}^\prime \Mb \ora{e}} = \frac{1}{n} \operatorname*{tr}\of{\Mb \ora{e} \ora{e}^\prime} .
+\end{equation}
+Note that the first equality $\wh{\s}^2 = \frac{1}{n} \wh{\oras{e}}^\prime \wh{\oras{e}} = \frac{1}{n} \ora{e}^\prime \Mb \ora{e}$ is due to $\wh{\oras{e}} = \Mb \ora{e}$.
+Then 
+\begin{equation}
+    \label{hansen_eq_4_25}
+    \begin{aligned}
+        \mathbb{E}\left[\widehat{\sigma}^2 \mid \Xb \right] & =\frac{1}{n} \operatorname{tr}\left(\mathbb{E}\left[\Mb \ora{e} \ora{e}^{\prime} \mid \Xb \right]\right) \\
+        & =\frac{1}{n} \operatorname{tr}\left(\Mb \mathbb{E}\left[\ora{e} \ora{e}^{\prime} \mid \Xb \right]\right) \\
+        & =\frac{1}{n} \operatorname{tr}(\Mb \Db) \\
+        & =\frac{1}{n} \sum_{i=1}^n\left(1-h_{i i}\right) \sigma_i^2 .
+    \end{aligned}
+\end{equation}
+The final equality holds since the trace is the sum of the diagonal elements of $\Mb \Db$, and since $\Db$ is diagonal the diagonal elements of $\Mb \Db$ are the product of the diagonal elements of $\Mb$ and $\Db$, which are $1-h_{ii}$, and $\s_i^2$, respectively.
+
+Adding the assumption of conditional homoskedasticity $\E\bs{e^2 \mid \Xb} = \s^2$ so that $\Db = \Ib_n \s^2$, then (\ref{hansen_eq_4_25}) simplified to
+\begin{equation}
+    \notag
+    \E\bs{\wh{\s}^2 \mid \Xb} = \frac{1}{n} \operatorname{tr} \of{\Mb \s^2} = \s^2 \bp{\frac{n-k}{n}}.
+\end{equation}
+Note that the above derivation uses the property of leverage values $\sum_{i} h_{ii} = k$. \highlightP{This calculation shows that $\wh{\s}^2$ is biased towards zero under the homoskedastic case.} The order of the bias depends on $k/n$, ratio of the number of estimated coefficients to the sample size.
+
+Another way to see this is to use (\ref{hansen_eq_4_22}). Note that 
+\begin{equation}
+    \notag
+    \E\bs{\wh{\s}^2 \mid \Xb} = \frac{1}{n}\sum_{i=1}^n \E\bs{\wh{e}_i^2 \mid \Xb} = \frac{1}{n} \sum_{i=1}^n (1-h_{ii})\s^2 = \bp{\frac{n-k}{n}}\s^2.
+\end{equation}
+
+Since the bias takes a scale from a classic method to obtain an unbiased estimator is by rescaling. Define 
+\begin{equation}
+    \label{4.26}
+    s^2 = \frac{1}{n - k} \sum_{i=1}^n \wh{e}_i^2.
+\end{equation}
+By the above calculation $\E\bs{s^2 \mid \Xb} = \s^2$ and $\E\bs{s^2} = \s^2$. Hence the estimator $s^2$ is unbiased for $\s^2$. Consequently, $s^2$ is known as the \highlightB{bias-corrected estimator for $\s^2$} and in empirical practice $s^2$ is the most widely used estimator for $\s^2$.
+
+Interestingly, this is not the only method to construct an unbiased estimator for $\s^2$. An estimator constructed with the standardized residuals $\ol{e}_i$ from (\ref{hansen_eq_4_23}) is 
+\begin{equation}
+    \label{hansen_eq_4_27}
+    \ol{\s}^2 = \frac{1}{n} \sum_{i=1}^n \ol{e}_i^2 = \frac{1}{n} \sum_{i=1}^{n} (1- h_{ii})^{-1} \wh{e}_i^2.
+\end{equation}
+You can show that $\ol{\s}^2$ is unbiased for $\s^2$ (in the homoskedastic linear regression model).
+
+\section{Mean-Square Forecast Error} \label{hansen_sec_4_14}
+
+One use of an estimated regression is to predict out-of-sample. Consider an out-of-sample realization $\bp{Y_{n+1}, \ora{X}_{n+1}}$ where $\ora{X}_{n+1}$ is observed but not $Y_{n+1}$. Then the standard point estimator is $\wt{Y}_{n+1} = \ora{X}_{n+1}^\prime \wt{\oras{\b}}$. The forecast error is the difference between the actual value $Y_{n+1}$ and the point forecast $\wt{Y}_{n+1}$. This is the forecast error $\wt{e}_{n+1} = Y_{n+1} - \wt{Y}_{n+1}$. The \highlightB{mean-squared forecast error (MSFE)} is the expected value $\operatorname*{MSFE}_n = \E\bs{\wt{e}_{n+1}^2}$. In the linear regression model, $\wt{e}_{n+1} = e_{n+1} - \ora{X}_{n+1}^\prime \bp{\wh{\oras{\b}} - \ora{\b}}$ so 
+\begin{equation}
+    \label{hansen_eq_4_28}
+    \operatorname{MSFE}_n = \E\bs{e_{n+1}^2} - 2\E\bs{e_{n+1} \ora{X}_{n+1}^\prime \bp{\wh{\oras{\b}} - \ora{\b}}} + \E\bs{\ora{X}_{n+1}^\prime \bp{\wh{\oras{\b}} - \ora{\b}} \bp{\wh{\oras{\b}} - \ora{\b}}^\prime \ora{X}_{n+1}}.
+\end{equation}
+
+The first term in (\ref{hansen_eq_4_28}) is $\s^2$. The second term in (\ref{hansen_eq_4_28}) is zero since $e_{n+1} \ora{X}_{n+1}^\prime$ is independent of $\wh{\oras{\b}} - \ora{\b}$ and both are mean zero. Using the properties of the trace operator the third term in (\ref{hansen_eq_4_28}) is 
+\begin{equation}
+    \label{hansen_eq_4_29}
+    \begin{aligned}
+        & \operatorname{tr}\of{\E\bs{\ora{X}_{n+1} \ora{X}_{n+1}^\prime} \E\bs{\bp{\wh{\oras{\b}} - \ora{\b}} \bp{\wh{\oras{\b}} - \ora{\b}}^\prime}} \\
+        & = \operatorname{tr}\of{\E\bs{\ora{X}_{n+1} \ora{X}_{n+1}^\prime} \E\bs{\E\of{\bp{\wh{\oras{\b}} - \ora{\b}} \bp{\wh{\oras{\b}} - \ora{\b}}^\prime} \mid \Xb}} \\
+        & = \operatorname{tr}\of{\E\bs{\ora{X}_{n+1} \ora{X}_{n+1}^\prime} \E\bs{\Vb_{\wh{\oras{\b}}}} } \\
+        & = \E\bs{\operatorname{tr}\of{\bp{\ora{X}_{n+1} \ora{X}_{n+1}^\prime} \Vb_{\wh{\oras{\b}}}}} \\
+        & = \E\bs{\ora{X}_{n+1}^\prime \Vb_{\wh{\oras{\b}}} \ora{X}_{n+1}}
+    \end{aligned}
+\end{equation}
+where we use the fact that $\ora{X}_{n+1}$ is independent of $\wh{\oras{\b}}$, the definition $\Vb_{\wh{\oras{\b}}} = \E\bs{\bp{\wh{\oras{\b}} - \ora{\b}} \bp{\wh{\oras{\b}} - \ora{\b}}^\prime \mid \Xb}$, and the fact that $\ora{X}_{n+1}$ is independent of $\Vb_{\wh{\oras{\b}}}$. Thus,
+\begin{equation}
+    \notag
+    \operatorname{MSFE}_n = \s^2 + \E\bs{\ora{X}_{n+1}^\prime \Vb_{\wh{\oras{\b}}} \ora{X}_{n+1}}.
+\end{equation}
+Under conditional homoskedasticity this simplifies to
+\begin{equation}
+    \notag
+    \operatorname{MSFE}_n = \s^2 \bp{1 + \E\bs{\ora{X}_{n+1}^\prime \bp{\Xb^\prime \Xb}^{-1} \ora{X}_{n+1}}} .
+\end{equation}
+
+A simple estimator for the MSFE is obtained by averaging the squared prediction errors (\ref{hansen_eq_3_46})
+\begin{equation}
+    \notag
+    \wt{\s}^2 = \frac{1}{n} \sum_{i=1}^{n}\wt{e}_i^2,
+\end{equation}
+where $\wt{e}_i = Y_i - \ora{X}_i^\prime \wh{\oras{\b}}_{(-i)} = \wh{e}_i \bp{1-h_{ii}}^{-1}$. Indeed, we can calculate that 
+\begin{equation}
+    \notag
+    \begin{aligned}
+        \E\bs{\wt{\s}^2} & = \E\bs{\wt{e}_i^2} \\
+        & = \E\bs{\bp{e_i - \ora{X}_i^\prime \bp{\wh{\oras{\b}}_{(-i)} - \ora{\b} }}^2} \\
+        & = \s^2 + \E\bs{\ora{X}_i^\prime \bp{\wh{\oras{\b}}_{(-i)} - \ora{\b}} \bp{\wh{\oras{\b}}_{(-i)} - \ora{\b}}^\prime \ora{X}_i}.
+    \end{aligned}
+\end{equation}
+By a similar calculation as in (\ref{hansen_eq_4_29}), we find 
+\begin{equation}
+    \notag
+    \E\bs{\wt{\s}^2} = \s^2 + \E\bs{\ora{X}_{i}^\prime \Vb_{\wh{\oras{\b}}_{(-i)}} \ora{X}_{i}} = \operatorname{MSFE}_{n-1}.
+\end{equation}
+This is the MSFE based on a sample of size $n-1$ rather than size $n$. The difference arises because the in-sample prediction errors $\wt{e}_i$ for $i \leq n$ are calculated using an effective sample size of $n-1$, while the out-of sample prediction error $\wt{e}_{n+1}$ is calculated from a sample with the full $n$ observations. Unless $n$ is very small, we should expect $\operatorname{MSFE}_{n-1}$ to be close to $\operatorname{MSFE}_{n}$. Thus, $\wt{\s}^2$ is a reasonable estimator for $\operatorname{MSFE}_{n}$.
+
+\begin{theorem}[MSFE]
+    \label{hansen_thm_4_8}
+    In the linear regression model (Assumption \ref{hansen_ass_4_2}) and iid sampling (Assumption \ref{hansen_ass_4_1}),
+    \begin{equation}
+        \notag
+        \operatorname{MSFE}_n = \s^2 + \E\bs{\ora{X}_{n+1}^\prime \Vb_{\wh{\oras{\b}}} \ora{X}_{n+1}},
+    \end{equation}
+    where $\Vb_{\wh{\oras{\b}}} = \var\bs{\wh{\oras{\b}} \mid \Xb}$. Furthermore, $\wt{\s}^2$ defined in (\ref{hansen_eq_3_46}) is an unbiased estimator of $\operatorname{MSFE}_{n-1}$, since $\E\bs{\wt{\s}^2} = \operatorname{MSFE}_{n-1}$.
+\end{theorem}
+
+\section{Covariance Matrix Estimation Under Homoskedasticity}
+
+For inference we need an estimator of the covariance matrix $\Vb_{\wh{\oras{\b}}}$ of the least squares estimator. In this section we consider the homoskedastic regression model (Assumption \ref{hansen_ass_4_3}).
+
+Under homoskedasticity the covariance matrix takes the simple form
+\begin{equation}
+    \notag
+    \Vb_{\wh{\oras{\b}}}^0 = \bp{\Xb^\prime \Xb}^{-1} \s^2
+\end{equation}
+which is known up to the scale $\s^2$. In Section \ref{hansen_sec_4_13} we discussed three estimators of $\s^2$. The most common used choice is $s^2$ leading to the classic covariance matrix estimator
+\begin{equation}
+    \label{hansen_eq_4_30}
+    \wh{\Vb}_{\wh{\oras{\b}}}^0 = \bp{\Xb^\prime \Xb}^{-1} s^2 .
+\end{equation}
+
+Since $s^2$ is conditionally unbiased for $\s^2$ it is simple to calculate that $\wh{\Vb}_{\wh{\oras{\b}}}^0$ is conditionally unbiased for $\Vb_{\wh{\oras{\b}}}^0$ under the assumption of homoskedasticity:
+\begin{equation}
+    \notag
+    \E\of{\wh{\Vb}_{\wh{\oras{\b}}}^0 \mid \Xb} = \bp{\Xb^\prime \Xb}^{-1} \E\of{s^2 \mid \Xb} = \bp{\Xb^\prime \Xb}^{-1} \s^2 = \Vb_{\wh{\oras{\b}}}.
+\end{equation}
+\highlightP{This was the dominant covariance matrix estimator in applied econometrics for many years and is still the default method in most regression packages.} For example, Stata uses the covariance matrix estimator (\ref{hansen_eq_4_30}) by default in linear regression unless an alternative is specified.
+
+\highlightP{If the estimator (\ref{hansen_eq_4_30}) is used but the regression error is heteroskedastic it is possible for $\wh{\Vb}_{\wh{\oras{\b}}}^0$ to be quite biased for the correct covariance matrix $\Vb_{\wh{\oras{\b}}} = \bp{\Xb^\prime \Xb}^{-1} \bp{\Xb^\prime \Db \Xb} \bp{\Xb^\prime \Xb}^{-1}$.} 
+
+For example, suppose $k=1$ and $\s_i^2 = X_i^2$ with $\E\bs{X} = 0$. The ratio of the true variance of the least squares estimator to the expectation of the variance estimator is 
+\begin{equation}
+    \notag
+    \frac{\Vb_{\wh{\oras{\b}}}}{\E\bs{\Vb_{\wh{\oras{\b}}^0} \mid \Xb}} = \frac{\sum_{i=1}^{n}X_i^4}{\s^2 \sum_{i=1}^{n} X_i^2} \simeq \frac{\E\bs{X^4}}{\bp{\E\bs{X^2}^2}} \coloneqq \kappa.
+\end{equation}
+Notice that we use the fact that $\s_i^2 = X_i^2$ implies $\s^2 = \E\bs{\s_i^2} = \E\bs{X^2}$. The constant $\kappa$ is the standardized fourth moment (or kurtosis) of the regressor $X$ and can be any number greater than one. For example, if $X \sim N\of{0, \s^2}$, then $\kappa=3$, so the true variance $\Vb_{\wh{\oras{\b}}}$ is three times larger than the expected homoskedastic estimator $\Vb_{\wh{\oras{\b}}^0}$.
+
+\highlightPP{I didn't quite understand the calculation of the above example.}
+%tocheck
+
+\section{Covariance Matrix Estimation Under Heteroskedasticity} \label{hansen_sec_4_15}
+
+Recall that the general form for the covariance matrix is
+
+$$\Vb_{\wh{\oras{\b}}} = \bp{\Xb^\prime \Xb}^{-1} \bp{\Xb^\prime \Db \Xb} \bp{\Xb^\prime \Xb}^{-1},$$
+with $\Db$ defined in (\ref{hansen_eq_4_8}). This depends on the unknown matrix $\Db$ which we can write as 
+\begin{equation}
+    \notag
+    \Db = \operatorname{diag}\of{\s_1^2, \ldots, \s_n^2} = \E\bs{\ora{e}\ora{e}^\prime \mid \Xb} = \E\bs{\wt{\Db} \mid \Xb}
+\end{equation}
+where $\wt{\Db} = \operatorname{diag}\of{e_1^2, \ldots, e_n^2}$. Thus $\wt{\Db}$ is a conditionally unbiased estimator for $\Db$. If the squared errors $e_i^2$ were observable, we could construct an unbiased estimator for $\Vb_{\wh{\oras{\b}}}$ as 
+\begin{equation}
+    \notag
+    \begin{aligned}
+        \Vb_{\wh{\oras{\b}}}^{\text{ideal}} & = \bp{\Xb^\prime \Xb}^{-1} \bp{\Xb^\prime \wt{\Db} \Xb} \bp{\Xb^\prime \Xb}^{-1} \\
+        & = \bp{\Xb^\prime \Xb}^{-1} \bp{\sum_{i=1}^n \ora{X}_i \ora{X}_i^\prime e_i^2} \bp{\Xb^\prime \Xb}^{-1}.
+    \end{aligned}
+\end{equation}
+
+Indeed, 
+\begin{equation}
+    \notag
+    \begin{aligned}
+        \E\bs{\Vb_{\wh{\oras{\b}}}^{\text{ideal}}} & = \bp{\Xb^\prime \Xb}^{-1} \bp{\sum_{i=1}^n X_i X_i^\prime \E\bs{e_i^2 \mid \Xb}} \bp{\Xb^\prime \Xb}^{-1} \\
+        & = \bp{\Xb^\prime \Xb}^{-1} \bp{\sum_{i=1}^n \ora{X}_i \ora{X}_i^\prime \s_i^2} \bp{\Xb^\prime \Xb}^{-1} \\
+        & = \bp{\Xb^\prime \Xb}^{-1} \bp{\Xb^\prime \Db \Xb} \bp{\Xb^\prime \Xb}^{-1} = \Vb_{\wh{\oras{\b}}},
+    \end{aligned}
+\end{equation}
+verifying that $\Vb_{\wh{\oras{\b}}}^{\text{ideal}}$ is unbiased for $\Vb_{\wh{\oras{\b}}}$.
+
+Since the errors $e_i^2$ were unobservable, $\Vb_{\wh{\oras{\b}}}^{\text{ideal}}$ is not a feasible estimator. However, we can replace $e_i^2$ with the squared residuals $\wh{e}_i^2$. Making this substitution we obtain the estimator
+\begin{equation}
+    \label{hansen_eq_4_31}
+    \Vb_{\wh{\oras{\b}}}^{\text{HC0}} = \bp{\Xb^\prime \Xb}^{-1} \bp{\sum_{i=1}^n \ora{X}_i \ora{X}_i^\prime \wh{e}_i^2} \bp{\Xb^\prime \Xb}^{-1} .
+\end{equation}
+The label ``HC'' refers to ``heteroskedasticity-consistent''. The label ``HC0'' refers to this being the \highlightB{baseline heteroskedasticity-consistent covariance matrix estimator}.
+
+We know, however, that $\wh{e}_i^2$ is biased towards zero (recall equation (\ref{hansen_eq_4_22})). To estimate the variance $\s^2$ scales the moment estimator $\wh{\s}^2$ by $n/(n-k)$. Making the same adjustment we obtain the estimator 
+\begin{equation}
+    \label{hansen_eq_4_32}
+    \Vb_{\wh{\oras{\b}}}^{\text{HC1}} = \bp{\frac{n}{n-k}} \bp{\Xb^\prime \Xb}^{-1} \bp{\sum_{i=1}^n \ora{X}_i \ora{X}_i^\prime \wh{e}_i^2} \bp{\Xb^\prime \Xb}^{-1} .
+\end{equation}
+While the scaling by $n/(n-k)$ is ad hoc, HC1 is often recommended over the unscaled HC0 estimator.
+
+Alternatively, we could use the standardized residuals $\ol{e}_i$ or the prediction errors $\wt{e}_i$ , yielding the HC2 and HC3 estimators
+\begin{equation}
+    \label{hansen_eq_4_33}
+    \begin{aligned}
+        \Vb_{\wh{\oras{\b}}}^{\text{HC2}} & = \bp{\Xb^\prime \Xb}^{-1} \bp{\sum_{i=1}^n \ora{X}_i \ora{X}_i^\prime \ol{e}_i^2} \bp{\Xb^\prime \Xb}^{-1} \\
+        & = \bp{\Xb^\prime \Xb}^{-1} \bp{\sum_{i=1}^n \bp{1-h_{ii}}^{-1} \ora{X}_i \ora{X}_i^\prime \wh{e}_i^2} \bp{\Xb^\prime \Xb}^{-1}
+    \end{aligned}
+\end{equation}
+and 
+\begin{equation}
+    \label{hansen_eq_4_34}
+    \begin{aligned}
+        \Vb_{\wh{\oras{\b}}}^{\text{HC3}} & = \bp{\Xb^\prime \Xb}^{-1} \bp{\sum_{i=1}^n \ora{X}_i \ora{X}_i^\prime \wt{e}_i^2} \bp{\Xb^\prime \Xb}^{-1} \\
+        & = \bp{\Xb^\prime \Xb}^{-1} \bp{\sum_{i=1}^n \bp{1-h_{ii}}^{-2} \ora{X}_i \ora{X}_i^\prime \wh{e}_i^2} \bp{\Xb^\prime \Xb}^{-1} .
+    \end{aligned}
+\end{equation}
+
+The four estimators HC0, HC1, HC2 and HC3 are collectively called \highlightB{robust, heteroskedasticity-consistent, or heteroskedasticity-robust} covariance matrix estimators. \highlightP{The degree-of-freedom adjustment in HC1 is the default robust covariance matrix estimator implemented in Stata.}
+
+Since $\bp{1-h_{ii}}^{-2} > \bp{1-h_{ii}}^{-1} > 1$, it is straightforward to show that 
+\begin{equation}
+    \label{hansen_eq_4_35}
+    \Vb_{\wh{\oras{\b}}}^{\text{HC0}} < \Vb_{\wh{\oras{\b}}}^{\text{HC2}} < \Vb_{\wh{\oras{\b}}}^{\text{HC3}} .
+\end{equation}
+The inequality $\Ab < \Bb$ when applied to matrices means that the matrix $\Bb - \Ab$ is positive definite.
+
+In general, the bias of the covariance matrix estimators is complicated but simplify under the assumption of homoskedasticity (Assumption \ref{hansen_ass_4_3}). For example, using (\ref{hansen_eq_4_22}), 
+\begin{equation}
+    \notag
+    \begin{aligned}
+        \mathbb{E}\left[\widehat{\boldsymbol{V}}_{\wh{\oras{\b}}}^{\mathrm{HC0}} \mid \boldsymbol{X}\right] & =\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^n \ora{X}_i \ora{X}_i^{\prime} \mathbb{E}\left[\widehat{e}_i^2 \mid \boldsymbol{X}\right]\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \\
+        & =\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^n \ora{X}_i \ora{X}_i^{\prime}\left(1-h_{i i}\right) \sigma^2\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \\
+        & =\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \sigma^2-\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1}\left(\sum_{i=1}^n \ora{X}_i \ora{X}_i^{\prime} h_{i i}\right)\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \sigma^2 \\
+        & <\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \sigma^2 =\boldsymbol{V}_{\wh{\oras{\b}}} .
+    \end{aligned}
+\end{equation}
+This calculation shows that $\Vb_{\wh{\oras{\b}}}^{\text{HC0}}$ is biased towards zero under homoskedasticity.
+
+By a similar calculation (again under homoskedasticity) we can calculate that the HC2 estimator is unbiased
+\begin{equation}
+    \label{4.36}
+    \E\bs{\Vb_{\wh{\oras{\b}}}^{\text{HC2}} \mid \Xb} = \bp{\Xb^\prime \Xb}^{-1} \s^2.
+\end{equation}
+
+\highlightP{It might seem rather odd to compare the bias of heteroskedasticity-robust estimators under the assumption of homoskedasticity but it does give us a baseline for comparison.}
+
+Another interesting calculation shows that \highlightR{in general (that is, without assuming homoskedasticity) the HC3 estimator is biased away from zero}. Indeed, using the definition of the prediction errors (\ref{hansen_eq_3_44})
+\begin{equation}
+    \notag
+    \wh{e}_i = Y_i - \ora{X}_i^\prime \wh{\oras{\b}}_{-i} = e_i - \ora{X}_i^\prime \bp{\wh{\oras{\b}}_{-i} - \ora{\b}}
+\end{equation}
+so 
+\begin{equation}
+    \notag
+    \wh{e}_i^2 = e_i^2 - 2 \ora{X}_i^\prime \bp{\wh{\oras{\b}}_{-i} - \ora{\b}} e_i + \bp{\ora{X}_i^\prime \bp{\wh{\oras{\b}}_{-i} - \ora{\b}}}^2.
+\end{equation}
+Note that $e_i$ and $\wh{\oras{\b}}_{-i}$ are functions of non-overlapping observations and are thus independent. Hence $\E\bs{\bp{\wh{\oras{\b}}_{-i} - \ora{\b}} e_i \mid \Xb} = 0$ and 
+\begin{equation}
+    \notag
+    \E\bs{\wh{e}_i^2 \mid \Xb} = \s_i^2 + \E\bs{\bp{\ora{X}_i^\prime \bp{\wh{\oras{\b}}_{-i} - \ora{\b}}}^2 \mid \Xb} \geq \s_i^2.
+\end{equation}
+If follows that 
+\begin{equation}
+    \notag
+    \begin{aligned}
+        \E\bs{\Vb_{\wh{\oras{\b}}}^{\text{HC3}} \mid \Xb} & = \bp{\Xb^\prime \Xb}^{-1} \bp{\sum_{i=1}^n \bp{1-h_{ii}}^{-2} \ora{X}_i \ora{X}_i^\prime \E\bs{\wh{e}_i^2} \mid \Xb} \bp{\Xb^\prime \Xb}^{-1} \\
+        & \geq \bp{\Xb^\prime \Xb}^{-1} \bp{\sum_{i=1}^n \ora{X}_i \ora{X}_i^\prime \s_i^2} \bp{\Xb^\prime \Xb}^{-1} = \Vb_{\wh{\oras{\b}}}.
+    \end{aligned}
+\end{equation}
+This means that the HC3 estimator is conservative in the sense that it is weakly larger (in expectation) than the correct variance for any realization of $\Xb$.
+
+\section{Standard Errors} \label{hansen_sec_4_16}
+
+\setcounter{definition}{1}
+\begin{definition} \label{hansen_def_4_2}
+    A \highlightB{standard error} $s\of{\wh{\b}}$ for a real-valued estimator $\wh{\b}$ is an estimator of the standard deviation of the distribution of $\wh{\b}$.
+\end{definition}
+
+When $\ora{\b}$ is a vector with estimator $\wh{\oras{\b}}$ and covariance matrix estimator $\wh{\Vb}_{\wh{\oras{\b}}}$, standard errors for individual elements are the square roots of the diagonal elements of $\wh{\Vb}_{\wh{\oras{\b}}}$. That is,
+\begin{equation}
+    \notag
+    s\of{\wh{\b}_j} = \sqrt{\wh{\Vb}_{\wh{\oras{\b}}_j}} = \sqrt{\bs{\wh{\Vb}_{\wh{\oras{\b}}}}_{jj}}.
+\end{equation}
+When the classical covariance matrix estimator (\ref{hansen_eq_4_30}) is used the standard error takes the simple form
+\begin{equation}
+    \label{hansen_eq_4_37}
+    s\of{\wh{\b}_j} = s \sqrt{\bs{\bp{\Xb^\prime \Xb}^{-1}}_{jj}}.
+\end{equation}
+
+\section{Estimation with Sparse Dummy Variables} \label{hansen_sec_4_18}
+\setcounter{equation}{39}
+
+The heteroskedasticity-robust covariance matrix estimators can be quite imprecise in some contexts. One is in the presence of \highlightB{sparse dummy variables} -- when a dummy variable only takes the value 1 or 0 for very few observations. In these contexts one component of the covariance matrix is estimated on just those few observations and will be imprecise. This is effectively hidden from the user.
+
+To see the problem, let $D$ be a dummy variable and consider the dummy variable regression
+\begin{equation}
+    \label{hansen_eq_4_40}
+    Y = \b_1 D + \b_2 + e.
+\end{equation}
+The number of observations for which $D_i = 1$ is $n_1 = \sum_{i=1}^n D_i$. The number of observations for which $D_i = 0$ is $n_2 = n - n_1$. We say the design is \highlightB{sparse} if $n_1$ or $n_2$ is small.
+
+To simplify our analysis, we take the extreme case $n_1 = 1$. The ideas extend to the case of $n_1 > 1$ but small, though with less dramatic effects.
+
+In the regression model (\ref{hansen_eq_4_40}), we can calculate that the true covariance matrix of the least squares estimator for the coefficients under the simplifying assumption of conditional homoskedasticity is
+\begin{equation}
+    \notag 
+    \Vb_{\wh{\oras{\b}}} = \s^2 \bp{\Xb^{\prime} \Xb}^{-1} = \sigma^2\left(\begin{array}{ll}
+        1 & 1 \\
+        1 & n
+        \end{array}\right)^{-1}=\frac{\sigma^2}{n-1}\left(\begin{array}{cc}
+        n & -1 \\
+        -1 & 1
+        \end{array}\right)
+\end{equation}
+In particular, the variance of the estimator for the coefficient on the dummy variable is 
+\begin{equation}
+    \notag 
+    V_{\wh{\b}_1} = \frac{\sigma^2 \cdot n}{n-1}.
+\end{equation}
+Essentially, the coefficient $\wh{\b}_1$ is estimated from a single observation so its variance is roughly unaffected by sample size. \highlightP{An important message is that certain coefficient estimators in the presence of sparse dummy variables will be imprecise, regardless of the sample size. A large sample alone is not sufficient to ensure precise estimation.}
+
+Now lets examine the standard HC1 covariance matrix estimator (\ref{hansen_eq_4_32}). The regression has perfect fit for the observation for which $D_i = 1$ so the corresponding residual is $\wh{e}_i = 0$. It follows that $D_i \wh{e}_i = 0$ for all $i$ (either $D_i = 0$ or $\wh{e}_i = 0$). Hence 
+\begin{equation}
+    \notag 
+    \sum_{i=1}^n X_i X_i^{\prime} \widehat{e}_i^2=\left(\begin{array}{cc}
+    0 & 0 \\
+    0 & \sum_{i=1}^n \widehat{e}_i^2
+    \end{array}\right)=\left(\begin{array}{cc}
+    0 & 0 \\
+    0 & (n-2) s^2
+    \end{array}\right).
+\end{equation}
+Together we find that 
+\begin{equation}
+    \notag 
+    \begin{aligned}
+    \widehat{V}_{\widehat{\beta}}^{\mathrm{HCl}} & =\left(\frac{n}{n-2}\right) \frac{1}{(n-1)^2}\left(\begin{array}{cc}
+    n & -1 \\
+    -1 & 1
+    \end{array}\right)\left(\begin{array}{cc}
+    0 & 0 \\
+    0 & (n-2) s^2
+    \end{array}\right)\left(\begin{array}{cc}
+    n & -1 \\
+    -1 & 1
+    \end{array}\right) \\
+    & =s^2 \frac{n}{(n-1)^2}\left(\begin{array}{cc}
+    1 & -1 \\
+    -1 & 1
+    \end{array}\right) .
+    \end{aligned}
+\end{equation}
+In particular, the estimator for $V_{\wh{\b}_1}$ is 
+\begin{equation}
+    \notag 
+    \wh{V}_{\wh{\b}_1}^{\text{HC1}} = s^2 \frac{n}{(n-1)^2}.
+\end{equation}
+It has expectation 
+\begin{equation}
+    \notag 
+    \E\bs{\wh{V}_{\wh{\b}_1}^{\text{HC1}}} = \frac{\sigma^2 \cdot n}{(n-1)^2} = \frac{V_{\wh{\b}_1}}{n-1} \ll V_{\wh{\b}_1}.
+\end{equation}
+The variance $\wh{V}_{\wh{\b}_1}^{\text{HC1}}$ is extremely biased for the true variance $V_{\wh{\b}_1}$. The reported
+variance -- and standard error -- is misleadingly small. The variance estimate erroneously mis-states the precision of $\wh{\b}_1$.
+
+The fact that $\wh{V}_{\wh{\b}_1}^{\text{HC1}}$ is biased is unlikely to be noticed by an applied researcher. Nothing in the reported output will alert a researcher to the problem.
+
+One insight is to examine the the leverage values. The single observation observation with $D_i = 1$ has 
+\begin{equation}
+    \notag 
+    h_{i i}=\frac{1}{n-1}\left(\begin{array}{ll}
+        1 & 1
+        \end{array}\right)\left(\begin{array}{cc}
+        n & -1 \\
+        -1 & 1
+        \end{array}\right)\binom{1}{1}=1
+\end{equation}
+This is an extreme leverage value.
+
+A possible solution is to replace the biased covariance matrix estimator $\wh{V}_{\wh{\b}_1}^{\text{HC1}}$ with $\wh{V}_{\wh{\b}_1}^{\text{HC2}}$ or $\wh{V}_{\wh{\b}_1}^{\text{HC3}}$. Neither approach can be done in the sparse case $n_1 = 1$, since they cannot be calculated.
+
+It is unclear if there is a best practice to avoid this situation. Once possibility is to calculate the maximum leverage value. If it is very large calculate the standard errors using several methods to see if variation occurs.
+
+% \section{Computation}
+
+\setcounter{section}{19}
+
+\section{Measures of Fit}
+
+As we described in the previous chapter a commonly reported measure of regression fit is the regression $R^2$ defined as 
+\begin{equation}
+    \notag
+    R^2 = 1 - \frac{\sum_{i=1}^{n} \wh{e}_i^2}{\sum_{i=1}^n \bp{Y_i - \ol{Y}}^2} = 1 - \frac{\wh{\s}^2}{\wh{\s}_Y^2},
+\end{equation}
+where $\wh{\s}_Y^2 = n^{-1} \sum_{i=1}^n \bp{Y_i - \ol{Y}}^2$. $R^2$ is an estimator of the population parameter,
+\begin{equation}
+    \notag
+    \rho^2 = \frac{\var\bs{\ora{X}^\prime \ora{\b}}}{\var\bs{Y}} = 1 - \frac{\s^2}{\s_Y^2}.
+\end{equation}
+
+However, $\wh{\s}^2$ and $\wh{\s}_Y^2$ are biased. Theil (1961) proposed replacing these by the unbiased versions $s^2$ and $$\wt{\s}_Y^2 = \frac{1}{n-1}\sum_{i=1}^{n} \bp{Y_i - \ol{Y}}^2$$ yielding what is known as \highlightB{$R$-bar-squared} or \highlightB{adjusted $R$-squared} 
+\begin{equation}
+    \notag 
+    \ol{R}^2 = 1 - \frac{s^2}{\wt{\s}_Y^2} = 1 - \frac{(n-k)^{-1} \sum_{i=1}^{n} \wh{e}_i^2}{(n-1)^{-1} \sum_{i=1}^n \bp{Y_i - \ol{Y}}^2}.
+\end{equation}
+
+While $\ol{R}^2$ is an improvement on $R^2$, a much better improvement is 
+\begin{equation}
+    \notag
+    \wt{R}^2 = 1 - \frac{\sum_{i=1}^{n} \wt{e}_i^2}{\sum_{i=1}^{n} \bp{Y_i - \ol{Y}}^2} = 1 - \frac{\wt{\s}^2}{\wt{\s}_Y^2}
+\end{equation}
+where $\wt{e}_i$ are the prediction errors (\ref{hansen_eq_3_44}) and $\wt{\s}^2$ is the MSPE from (\ref{hansen_eq_3_46}). As described in Section \ref{hansen_sec_4_14}, $\wt{\s}^2$ is a good estimator of the out-of-sample mean-squared forecast error so \highlightP{$\wt{R}^2$ is a good estimator of the percentage of the forecast variance which is explained by the regression forecast}.
+
+One problem with $R^2$ which is partially corrected by $\ol{R}^2$ and fully corrected by $\wt{R}^2$ is that $R^2$ necessarily increases when regressors are added to a regression model. This occurs because $R^2$ is a negative function of the sum of squared residuals which cannot increase when a regressor is added. \highlightR{In contrast, $\ol{R}^2$ and $\wt{R}^2$ are non-monotonic in the number of regressors. $\wt{R}^2$ can even be negative, which occurs when an estimated model predicts worse than a constant-only model.}
+
+In the statistical literature the MSPE $\wt{\s}^2$ is known as the \highlightB{leave-one-out cross validation} criterion and is popular for model comparison and selection, especially in high-dimensional and non-parametric contexts. It is equivalent to use $\wt{R}^2$ or $\wt{\s}^2$ to compare and select models. Models with high $\wt{R}^2$ (or low $\wt{\s}^2$) are better models in terms of expected out of sample squared error. In contrast, $R^2$ cannot be used for model selection as it necessarily increases when regressors are added to a regression model. $\ol{R}^2$ is also an inappropriate choice for model selection as it tends to select models with too many parameters though a justification of this assertion requires a study of the theory of model selection. Unfortunately, $\ol{R}^2$ is routinely used by some economists, possibly as a hold-over form previous generations.
+
+% \section{Empirical Example}
+
+\setcounter{section}{21}
+\section{Multicollinearity}
+
+If $\Xb^\prime \Xb$ is singular then $\bp{\Xb^\prime \Xb}^{-1}$ and $\wh{\oras{\b}}$ are not defined. This situation is called \highlightB{strict multicollinearity} as the columns of $\Xb$ are linearly dependent, i.e., there is some $\ora{\a} \neq \ora{0}$ such that $\Xb \ora{\a} = 0$. Most commonly this arises when sets of regressors are included which are identically related.
+
+A related common situation is \highlightB{near multicollinearity} which is often called ``multicollinearity'' for brevity. This is the situation when the regressors are highly correlated. An implication of near multicollinearity is that individual coefficient estimates will be imprecise. This is not necessarily a problem for econometric analysis if the reported standard errors are accurate. However, robust standard errors can be sensitive to large leverage values which can occur under near multicollinearity. This leads to the
+undesirable situation where the coefficient estimates are imprecise yet the standard errors are misleadingly small.
+
+\section{Clustered Sampling}
+\setcounter{equation}{42}
+
+In clustering contexts it is convenient to double index the observations as $\bp{Y_{ig}, \ora{X}_{ig}}$ where $g = 1, \ldots, G$ indexes the cluster and $i=1,\ldots,n_g$ indexes the individual within the $g$th cluster. The number of observations per cluster $n_g$ may vary across clusters. The number of clusters is $G$. The total number of observations is $n = \sum_{i=g}^{G}n_g$.
+
+Let $\ora{Y}_g = \bp{Y_{1g}, \ldots, Y_{n_g g}}^\prime$ and $\Xb_g = \bp{\ora{X}_{1g}, \ldots, \ora{X}_{n_g g}}^\prime$ denote the $n_g \times 1$ vector of dependent variables and $n_g \times k$ matrix of regressors for the $g$th cluster. A linear regression model can be written by individual as 
+\begin{equation}
+    \notag
+    Y_{ig} = \ora{X}_{ig}^\prime \ora{\b} + e_{ig}
+\end{equation}
+and using cluster notation as 
+\begin{equation}
+    \label{hansen_eq_4_43}
+    \ora{Y}_g = \Xb_g \ora{\b} + \ora{e}_{g}
+\end{equation}
+where $\ora{e}_g = \bp{e_{1g}, \ldots, e_{n_g g}}^\prime$ is a $n_g \times 1$ error vector. We can also stack the observations into full sample matrices and write the model as
+\begin{equation}
+    \notag
+    \ora{Y} = \Xb \ora{\b} + \ora{e}.
+\end{equation}
+
+The OLS estimator can be written as 
+\begin{equation}
+    \label{hansen_eq_4_44}
+    \begin{aligned}
+        \wh{\oras{\b}} & = \bp{\sum_{g=1}^{G}\sum_{i=1}^{n_g} \ora{X}_{ig}\ora{X}_{ig}^\prime}^{-1} \bp{\sum_{g=1}^{G}\sum_{i=1}^{n_g} \ora{X}_{ig} Y_{ig}} \\
+        & = \bp{\sum_{g=1}^{G} \Xb_{g}^\prime\Xb_{g}}^{-1} \bp{\sum_{g=1}^{G} \Xb_g^\prime \ora{Y}_g} \\
+        & = \bp{\Xb^\prime \Xb}^{-1} \bp{\Xb^\prime \ora{Y}}.
+    \end{aligned}
+\end{equation}
+The residuals are $\wh{e}_{ig} = Y_{ig} - \ora{X}_{ig}^\prime \wh{\oras{\b}}$ in individual level notation and $\wh{\oras{e}}_g = \ora{Y}_g - \Xb_g \wh{\oras{\b}}$ in cluster level notation.
+
+\begin{assumption}
+    \label{hansen_ass_4_4}
+    The clusters $\bp{\ora{Y}_g, \Xb_g}$ are mutually independent across clusters $g$.
+\end{assumption}
+
+The model is a linear regression under the assumption 
+\begin{equation}
+    \label{hansen_eq_4_45}
+    \E\bs{\ora{e}_g \mid \Xb_g} = \ora{0}.
+\end{equation}
+This is the same as assuming that the individual errors are conditionally mean zero
+\begin{equation}
+    \notag
+    \E\bs{e_{ig} \mid \Xb_g} = 0,
+\end{equation}
+or that the conditional mean of $\ora{Y}_g$ given $\Xb_g$ is linear. \highlightP{As in the independent case equation (\ref{hansen_eq_4_45}) means that the linear regression model is correctly specified.} In the clustered regression model this requires that all interaction effects within clusters have been accounted for in the specification of the individual regressors $\ora{X}_{ig}$.
+
+Given (\ref{hansen_eq_4_45}) we can calculate the mean of the OLS estimator. Substituting (\ref{hansen_eq_4_43}) into (\ref{hansen_eq_4_44}) we find 
+\begin{equation}
+    \notag 
+    \wh{\oras{\b}} - \ora{\b} = \bp{\sum_{g=1}^{G} \Xb_{g}^\prime\Xb_{g}}^{-1} \bp{\sum_{g=1}^{G} \Xb_g^\prime \ora{e}_g}.
+\end{equation}
+The mean of $\wh{\oras{\b}} - \ora{\b}$ conditioning on all the regressors is 
+\begin{equation}
+    \notag 
+    \begin{aligned}
+    \mathbb{E}[\wh{\oras{\b}} - \ora{\b} \mid \boldsymbol{X}] & =\left(\sum_{g=1}^G \boldsymbol{X}_g^{\prime} \boldsymbol{X}_g\right)^{-1}\left(\sum_{g=1}^G \boldsymbol{X}_g^{\prime} \mathbb{E}\left[\boldsymbol{e}_g \mid \boldsymbol{X}\right]\right) \\
+    & =\left(\sum_{g=1}^G \boldsymbol{X}_g^{\prime} \boldsymbol{X}_g\right)^{-1}\left(\sum_{g=1}^G \boldsymbol{X}_g^{\prime} \mathbb{E}\left[\boldsymbol{e}_g \mid \boldsymbol{X}_g\right]\right) \\
+    & =0 .
+    \end{aligned}
+\end{equation}
+The fist equality holds by linearity, the second by Assumption \ref{hansen_ass_4_4}, and the third by (\ref{hansen_eq_4_45}).
+
+This shows that OLS is unbiased under clustering if the conditional mean is linear, as summarized in Theorem \ref{hansen_thm_4_9}.
+\begin{theorem}
+    \label{hansen_thm_4_9}
+    In the clustered linear regression model (Assumption \ref{hansen_ass_4_4} and (\ref{hansen_eq_4_45})), $$\E\bs{\wh{\oras{\b}} \mid \Xb} = \ora{\b}.$$
+\end{theorem}
+
+
+
+Now consider the covariance matrix of $\wh{\oras{\b}}$. Let $\bds{\Sigma}_g = \E\bs{\ora{e}_g \ora{e}_g^\prime \mid \Xb_g}$ denote the $n_g \times n_g$ conditional covariance matrix of the errors within the $g$th cluster. Since the observations are independent across clusters,
+\begin{equation}
+    \label{hansen_eq_4_46}
+    \begin{aligned}
+        \var\bs{\bp{\sum_{g=1}^{G} \Xb_g^\prime \ora{e}_g} \mid \Xb} & = \sum_{g=1}^{G} \var\bs{\Xb_g^\prime \ora{e}_g \mid \Xb} \\ 
+        & = \sum_{g=1}^{G} \Xb_g^\prime \var\bs{\ora{e}_g \mid \Xb} \Xb_g \\
+        & = \sum_{g=1}^{G} \Xb_g^\prime \bds{\Sigma}_g \Xb_g \\
+        & \eqqcolon \bds{\O}_n.
+    \end{aligned}
+\end{equation}
+It follows that 
+\begin{equation}
+    \label{hansen_eq_4_47}
+    \Vb_{\wh{\oras{\b}}} = \var\bs{\wh{\oras{\b}} \mid \Xb} = \bp{\Xb^\prime \Xb}^{-1} \bds{\O}_n \bp{\Xb^\prime \Xb}^{-1}.
+\end{equation}
+
+This differs from the formula in the independent case due to the correlation between observations within clusters. The magnitude of the difference depends on the degree of correlation between observations within clusters and the number of observations within clusters. To see this, suppose that all clusters have the same number of observations $n_g = N$, $\E\bs{e_{ig}^2 \mid \Xb_g} = \s^2, \E\bs{e_{ig} e_{\ell g} \mid \Xb_g} = \s^2 \rho$ for $i \neq \ell$, and the regressors $\ora{X}_{ig}$ do not vary within a cluster. In this case, the exact variance of the OLS estimator equals 
+\begin{equation}
+    \label{hansen_eq_4_48}
+    \Vb_{\wh{\oras{\b}}} = \bp{\Xb^\prime \Xb}^{-1} \s^2 \bp{ 1 + \rho \bp{N-1}}.
+\end{equation}
+
+Arellano proposed a cluster-robust covariance matrix estimator which is an extension of the White estimator. Recall that the insight of the White covariance estimator is that the squared error $e_i^2$ is unbiased for $\E\bs{e_i^2 \mid \ora{X}_i} = \s_i^2$. Similarly with cluster dependence the matrix $\ora{e}_g \ora{e}_g^\prime$ is unbiased for $\E\bs{\ora{e}_g \ora{e}_g^\prime \mid \Xb_g} = \bds{\Sigma}_g$. This means that an unbiased estimator for (\ref{hansen_eq_4_46}) is $\wt{\bds{\O}}_n = \sum_{g=1}^{G} \Xb_g^\prime \ora{e}_g \ora{e}_g^\prime \Xb_g$. This is not feasible, but we can replace the unknown errors by the OLS residuals to obtain Arellano's estimator 
+\begin{equation}
+    \label{hansen_eq_4_49}
+    \begin{aligned}
+        \wh{\bds{\O}}_n & = \sum_{g=1}^{G} \Xb_g^\prime \wh{\oras{e}}_g \wh{\oras{e}}_g^\prime \Xb_g \\
+        & = \sum_{g=1}^{G} \sum_{i=1}^{n_g} \sum_{\ell = 1}^{n_g} \ora{X}_{ig} \ora{X}_{\ell g}^\prime \wh{e}_{ig} \wh{e}_{\ell g} \\
+        & = \sum_{g=1}^{G} \bp{\sum_{i=1}^{n_g}\ora{X}_{ig}\wh{e}_{ig}} \bp{\sum_{\ell = 1}^{n_g} \ora{X}_{\ell g} \wh{e}_{\ell g}}^\prime .
+    \end{aligned}
+\end{equation}
+
+Given the expressions (\ref{hansen_eq_4_46})-(\ref{hansen_eq_4_47}), a natural cluster covariance matrix estimator takes the form 
+\begin{equation}
+    \label{hansen_eq_4_50}
+    \Vb_{\wh{\oras{\b}}} = a_n \bp{\Xb^\prime \Xb}^{-1} \wh{\bds{\O}}_n \bp{\Xb^\prime \Xb}^{-1}
+\end{equation}
+where $a_n$ is a possible finite-sample adjustment. The Stata $\mathtt{cluster}$ command uses 
+\begin{equation}
+    \label{hansen_eq_4_51}
+    a_n = \bp{\frac{n-1}{n-k}} \bp{\frac{G}{G-1}}.
+\end{equation}
+The factor $\frac{G}{G-1}$ was derived by Chris Hansen (2007) in the context of equal-sized clusters to improve performance when the number of clusters $G$ is small. The factor $\frac{n-1}{n-k}$ is an ad hoc generalization which nests the adjustment used in (\ref{hansen_eq_4_32}) since $G=n$ implies the simplification an $a_n = n/(n-k)$.
+
+Alternative cluster-robust covariance matrix estimators can be constructed using cluster-level prediction errors such as $\wt{\ora{e}}_g = \ora{Y}_g - \Xb_g \wh{\oras{\b}}_{(-g)}$ where $\wh{\oras{\b}}_{(-g)}$ is the least squares estimator omitting cluster $g$. As in Section 3.20, we can show that 
+\begin{equation}
+    \label{hansen_eq_4_52}
+    \wt{\oras{e}}_g = \bp{\Ib_{n_g} - \Xb_g \bp{\Xb^\prime \Xb}^{-1} \Xb_g^\prime}^{-1} \wh{\oras{e}}_g
+\end{equation}
+and 
+\begin{equation}
+    \label{hansen_eq_4_53}
+    \wh{\oras{\b}}_{(-g)} = \wh{\oras{\b}} - \bp{\Xb^\prime \Xb}^{-1}\Xb_g^\prime\wt{\oras{e}}_g .
+\end{equation}
+We then have the robust covariance matrix estimator
+\begin{equation}
+    \label{hansen_eq_4_54}
+    \wh{\Vb}_{\wh{\oras{\b}}}^{\text{CR3}} = \bp{\Xb^\prime \Xb}^{-1} \bp{\sum_{g=1}^{G} \Xb_g^\prime \wt{\oras{e}}_g \wt{\oras{e}}_g^\prime \Xb_g} \bp{\Xb^\prime \Xb}^{-1}.
+\end{equation}
+The label ``CR'' refers to ``cluster-robust'' and ``CR3'' refers to the analogous formula for the HC3 estimator.
+
+Similarly to the heteroskedastic-robust case you can show that CR3 is a conservative estimator for $\Vb_{\wh{\oras{\b}}}$ in the sense that the conditional expectation for $\wh{\Vb}_{\wh{\oras{\b}}}^{\text{CR3}}$ exceeds $\Vb_{\wh{\oras{\b}}}$. This covariance matrix estimator may be more cumbersome to implement, however, as the cluster-level prediction errors (\ref{hansen_eq_4_52}) cannot be calculated in a simple linear operation and appear to require a loop (across clusters) to calculate.
+
+\section{Inference with Clustered Samples}
+
+\highlightP{In many respects cluster-robust inference should be viewed similarly to heteroskedasticity-robust inference where a ``cluster'' in the cluster-robust case is interpreted similarly to an ``observation'' in the heteroskedasticity-robust case.} 
+
+\highlightP{In particular, the effective sample size should be viewed as the number of clusters not the ``sample size'' $n$.} This is because the cluster-robust covariance matrix estimator effectively treats each cluster as a single observation and estimates the covariance matrix based on the variation across cluster means.
+
+Furthermore, most cluster-robust theory (for example, the work of Chris Hansen (2007)) assumes that the clusters are homogeneous including the assumption that the cluster sizes are all identical. This turns out to be a very important simplication. When this is violated -- \highlightP{when, for example, cluster sizes are highly heterogeneous -- the regression should be viewed as roughly equivalent to the heteroskedastic case with an extremely high degree of heteroskedasticity}.  Cluster sums have variances which are proportional to the cluster sizes so if the latter is heterogeneous so will be the variances of the cluster sums. This also has a large effect on finite sample inference. When clusters are heterogeneous then cluster-robust inference is similar to heteroskedasticity-robust inference with highly heteroskedastic observations.
+
+Put together, if the number of clusters $G$ is small and the number of observations per cluster is highly varied then we should interpret inferential statements with a great degree of caution. Unfortunately, small $G$ with heterogeneous cluster size is commonplace.  Many empirical studies on U.S. data cluster at the ``state'' level meaning that there are 50 or 51 clusters (the District of Columbia is typically treated as a state). The number of observations vary considerably across states since the populations are highly unequal. Thus when you read empirical papers with individual-level data but clustered at the ``state'' level you should be cautious and recognize that this is equivalent to inference with a small number of extremely heterogeneous observations.
+
+A further complication occurs when we are interested in treatment as in the tracking example given in the previous section. In many cases the interest is in the effect of a treatment applied at the cluster level (e.g., schools). In many cases, the number of treated clusters is small relative to the total number of clusters; in an extreme case there is just a single treated cluster. Based on the reasoning given above these applications should be interpreted as equivalent to heteroskedasticity-robust inference with a sparse dummy variable as discussed in Section \ref{hansen_sec_4_18}. As discussed there, standard error estimates can be erroneously small. In the extreme of a single treated cluster (in the example, if only a single school was tracked) then the estimated coefficient on tracking will be very imprecisely estimated yet will have a misleadingly small cluster standard error. In general, reported standard errors will greatly understate the imprecision of parameter estimates.
+
+\section{At What Level to Cluster?}
+
+\highlightP{First, suppose cluster dependence is ignored or imposed at too fine a level (e.g. clustering by households instead of villages). Then variance estimators will be biased as they will omit covariance terms. As correlation is typically positive, this suggests that standard errors will be too small giving rise to spurious indications of significance and precision.}
+
+Second, suppose cluster dependence is imposed at too aggregate a measure (e.g. clustering by states rather than villages). This does not cause bias. But the variance estimators will contain many extra components so the precision of the covariance matrix estimator will be poor. This means that reported standard errors will be imprecise -- more random -- than if clustering had been less aggregate.
+
+These considers show that there is a trade-off between bias and variance in the estimation of the covariance matrix by cluster-robust methods. It is not at all clear -- based on current theory -- what to do. 
+
+One challenge is that in empirical practice many people have observed: ``Clustering is important. Standard errors change a lot whether or not we cluster. Therefore we should only report clustered standard errors.'' The flaw in this reasoning is that we do not know why in a specific empirical example the standard errors change under clustering. One possibility is that clustering reduces bias and thus is more accurate. The other possibility is that clustering adds sampling noise and is thus less accurate. In reality it is likely that both factors are present.
+
+\highlightPP{Recent advancements and survey on clustering standard errors should be reviewed separately.}
