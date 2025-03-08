@@ -1,0 +1,201 @@
+% !TeX encoding = UTF8
+
+\documentclass[12pt]{report} 
+
+%?? paths specification and project-specific commands
+\newcommand{\CiteMathPackage}{math} 
+% \newcommand{\CiteReference}{reference.bib}
+
+%?? preamble
+%?? packages 
+\usepackage{setspace,geometry,fancyvrb,rotating} 
+\usepackage{marginnote,datetime,enumitem} 
+\usepackage{titlesec,indentfirst} 
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools} 
+\usepackage{threeparttable,booktabs,adjustbox} 
+\usepackage{graphicx,epstopdf,float,soul,subfig} 
+\usepackage[toc,page]{appendix} 
+\usdate
+
+%?? page setup 
+\geometry{scale=0.8} 
+\titleformat{\paragraph}[runin]{\itshape}{}{}{}[.] 
+\titlelabel{\thetitle.\;} 
+\setlength{\parindent}{10pt} 
+\setlength{\parskip}{10pt} 
+\usepackage{notomath}
+\usepackage[T1]{fontenc}
+
+%?? bibliography 
+\usepackage{natbib,fancybox,url,xcolor} 
+\definecolor{MyBlue}{rgb}{0,0.2,0.6} 
+\definecolor{MyRed}{HTML}{D2042D}
+\definecolor{MyGreen}{rgb}{0,0.4,0} 
+\definecolor{MyPink}{HTML}{E50379} 
+\definecolor{MyOrange}{HTML}{CC5500} 
+\definecolor{MyPurple}{HTML}{BF40BF}
+\newcommand{\highlightR}[1]{{\emph{\color{MyRed}{#1}}}} 
+\newcommand{\highlightB}[1]{{\emph{\color{MyBlue}{#1}}}} 
+\newcommand{\highlightP}[1]{{\emph{\color{MyPink}{#1}}}} 
+\newcommand{\highlightO}[1]{{\emph{\color{MyOrange}{#1}}}}
+\newcommand{\highlightPP}[1]{{\emph{\color{MyPurple}{#1}}}}
+\usepackage[bookmarks=true,bookmarksnumbered=true,colorlinks=true,linkcolor=MyGreen,citecolor=MyGreen,filecolor=MyBlue,urlcolor=MyGreen]{hyperref} 
+\bibliographystyle{econ}
+
+%?? math and theorem environment 
+% \theoremstyle{definition} 
+% \newtheorem{assumption}{Assumption} 
+% \newtheorem{definition}{Definition} 
+% \newtheorem{theorem}{Theorem} 
+% \newtheorem{proposition}{Proposition} 
+% \newtheorem{lemma}{Lemma} 
+% \newtheorem{example}{Example} 
+% \newtheorem{corollary}[theorem]{Corollary} 
+\usepackage{mathtools} 
+\usepackage{\CiteMathPackage}
+
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{skins, breakable}
+
+%-? definition environment
+%!! definition counter
+\newcounter{definition}
+\renewcommand{\thedefinition}{\arabic{chapter}.\arabic{definition}}
+%!! definition box style
+\tcbset{
+	definitionstyle/.style={
+		breakable,
+		colback=black!10,
+		colframe=black,
+		colbacktitle=gray!15,
+		coltitle=black,
+        coltext=MyBlue,
+		fonttitle=\bfseries,
+		title={#1},
+		enhanced,
+		attach boxed title to top left={yshift=-2mm, xshift=2mm},
+		boxed title style={
+			colframe=black,
+			arc=1mm,
+			outer arc=1.5mm,
+			boxrule=0.5mm,
+		},
+		overlay={},
+	}
+}
+%!! definition environment with name
+\NewDocumentEnvironment{definition}{o}{
+    \refstepcounter{definition}
+    \IfNoValueTF{#1}{
+        \begin{tcolorbox}[definitionstyle={Definition \thedefinition.}]
+    }{
+        \begin{tcolorbox}[definitionstyle={Definition \thedefinition. #1}]
+    }
+    \setlength{\parindent}{10pt}
+}{
+    \end{tcolorbox}
+}
+
+
+%-? assumption environment
+%!! assumption counter
+\newcounter{assumption}
+\renewcommand{\theassumption}{\arabic{chapter}.\arabic{assumption}}
+%!! assumption box style
+\tcbset{
+	assumptionstyle/.style={
+		breakable,
+		colback=black!10,
+		colframe=black,
+		colbacktitle=gray!15,
+		coltitle=black,
+        coltext=MyOrange,
+		fonttitle=\bfseries,
+		title={#1},
+		enhanced,
+		attach boxed title to top left={yshift=-2mm, xshift=2mm},
+		boxed title style={
+			colframe=black,
+			arc=1mm,
+			outer arc=1.5mm,
+			boxrule=0.5mm,
+		},
+		overlay={},
+	}
+}
+%!! assumption environment with name
+\NewDocumentEnvironment{assumption}{o}{
+    \refstepcounter{assumption}
+    \IfNoValueTF{#1}{
+        \begin{tcolorbox}[assumptionstyle={Assumption \theassumption.}]
+    }{
+        \begin{tcolorbox}[assumptionstyle={Assumption \theassumption. #1}]
+    }
+    \setlength{\parindent}{10pt}
+}{
+    \end{tcolorbox}
+}
+
+%-? theorem environment
+%!! theorem counter
+\newcounter{theorem}
+\renewcommand{\thetheorem}{\arabic{chapter}.\arabic{theorem}}
+%!! theorem box style
+\tcbset{
+	theoremstyle/.style={
+		breakable,
+		colback=black!10,
+		colframe=black,
+		colbacktitle=gray!15,
+		coltitle=black,
+        coltext=MyRed,
+		fonttitle=\bfseries,
+		title={#1},
+		enhanced,
+		attach boxed title to top left={yshift=-2mm, xshift=2mm},
+		boxed title style={
+			colframe=black,
+			arc=1mm,
+			outer arc=1.5mm,
+			boxrule=0.5mm,
+		},
+		overlay={},
+	}
+}
+%!! theorem environment with name
+\NewDocumentEnvironment{theorem}{o}{
+    \refstepcounter{theorem}
+    \IfNoValueTF{#1}{
+        \begin{tcolorbox}[theoremstyle={Theorem \thetheorem.}]
+    }{
+        \begin{tcolorbox}[theoremstyle={Theorem \thetheorem. #1}]
+    }
+    \setlength{\parindent}{10pt}
+}{
+    \end{tcolorbox}
+}
+
+\usepackage{chngcntr}
+\counterwithin{definition}{chapter}
+\counterwithin{assumption}{chapter}
+\counterwithin{theorem}{chapter}
+
+
+\begin{document}
+
+\tableofcontents
+
+\input{CH2.tex}
+\input{CH3.tex}
+\input{CH4.tex}
+\input{CH5.tex}
+\input{Ch7.tex}
+% \input{Ch8.tex}
+% \input{Ch9.tex}
+% \input{Ch10.tex}
+
+\appendix
+\input{CH5Prime_NormalDist.tex}
+
+
+\end{document}
