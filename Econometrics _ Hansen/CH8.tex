@@ -1,0 +1,629 @@
+% !TEX root = Econometrics.tex
+
+\chapter{Restricted Estimation}
+
+
+\section{Introduction}
+
+In the linear projection model 
+\begin{equation}
+    \notag
+    \begin{aligned}
+        & Y = \ora{X}^\prime \ora{\b} + e \\
+        & \E\bs{\ora{X} e} = \ora{0}
+    \end{aligned}
+\end{equation}
+a common task is to impose a constraint on the coefficient vector $\ora{\b}$. For example, partitioning $\ora{X}^\prime = \bp{\ora{X}_1^\prime, \ora{X}_2^\prime}^\prime$ and $\ora{\b}^\prime = \bp{\ora{\b}_1^\prime, \ora{\b}_2^\prime}^\prime$, a typical constraint is an exclusion restriction of the form $\ora{\b}_2 = \ora{0}$. In this case, the constrained model is 
+\begin{equation}
+    \notag
+    \begin{aligned}
+        & Y = \ora{X}_1^\prime \ora{\b}_1 + e \\
+        & \E\bs{\ora{X} e} = \ora{0}.
+    \end{aligned}
+\end{equation}
+At first glance this appears the same as the linear projection model but there is one important difference: \highlightP{the error $e$ is uncorrelated with the entire regressor vector, $\ora{X}^\prime = \bp{\ora{X}_1^\prime, \ora{X}_2^\prime}^\prime$ not just the included regressor $\ora{X}_1$}.
+
+In general, a set of $q$ linear constraints on $\ora{\b}$ takes the form 
+\begin{equation}
+    \label{hansen_eq_8_1}
+    \Rb^\prime \ora{\b} = \ora{c}
+\end{equation}
+where $\Rb$ is $k \times q$, $\operatorname*{rand}\of{\Rb} = q < k$, and $\ora{c}$ is $q \times 1$. The assumption that $\Rb$ is full rank means that the constraints are linearly independent (there are no redundant or contradictory constraints). We define the restricted parameter space B as the set of values of $\ora{\b}$ which satisfy (\ref{hansen_eq_8_1}), that is
+\begin{equation}
+    \notag
+    B = \bc{\ora{\b}: \Rb^\prime \ora{\b} = \ora{c}}.
+\end{equation}
+
+We will call (\ref{hansen_eq_8_1}) a \highlightB{constraint} or \highlightB{restriction}. we will call estimators which satisfy (\ref{hansen_eq_8_1}) \highlightB{constrained estimators} and sometimes \highlightB{restricted estimators}.
+
+The constraints $\ora{\b}_2 = \ora{0}$ discussed above is a special case of the constraint (\ref{hansen_eq_8_1}) with 
+\begin{equation}
+    \label{hansen_eq_8_2}
+    \Rb = \bp{\begin{array}{cc}
+        \bds{0} \\
+        \Ib_{k_2}
+    \end{array}}
+\end{equation}
+a selector matrix, and $\ora{c} = \ora{0}$.
+
+Another common restriction is that a set of coefficients sum to a known constant, i.e., $\b_1 + \b_2 =1$. For example, this constraint arises in a constant-return-to-scale production function. Other common restrictions include the equality of coefficients $\b_1 = \b_2$, and equal and offsetting coefficients $\b_1 = -\b_2$.
+
+A typical reason to impose a constraint is that we believe (or have information) that the constraint is true. By imposing the constraint we hope to improve estimation efficiency. \highlightP{The goal is to obtain consistent estimates with reduced variance relative to the unconstrained estimator.}
+
+The questions then arise: How should we estimate the coefficient vector $\ora{\b}$ imposing the linear restriction (\ref{hansen_eq_8_1})? If we impose such constraints what is the sampling distribution of the resulting estimator? How should we calculate standard errors? These are the questions explored in this chapter.
+
+
+\section{Constrained Least Squares}
+
+An intuitively appealing method to estimate a constrained linear projection is to minimize the least squares criterion subject to the constraint $\Rb^{\prime} \ora{\b} = \ora{c}$.
+
+The constrained least squares estimator is
+\begin{equation}
+    \label{hansen_eq_8_3}
+    \wt{\oras{\b}}_{\text{cls}} = \argmin_{\Rb^\prime \oras{\b} = \oras{c}} \operatorname*{SSE}\of{\ora{\b}}
+\end{equation}
+where 
+\begin{equation}
+    \label{hansen_eq_8_4}
+    \operatorname*{SSE}\of{\ora{\b}} = \sum_{i=1}^{n} \bp{Y_i - \ora{X}_i^\prime \ora{\b}}^2 = \ora{Y}^\prime \ora{Y} - 2 \ora{Y}^\prime \Xb \ora{\b} + \ora{\b}^\prime \Xb^\prime \Xb \ora{\b}.
+\end{equation}
+We call $\wt{\oras{\b}}_{\text{cls}}$ the \highlightB{constrained least squares (CLS)} estimator.
+
+One method to find the solution to (\ref{hansen_eq_8_3}) uses the technique of Lagrange multipliers. The problem (\ref{hansen_eq_8_3}) is equivalent to finding the critical points of the Lagrangian
+\begin{equation}
+    \label{hansen_eq_8_5}
+    \Lc\of{\ora{\b}, \ora{\l}} = \frac{1}{2} \operatorname*{SSE}\of{\ora{\b}} + \ora{\l}^\prime \bp{\Rb^\prime \ora{\b} - \ora{c}}
+\end{equation}
+over $\bp{\ora{\b}, \ora{\l}}$, where $\ora{\l}$ is an $s \times 1$ vector of Lagrange multipliers. The solution is a saddlepoint. The first-order conditions for the solution of (\ref{hansen_eq_8_5}) are 
+\begin{equation}
+    \label{hansen_eq_8_6}
+    \frac{\partial}{\partial \oras{\b}} \Lc\of{\wt{\oras{\b}}_{\text{cls}}, \wt{\oras{\l}}_{\text{cls}}} = - \Xb^\prime \ora{Y} + \Xb^\prime \Xb \wt{\oras{\b}}_{\text{cls}} + \Rb \wt{\oras{\l}}_{\text{cls}} = \ora{0}
+\end{equation}
+and 
+\begin{equation}
+    \label{hansen_eq_8_7}
+    \frac{\partial}{\partial \oras{\l}} \Lc\of{\wt{\oras{\b}}_{\text{cls}}, \wt{\oras{\l}}_{\text{cls}}} = \Rb \wt{\oras{\b}}_{\text{cls}} - \ora{c} = \ora{0}.
+\end{equation}
+Premultiplying (\ref{hansen_eq_8_6}) by $\Rb^\prime \bp{\Xb^\prime \Xb}^{-1}$ we obtain 
+\begin{equation}
+    \notag
+    - \Rb^\prime \wh{\oras{\b}} + \Rb^\prime \wt{\oras{\b}}_{\text{cls}} + \Rb^\prime \bp{\Xb^\prime \Xb}^{-1} \Rb \wt{\oras{\l}}_{\text{cls}} = \oras{0},
+\end{equation}
+where $\wh{\oras{\b}} = \bp{\Xb^\prime \Xb}^{-1} \Xb^\prime \ora{Y}$ is the unrestricted least squares estimator. Imposing $\Rb \wt{\oras{\b}}_{\text{cls}} - \ora{c} = \ora{0}$ from (\ref{hansen_eq_8_7}) and solving for $\wt{\oras{\l}}_{\text{cls}}$ we find 
+\begin{equation}
+    \notag
+    \wt{\oras{\l}}_{\text{cls}} = \bs{\Rb^\prime \bp{\Xb^\prime \Xb}^{-1} \Rb}^{-1} \bp{\Rb^\prime \wh{\oras{\b}} - \ora{c}}.
+\end{equation}
+Notice that $\bp{\Xb^\prime \Xb}^{-1} > 0$ and $\Rb$ full rank imply that $\Rb^\prime \bp{\Xb^\prime \Xb} \Rb > 0$ and is hence invertible.
+
+Substituting this expression into (\ref{hansen_eq_8_6}) and solving for $\wt{\oras{\b}}_{\text{cls}}$ we find the solution to the constrained minimization problem (\ref{hansen_eq_8_3})
+\begin{equation}
+    \label{hansen_eq_8_8}
+    \wt{\oras{\b}}_{\text{cls}} = \wh{\oras{\b}}_{\text{ols}} - \left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{R}\left[\boldsymbol{R}^{\prime}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{R}\right]^{-1}\left(\boldsymbol{R}^{\prime} \widehat{\oras{\beta}}_{\mathrm{ols}}-\ora{c}\right)
+\end{equation}
+
+This is a general formula for the CLS estimator. It also can be written as
+\begin{equation}
+    \label{hansen_eq_8_9}
+    \wt{\oras{\b}}_{\text{cls}} = \wh{\oras{\b}}_{\text{ols}} - \wh{\Qb}_{XX}^{-1} \boldsymbol{R}\left(\boldsymbol{R}^{\prime}\wh{\Qb}_{XX}^{-1} \boldsymbol{R}\right)^{-1}\left(\boldsymbol{R}^{\prime} \widehat{\oras{\beta}}_{\text{ols}}-\ora{c}\right)
+\end{equation}
+The CLS residuals are $\wt{e}_i = Y_i - \ora{X}_i^\prime \wt{\oras{\b}}_{\text{cls}}$ and are written in vector notation as $\wt{\ora{e}}$.
+
+
+\section{Exclusion Restriction}
+
+\highlightP{While (\ref{hansen_eq_8_8}) is a general formula for CLS, in most cases the estimator can be found by applying least squares to a reparameterized equation.} To illustrate let us return to the first example presented at the beginning of the chapter -- a simple exclusion restriction. Recall that the unconstrained model is 
+\begin{equation}
+    \label{hansen_eq_8_10}
+    Y = \ora{X}_1^\prime \ora{\b}_1 + \ora{X}_2^\prime \ora{\b}_2 + e,
+\end{equation}
+the exclusion restriction is $\ora{\b}_2 = 0$, and the constrained equation is 
+\begin{equation}
+    \label{hansen_eq_8_11}
+    Y = \ora{X}_1^\prime \ora{\b}_1 + e,
+\end{equation}
+In this setting the CLS estimator is OLS of $Y$ on $\ora{X}_1$. We can write this as 
+\begin{equation}
+    \label{hansen_eq_8_12}
+    \wt{\oras{\b}}_1 = \bp{\sum_{i=1}^{n} \ora{X}_{1i} \ora{X}_{1i}^\prime}^{-1} \bp{\sum_{i=1}^{n} \ora{X}_{1i} Y_i}.
+\end{equation}
+The CLS estimator of the entire vector $\ora{\b}^\prime = \bp{\ora{\b}_1^\prime, \ora{\b}_2^\prime}^\prime$ is 
+\begin{equation}
+    \label{hansen_eq_8_13}
+    \wt{\oras{\b}} = \bp{{\setstretch{2}\begin{array}{cc}
+        \wt{\oras{\b}}_1 \\
+        \ora{0}
+    \end{array}}}.
+\end{equation}
+It is not immediately obvious but (\ref{hansen_eq_8_8}) and (\ref{hansen_eq_8_13}) are algebraically identical. To see this the first component of (\ref{hansen_eq_8_8}) with (\ref{hansen_eq_8_2}) is 
+\begin{equation}
+    \notag
+    \wt{\oras{\b}}_1 = \left(\begin{array}{ll}
+        \boldsymbol{I}_{k_2} & \bds{0}
+        \end{array}\right)\left[\widehat{\oras{\beta}}-\widehat{\boldsymbol{Q}}_{X X}^{-1}\left(\begin{array}{c}
+            \bds{0} \\
+        \boldsymbol{I}_{k_2}
+        \end{array}\right)\left[\left(\begin{array}{ll}
+            \bds{0} & \boldsymbol{I}_{k_2}
+        \end{array}\right) \widehat{\boldsymbol{Q}}_{X X}^{-1}\left(\begin{array}{c}
+            \bds{0} \\
+        \boldsymbol{I}_{k_2}
+        \end{array}\right)\right]^{-1}\left(\begin{array}{ll}
+            \bds{0} & \boldsymbol{I}_{k_2}
+        \end{array}\right) \widehat{\oras{\beta}}\right] .
+\end{equation}
+This then equals 
+\begin{equation}
+    \notag
+    \begin{aligned}
+        \widetilde{{\oras{\beta}}}_1 & =\widehat{\oras{\beta}}_1-\widehat{\boldsymbol{Q}}^{12}\left(\widehat{\boldsymbol{Q}}^{22}\right)^{-1} \widehat{\oras{\beta}}_2 \\
+        & =\widehat{\oras{\beta}}_1+\widehat{\boldsymbol{Q}}_{11 \cdot 2}^{-1} \widehat{\boldsymbol{Q}}_{12} \widehat{\boldsymbol{Q}}_{22}^{-1} \widehat{\boldsymbol{Q}}_{22 \cdot 1} \widehat{\oras{\beta}}_2 \\
+        & =\widehat{\boldsymbol{Q}}_{11 \cdot 2}^{-1}\left(\widehat{\boldsymbol{Q}}_{1 Y}-\widehat{\boldsymbol{Q}}_{12} \widehat{\boldsymbol{Q}}_{22}^{-1} \widehat{\boldsymbol{Q}}_{2 Y}\right) +\widehat{\boldsymbol{Q}}_{11 \cdot 2}^{-1} \widehat{\boldsymbol{Q}}_{12} \widehat{\boldsymbol{Q}}_{22}^{-1} \widehat{\boldsymbol{Q}}_{22 \cdot 1} \widehat{\boldsymbol{Q}}_{22 \cdot 1}^{-1}\left(\widehat{\boldsymbol{Q}}_{2 y}-\widehat{\boldsymbol{Q}}_{21} \widehat{\boldsymbol{Q}}_{11}^{-1} \widehat{\boldsymbol{Q}}_{1 Y}\right) \\
+        & =\widehat{\boldsymbol{Q}}_{11 \cdot 2}^{-1}\left(\widehat{\boldsymbol{Q}}_{1 Y}-\widehat{\boldsymbol{Q}}_{12} \widehat{\boldsymbol{Q}}_{22}^{-1} \widehat{\boldsymbol{Q}}_{21} \widehat{\boldsymbol{Q}}_{11}^{-1} \widehat{\boldsymbol{Q}}_{1 Y}\right) \\
+        & =\widehat{\boldsymbol{Q}}_{11 \cdot 2}^{-1}\left(\widehat{\boldsymbol{Q}}_{11}-\widehat{\boldsymbol{Q}}_{12} \widehat{\boldsymbol{Q}}_{22}^{-1} \widehat{\boldsymbol{Q}}_{21}\right) \widehat{\boldsymbol{Q}}_{11}^{-1} \widehat{\boldsymbol{Q}}_{1 Y} \\
+        & =\widehat{\boldsymbol{Q}}_{11}^{-1} \widehat{\boldsymbol{Q}}_{1 Y}
+    \end{aligned}
+\end{equation}
+which is (\ref{hansen_eq_8_13}) as originally claimed.
+
+
+\section{Finite Sample Properties}
+
+In this section we explore some of the properties of the CLS estimator in the linear regression model
+\begin{equation}
+    \label{hansen_eq_8_14}
+    Y = \ora{X}^\prime \ora{\b} + e
+\end{equation}
+\begin{equation}
+    \label{hansen_eq_8_15}
+    \E \bs{e \mid \ora{X}} = 0,
+\end{equation}
+with restriction 
+\begin{equation}
+    \notag 
+    \Rb^{\prime}\ora{\b} = \ora{c}.
+\end{equation}
+
+First, it is useful to write the estimator and the residuals as linear functions of the error vector. These are algebraic relationships and do not rely on the linear regression assumptions.
+
+\begin{theorem}
+    \label{hansen_thm_8_1}
+    The CLS estimator satisfies 
+
+    \begin{enumerate}[topsep=10pt, leftmargin=20pt, itemsep=0pt, label=(\arabic*)]
+        \setlength{\parskip}{10pt} 
+        \item $\Rb^{\prime}\wh{\oras{\b}} - \ora{c} = \Rb^{\prime} \bp{\Xb^{\prime} \Xb}^{-1} \Xb^{\prime} \oras{e}$.
+        \item $\wt{\oras{\b}}_{\text{cls}} - \ora{\b} = \bp{\bp{\Xb^{\prime} \Xb}^{-1} \Xb^{\prime} - \Ab \Xb^{\prime}} \oras{e}$.
+        \item $\wt{\oras{e}} = \bp{\Ib_n - \Pb + \Xb \Ab \Xb^{\prime}} \oras{e}$.
+        \item $\bp{\Ib_n - \Pb + \Xb \Ab \Xb^{\prime}}$ is symmetric and idempotent.
+        \item $\tr\of{\Ib_n - \Pb + \Xb \Ab \Xb^{\prime}} = n - k + q$.
+    \end{enumerate}
+    The two matrices $\Pb$ and $\Ab$ are defined as
+    \begin{equation}
+        \notag 
+        \Pb = \Xb \bp{\Xb^{\prime} \Xb}^{-1} \Xb^{\prime}
+    \end{equation}
+    and 
+    \begin{equation}
+        \notag 
+        \Ab = \bp{\Xb^{\prime} \Xb}^{-1} \Rb \bp{\Rb^{\prime} \bp{\Xb^{\prime} \Xb}^{-1} \Rb}^{-1} \Rb^{\prime} \bp{\Xb^{\prime} \Xb}^{-1}.
+    \end{equation}
+\end{theorem}
+
+Given the linearity of Theorem \ref{hansen_thm_8_1}(2), it is not hard to show that the CLS estimator is unbiased for $\ora{\b}$.
+\begin{theorem}
+    \label{hansen_thm_8_2}
+    In the linear regression model (\ref{hansen_eq_8_14})-(\ref{hansen_eq_8_15}) under (\ref{hansen_eq_8_1}), 
+    \begin{equation}
+        \notag 
+        \E\bs{\wt{\oras{\b}}_{\text{cls}}} = \ora{\b}.
+    \end{equation}
+\end{theorem}
+
+We can also calculate the covariance matrix of $\wt{\oras{\b}}_{\text{cls}}$. First, for simplicity take the case of conditional homoskedasticity.
+
+\begin{theorem}
+    \label{hansen_thm_8_3}
+    In the homoskedastic linear regression model (\ref{hansen_eq_8_14})-(\ref{hansen_eq_8_15}) with $\E\bs{e \mid \ora{X}} = \s^2$, under (\ref{hansen_eq_8_1}),
+    \begin{equation}
+        \notag 
+        \begin{aligned}
+            \Vb_{\wt{\oras{\b}}}^0 & = \var\bs{\wt{\oras{\b}} \mid \Xb} \\
+            & = \bs{\bp{\Xb^{\prime} \Xb}^{-1} - \bp{\Xb^{\prime} \Xb}^{-1} \Rb \bp{\Rb^{\prime} \bp{\Xb^{\prime} \Xb}^{-1} \Rb}^{-1} \Rb^{\prime} \bp{\Xb^{\prime} \Xb}^{-1}} \s^2 .
+        \end{aligned}
+    \end{equation}
+\end{theorem}
+We use the $\Vb_{\wt{\oras{\b}}}^0$ notation to emphasize that this is the covariance matrix under the assumption of conditional homoskedasticity.
+
+For inference we need an estimate of $\Vb_{\wt{\oras{\b}}}^0$. A natural estimator is 
+\begin{equation}
+    \notag 
+    \wh{\Vb}_{\wt{\oras{\b}}}^0 = \bs{\bp{\Xb^{\prime} \Xb}^{-1} - \bp{\Xb^{\prime} \Xb}^{-1} \Rb \bp{\Rb^{\prime} \bp{\Xb^{\prime} \Xb}^{-1} \Rb}^{-1} \Rb^{\prime} \bp{\Xb^{\prime} \Xb}^{-1}} s_{\text{cls}}^2,
+\end{equation}
+where 
+\begin{equation}
+    \label{hansen_eq_8_16}
+    s_{\text{cls}}^2 = \frac{1}{n - k + q} \sum_{i=1}^{n} \wt{e}_i^2
+\end{equation}
+is the biased-corrected estimator of $\s^2$. Standard errors for the components of $\ora{\b}$ are then found by taking the squares roots of the diagonal elements of $\wh{\Vb}_{\wt{\oras{\b}}}$, for example, 
+\begin{equation}
+    \notag 
+    s\of{\wt{\b}_j} = \sqrt{\bs{\wh{\Vb}_{\wt{\oras{\b}}}}_{jj}}.
+\end{equation}
+
+The estimator (\ref{hansen_eq_8_16}) has the property that it is unbiased for $\s^2$ under conditional homoskedasticity. To see this, using the properties of Theorem \ref{hansen_thm_8_1}, 
+\begin{equation}
+    \label{hansen_eq_8_17}
+    \begin{aligned}
+        \bp{n-k+q} s^{2}_{\text{cls}} & = \wt{\oras{e}}^{\prime}\wt{\oras{e}} \\
+        & = \ora{e}^{\prime} \bp{\Ib_n - \Pb + \Xb \Ab \Xb^{\prime}} \bp{\Ib_n - \Pb + \Xb \Ab \Xb^{\prime}} \ora{e} \\
+        & = \ora{e}^{\prime} \bp{\Ib_n - \Pb + \Xb \Ab \Xb^{\prime}} \ora{e} .
+    \end{aligned}
+\end{equation}
+
+\begin{theorem}
+    \label{hansen_thm_8_4}
+    In the homoskedastic linear regression model (\ref{hansen_eq_8_14})-(\ref{hansen_eq_8_15}) with $\E\bs{e \mid \ora{X}} = \s^2$, under (\ref{hansen_eq_8_1}),
+    \begin{equation}
+        \notag 
+        \E\bs{s_{\text{cls}}^2 \mid \Xb} = \s^2.
+    \end{equation}
+    and 
+    \begin{equation}
+        \notag 
+        \E\bs{\wh{\Vb}_{\wt{\oras{\b}}}^0 \mid \Xb} = {\Vb}_{\wt{\oras{\b}}}^0.
+    \end{equation}
+    Above, $s_{\text{cls}}^2$ and $\wh{\Vb}_{\wt{\oras{\b}}}^0$ are constructed as  
+    \begin{equation}
+        \notag 
+        \wh{\Vb}_{\wt{\oras{\b}}}^0 = \bs{\bp{\Xb^{\prime} \Xb}^{-1} - \bp{\Xb^{\prime} \Xb}^{-1} \Rb \bp{\Rb^{\prime} \bp{\Xb^{\prime} \Xb}^{-1} \Rb}^{-1} \Rb^{\prime} \bp{\Xb^{\prime} \Xb}^{-1}} s_{\text{cls}}^2,
+    \end{equation}
+    \begin{equation}
+        \notag
+        s_{\text{cls}}^2 = \frac{1}{n - k + q} \sum_{i=1}^{n} \wt{e}_i^2
+    \end{equation}
+\end{theorem}
+
+Now consider the distributional properties in the normal regression model $Y = \ora{X}^{\prime}\ora{\b} + e$, with $e \sim N\of{0, \s^2}$. By the linearity of Theorem \ref{hansen_thm_8_1}(2), conditional on $\Xb$, $\wt{\oras{\b}}_{\text{cls}} - \oras{\b}$ is normal. Given Theorem \ref{hansen_thm_8_2} and \ref{hansen_thm_8_3}, we deduce that 
+\begin{equation}
+    \notag 
+    \wt{\oras{\b}}_{\text{cls}} \sim N\of{\oras{\b}, \Vb_{\wt{\oras{\b}}}}^0.
+\end{equation}
+Similarly, using the algebraic representation of $\wt{\oras{e}}$, we can show that $\wt{\oras{e}}$ and $\wt{\oras{\b}}_{\text{cls}}$ are uncorrelated and thus independent. Thus, $s_{\text{cls}}^2$ and $\wt{\oras{\b}}_{\text{cls}}$ are independent.
+
+From (\ref{hansen_eq_8_17}) and the fact that $\bp{\Ib_n - \Pb + \Xb \Ab \Xb^{\prime}}$ is idempotent with rank $n - k + q$ it follows that 
+\begin{equation}
+    \notag 
+    s_{\text{cls}}^2 \sim \s^2 \frac{\chi_{n-k+q}^2}{n-k+q}.
+\end{equation}
+It follows that the $t$-statistic has the exact distribution, 
+\begin{equation}
+    \notag 
+    T=\frac{\widehat{\beta}_j-\beta_j}{s\left(\widehat{\beta}_j\right)} \sim \frac{\mathrm{N}(0,1)}{\sqrt{\chi_{n-k+q}^2 /(n-k+q)}} \sim t_{n-k+q}
+\end{equation}
+a student $t$ distribution with $n - k + q$ degrees of freedom.
+
+The relevance of this calculation is that the ``degree of freedom'' for CLS regression equal $n-k+q$ rather than $n-k$ as in OLS. Essentially the model has $k-q$ free parameters instead of $k$. Another way of thinking about this is that estimation of a model with $k$ coefficients and $q$ restrictions is equivalent to estimation with $k-q$ coefficients.
+
+We summarize the properties of the normal regression model.
+\begin{theorem}
+    \label{hansen_thm_8_5}
+    In the normal linear regression model (\ref{hansen_eq_8_14})-(\ref{hansen_eq_8_15}), with $e \sim N\of{0, \s^2}$, under (\ref{hansen_eq_8_1}),
+    \begin{equation}
+        \notag 
+        \begin{aligned}
+            \widetilde{\oras{\beta}}_{\mathrm{cls}} & \sim \mathrm{~N}\left(\oras{\beta}, V_{\widetilde{\oras{\beta}}}^0\right) \\
+            \frac{(n-k+q) s_{\mathrm{cls}}^2}{\sigma^2} & \sim \chi_{n-k+q}^2 \\
+            T & \sim t_{n-k+q} .
+        \end{aligned}
+    \end{equation}
+\end{theorem}
+
+An interesting relationship is that in the homoskedastic regression model
+\begin{equation}
+    \notag 
+    \begin{aligned}
+        \cov\bs{\wh{\oras{\b}}_{\text{ols}} - \wt{\oras{\b}}_{\text{cls}}, \wt{\oras{\b}}_{\text{cls}} \mid \Xb} & = \E\bs{\bp{\wh{\oras{\b}}_{\text{ols}} - \wt{\oras{\b}}_{\text{cls}}} \bp{\wh{\oras{\b}}_{\text{cls}} - {\oras{\b}}}^{\prime} \mid \Xb} \\
+        & = \Ab \Xb^{\prime} \bp{\Xb \bp{\Xb^{\prime} \Xb}^{-1} - \Xb \Ab} \s^2 = 0.
+    \end{aligned}
+\end{equation}
+This means that $\wh{\oras{\b}}_{\text{ols}} - \wt{\oras{\b}}_{\text{cls}}$ and $\wt{\oras{\b}}_{\text{cls}}$ are conditionally uncorrelated and hence independent. A corollary is 
+\begin{equation}
+    \notag 
+    \cov\bs{\wh{\oras{\b}}_{\text{ols}}, \wt{\oras{\b}}_{\text{cls}} \mid \Xb} = \var\bs{\wt{\oras{\b}}_{\text{cls}} \mid \Xb}.
+\end{equation}
+A second corollary is 
+\begin{equation}
+    \label{hansen_eq_8_18}
+    \begin{aligned}
+        \operatorname{var}\left[\wh{\oras{\b}}_{\text{ols}}-\wt{\oras{\b}}_{\text{cls}} \mid \boldsymbol{X}\right] & =\operatorname{var}\left[\wh{\oras{\b}}_{\text{ols}} \mid \boldsymbol{X}\right]-\operatorname{var}\left[\wt{\oras{\b}}_{\text{cls}} \mid \boldsymbol{X}\right] \\
+        & =\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{R}\left(\boldsymbol{R}^{\prime}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \boldsymbol{R}\right)^{-1} \boldsymbol{R}^{\prime}\left(\boldsymbol{X}^{\prime} \boldsymbol{X}\right)^{-1} \sigma^2 .
+    \end{aligned}
+\end{equation}
+This also shows that the difference between the OLS and CLS variance matrices equals 
+\begin{equation}
+    \notag 
+    \operatorname{var}\left[\wh{\oras{\b}}_{\text{ols}} \mid \boldsymbol{X}\right]-\operatorname{var}\left[\wt{\oras{\b}}_{\text{cls}} \mid \boldsymbol{X}\right] \geq \bds{0}
+\end{equation}
+the final inequality meaning positive semi-definite. It follows that $\var\bs{\wh{\oras{\b}}_{\text{ols}}} \geq \var\bs{\wt{\oras{\b}}_{\text{cls}}}$ in the positive definite sense, and thus CLS is more efficient than OLS. \highlightP{Both estimators are unbiased (in the linear regression model) and CLS has a lower covariance matrix (in the linear homoskedastic regression model).}
+
+The relationship (\ref{hansen_eq_8_18}) is rather interesting and will appear again. \highlightP{The expression says that the variance of the difference between the estimators is equal to the difference between the variances. This is rather special. It occurs generically when we are comparing an efficient and an inefficient estimator.} We call (\ref{hansen_eq_8_18}) the \highlightB{Hausman Equality} as it was first pointed out in econometrics by Hausman (1978).
+
+\section{Minimum Distance}
+
+The previous section explored the finite sample distribution theory under the assumptions of the linear regression model, homoskedastic regression model, and normal regression model. We now return to the general projection model where we do not impose linearity, homoskedasticity, nor normality. We are interested in the question: Can we do better than CLS in this setting?
+
+A minium distance estimator tries to find a parameter value satisfying the constraint which is as close as possible to the unconstrained estimator. \highlightO{Let $\wh{\oras{\b}}$ be the unconstrained least squares estimator}, and for some $k \times k$ positive definite weight matrix $\wh{\Wb} > 0$ define the quadratic criterion function
+\begin{equation}
+    \label{hansen_eq_8_19}
+    J\of{\oras{\b}} = n \bp{\wh{\oras{\b}} - \oras{\b}}^{\prime} \wh{\Wb} \bp{\wh{\oras{\b}} - \oras{\b}}.
+\end{equation}
+This is a (squared) weighted Euclidean distance between $\wh{\oras{\b}}$ and $\ora{\b}$. $J\of{\ora{\b}}$ is small if $\ora{\b}$ is close to $\wh{\oras{\b}}$, and is minimized at zero only if $\oras{\b} = \wh{\oras{\b}}$. A \highlightB{minimum distance estimator} $\wt{\oras{\b}}_{\text{md}}$ for $\oras{\b}$ minimizes $J\of{\oras{\b}}$ subject to the constraint (\ref{hansen_eq_8_1}), that is, 
+\begin{equation}
+    \notag 
+    \wt{\oras{\b}}_{\text{md}} = \argmin_{\Rb^{\prime} \oras{\b} = \ora{c}} J\of{\oras{\b}}.
+\end{equation}
+
+The CLS estimator is the special case when $\wh{\Wb} = \wh{\Qb}_{XX}$ and we write this criterion as 
+\begin{equation}
+    \label{hansen_eq_8_20}
+    J^0\of{\ora{\b}} = n \bp{\wh{\oras{\b}} - \ora{\b}}^{\prime} \wh{\Qb}_{XX} \bp{\wh{\oras{\b}} - \ora{\b}}.
+\end{equation}
+To see the equality of CLS and minimum distance rewrite the least squares criterion as follows. Substitute the unconstrained least squares fitted equation $Y_i = \ora{X}_i^{\prime} \wh{\oras{\b}} + \wh{e}_i$ into $\text{SSE}\of{\ora{\b}}$ to obtain 
+\begin{equation}
+    \label{hansen_eq_8_21}
+    \begin{aligned}
+        \operatorname{SSE}(\oras{\b}) & =\sum_{i=1}^n\left(Y_i-\oras{X}_i^{\prime} \oras{\b}\right)^2 \\
+        & =\sum_{i=1}^n\left(\oras{X}_i^{\prime} \widehat{\oras{\b}}+\widehat{e}_i-\oras{X}_i^{\prime} \oras{\b}\right)^2 \\
+        & =\sum_{i=1}^n \widehat{e}_i^2+(\widehat{\oras{\b}}-\oras{\b})^{\prime}\left(\sum_{i=1}^n \oras{X}_i \oras{X}_i^{\prime}\right)(\widehat{\oras{\b}}-\oras{\b}) \\
+        & =n \widehat{\sigma}^2+J^0(\oras{\b})
+    \end{aligned}
+\end{equation}
+where the third equality uses the fact that $\sum_{i=1}^{n} \ora{X}_i \wh{e}_i = \ora{0}$, and the last line uses 
+\begin{equation}
+    \notag 
+    \sum_{i=1}^n \oras{X}_i \oras{X}_i^{\prime} = n \wh{\Qb}_{XX}.
+\end{equation}
+The expression (\ref{hansen_eq_8_21}) only depends on $\ora{\b}$ through $J^0\of{\ora{\b}}$. Thus minimization of $\operatorname{SSE}\of{\ora{\b}}$ is equivalent to minimization of $J^0\of{\ora{\b}}$, and hence 
+\begin{equation}
+    \notag 
+    \wt{\oras{\b}}_{\text{md}} = \wt{\oras{\b}}_{\text{cls}}, \text{  when  } \wh{\Wb} = \wh{\Qb}_{XX}.
+\end{equation}
+
+We can solve for $\wt{\oras{\b}}_{\text{md}}$ explicitly by the method of Lagrange multipliers. The Lagrangian is 
+\begin{equation}
+    \notag 
+    \Lc\of{\oras{\b}, \oras{\l}} = \frac{1}{2} J\of{\oras{\b} + \wh{\Wb}} + \oras{\l}^{\prime} \bp{\Rb^{\prime} \oras{\b} - \ora{c}}.
+\end{equation}
+The solution to the pair of first order conditions is 
+\begin{equation}
+    \label{hansen_eq_8_22}
+    \widetilde{\oras{\lambda}}_{\text{md}}=n\left(\boldsymbol{R}^{\prime} \widehat{\boldsymbol{W}}^{-1} \boldsymbol{R}\right)^{-1}\left(\boldsymbol{R}^{\prime} \widehat{\oras{\beta}}-\oras{c}\right)
+\end{equation}
+\begin{equation}
+    \label{hansen_eq_8_23}
+    \widetilde{\oras{\beta}}_{\text{md}}=\widehat{\boldsymbol{\beta}}-\widehat{\boldsymbol{W}}^{-1} \boldsymbol{R}\left(\boldsymbol{R}^{\prime} \widehat{\boldsymbol{W}}^{-1} \boldsymbol{R}\right)^{-1}\left(\boldsymbol{R}^{\prime} \widehat{\oras{\beta}}-\oras{c}\right) .
+\end{equation}
+Comparing (\ref{hansen_eq_8_23}) with (\ref{hansen_eq_8_9}) we see that the minimum distance estimator $\wt{\oras{\b}}_{\text{md}}$ specializes to $\wt{\oras{\b}}_{\text{cls}}$ when we set $\wh{\Wb} = \wh{\Qb}_{XX}$.
+
+An obvious question is which weight matrix $\wh{\Wb}$ is best. We will address this question after we derive the asymptotic distribution for a general weight matrix.
+
+\section{Asymptotic Distribution}
+
+We first show that the class of minimum distance estimators are consistent for the population parameters when the constraints are valid.
+
+\begin{assumption}
+    \label{hansen_ass_8_1}
+    $\Rb^{\prime} \ora{\b} = \ora{c}$ where $\Rb$ is $k \times q$ with $\operatorname{rank}\of{\Rb} = q$.
+\end{assumption}
+
+\begin{assumption}
+    \label{hansen_ass_8_2}
+    $\wh{\Wb} \inprob \Wb > \bds{0}$.
+\end{assumption}
+
+\begin{theorem}[Consistency]
+    \label{hansen_thm_8_6}
+
+    Under Assumptions \ref{hansen_ass_7_1}, \ref{hansen_ass_8_1}, $\wt{\oras{\b}}_{\text{md}} \inprob \oras{\b}$, as $n \rightarrow \infty$.
+\end{theorem}
+
+Theorem \ref{hansen_thm_8_6} shows that consistency holds for any weight matrix with a positive definite limit so includes the CLS estimator.
+
+Similarly, the constrained estimators are asymptotically normally distributed.
+
+\begin{theorem}[Asymptotic Normality]
+    \label{hansen_thm_8_7}
+
+    Under Assumptions \ref{hansen_ass_7_2}, \ref{hansen_ass_8_1}, and \ref{hansen_ass_8_2}, 
+    \begin{equation}
+        \notag 
+        \sqrt{n} \bp{\wh{\oras{\b}} - \oras{\b}} \indist N\of{\oras{0}, \Vb_{\oras{\b}}\of{\Wb}},
+    \end{equation}
+    as $n \rightarrow \infty$, where 
+    {\scriptsize
+    \begin{equation}
+        \label{hansen_eq_8_24}
+        \Vb_{\oras{\b}}\of{\Wb} = \Vb_{\oras{\b}} - \Wb^{-1} \Rb \bp{\Rb^{\prime} \Wb^{-1} \Rb}^{-1} \Rb^{\prime} \Vb_{\oras{\b}} - \Vb_{\oras{\b}} \Rb \bp{\Rb^{\prime} \Wb^{-1} \Rb}^{-1} \Rb^{\prime} \Wb^{-1} + \Wb^{-1} \Rb \bp{\Rb^{\prime} \Wb^{-1} \Rb}^{-1} \Rb^{\prime} \Vb_{\oras{\b}} \Rb \bp{\Rb^{\prime} \Wb^{-1} \Rb}^{-1} \Rb^{\prime} \Wb^{-1}
+    \end{equation}}
+    and 
+    \begin{equation}
+        \notag 
+        \Vb_{\oras{\b}} = \Qb_{XX}^{-1} \bds{\O} \Qb_{XX}^{-1}, \quad \bds{\O} = \E\bs{\ora{X} \ora{X}^{\prime} e^2}.
+    \end{equation}
+\end{theorem}
+
+Theorem \ref{hansen_thm_8_7} shows that the minimum distance estimator is asymptotically normal for all positive definite weight matrices. The asymptotic variance depends on $\Wb$. The theorem includes the CLS estimator as a special case by setting $\Wb = \Qb_{XX}$.
+
+\begin{theorem}[Asymptotic Distribution of CLS Estimator]
+    \label{hansen_thm_8_8}
+    Under Assumptions \ref{hansen_ass_7_2} and \ref{hansen_ass_8_1}, as $n \rightarrow \infty$,
+    \begin{equation}
+        \notag 
+        \sqrt{n} \bp{\wt{\oras{\b}}_{\text{cls}} - \oras{\b}} \indist N\of{\oras{0}, \Vb_{\text{cls}}},
+    \end{equation}
+    where 
+    {\scriptsize
+    \begin{equation}
+        \notag 
+        \Vb_{\text{cls}} = \Vb_{\oras{\b}} - \Qb_{XX}^{-1} \Rb \bp{\Rb^{\prime} \Qb_{XX}^{-1} \Rb}^{-1} \Rb^{\prime} \Vb_{\oras{\b}} - \Vb_{\oras{\b}} \Rb \bp{\Rb^{\prime} \Qb_{XX}^{-1} \Rb}^{-1} \Rb^{\prime} \Qb_{XX}^{-1} + \Qb_{XX}^{-1} \Rb \bp{\Rb^{\prime} \Qb_{XX}^{-1} \Rb}^{-1} \Rb^{\prime} \Vb_{\oras{\b}} \Rb \bp{\Rb^{\prime} \Qb_{XX}^{-1} \Rb}^{-1} \Rb^{\prime} \Qb_{XX}^{-1}.
+    \end{equation}}
+\end{theorem}
+
+\section{Variance Estimation and Standard Errors}
+
+Earlier we introduced the covariance matrix estimator under the assumption of conditional homoskedasticity. We now introduce an estimator which does not impose homoskedasticity.
+
+The asymptotic covariance matrix $\Vb_{\text{cls}}$ may be estimated by replacing $\Vb_{\oras{\b}}$ with a consistent estimator such as $\wh{\Vb}_{\oras{\b}}$. A more efficient estimator can be obtained by using the restricted coefficient estimator which we now show. Given the constrained least squares residuals $\wt{e}_i = Y_i = \oras{X}_i \wt{\oras{\b}}_{\text{cls}}$ we can estimate the matrix $\bds{\O}$ by 
+\begin{equation}
+    \notag 
+    \wt{\bds{\O}} = \frac{1}{n-k+q} \sum_{i=1}^{n} \oras{X}_i \oras{X}_i^{\prime} \wt{e}_i^2.
+\end{equation}
+Notice that we have used an adjusted degrees of freedom. This is an ad hoc adjustment designed to mimic that used for estimation of the error variance $\s^2$. The moment estimator of $\Vb_{\oras{\b}}$ is 
+\begin{equation}
+    \notag 
+    \wt{\Vb}_{\oras{\b}} = \wh{\Qb}_{XX}^{-1} \wt{\bds{\O}} \wh{\Qb}_{XX}^{-1}, 
+\end{equation}
+and that for $\Vb_{\text{cls}}$ is substituting $\wt{\Vb}_{\oras{\b}}$ for $\Vb_{\oras{\b}}$, and $\wh{\Qb}_{XX}^{-1}$ for $\Qb_{XX}^{-1}$ in the expression for $\Vb_{\text{cls}}$ in Theorem \ref{hansen_thm_8_8}.
+
+We can calculate standard errors for any linear combination $\oras{h}^{\prime} \wt{\oras{\b}}_{\text{cls}}$ such that $h$ does not lie in the range space of $\Rb$. The standard error for $\oras{h}^{\prime} \wt{\oras{\b}}_{\text{cls}}$ is
+\begin{equation}
+    \notag 
+    s\of{\oras{h}^{\prime} \wt{\oras{\b}}_{\text{cls}}} = \sqrt{ n^{-1} \oras{h}^{\prime} \wt{\Vb}_{\oras{\b}} \oras{h}}.
+\end{equation}
+
+\section{Efficient Minimum Distance Estimator}
+
+Theorem \ref{hansen_thm_8_7} shows that minimum distance estimators, which include CLS as a special case, are asymptotically normal with an asymptotic covariance matrix which depends on the weight matrix $\Wb$. The asymptotically optimal weight matrix is the one which minimizes the asymptotic variance $\Vb_{\oras{\b}}\of{\Wb}$. This turns out to be $\Wb = \Vb_{\oras{\b}}^{-1}$ as shown in Theorem \ref{hansen_thm_8_9} below. Since $\Vb_{\oras{\b}}^{-1}$ is unknown in weight matrix cannot be used for a feasible estimator but we can replace $\Vb_{\oras{\b}}^{-1}$ with a consistent estimator $\wh{\Vb}_{\oras{\b}}^{-1}$ and the asymptotic distribution (and efficiency) are unchanged. We call the minimum distance estimator with $\wh{\Wb} = \wh{\Vb}_{\oras{\b}}^{-1}$ the \highlightB{efficient minimum distance estimator} and takes the form 
+\begin{equation}
+    \label{hansen_eq_8_25}
+    \wt{\oras{\b}}_{\text{emd}} = \wh{\oras{\b}} - \wh{\Vb}_{\oras{\b}} \Rb \bp{\Rb^{\prime} \wh{\Vb}_{\oras{\b}} \Rb}^{-1} \bp{\Rb^{\prime} \wh{\oras{\b}} - \oras{c}}.
+\end{equation}
+The asymptotic distribution of (\ref{hansen_eq_8_25}) can be deduced from Theorem \ref{hansen_thm_8_7}.
+
+\begin{theorem}[Efficient Minimum Distance Estimator]
+    \label{hansen_thm_8_9}
+    Under Assumptions \ref{hansen_ass_7_2} and \ref{hansen_ass_8_1}, 
+    \begin{equation}
+        \notag 
+        \sqrt{n} \bp{\wt{\oras{\b}}_{\text{emd}} - \oras{\b}} \indist N\of{\oras{0}, \Vb_{\oras{\b}, \text{emd}}}
+    \end{equation}
+    as $n \rightarrow \infty$, where 
+    \begin{equation}
+        \label{hansen_eq_8_26}
+        \Vb_{\oras{\b}, \text{emd}} = \Vb_{\oras{\b}} - \Vb_{\oras{\b}} \Rb \bp{\Rb^{\prime} \Vb_{\oras{\b}} \Rb}^{-1} \Rb^{\prime} \Vb_{\oras{\b}}. 
+    \end{equation}
+    Since 
+    \begin{equation}
+        \label{hansen_eq_8_27}
+        \Vb_{\oras{\b}, \text{emd}} \leq \Vb_{\oras{\b}} 
+    \end{equation}
+    the estimator (\ref{hansen_eq_8_25}) has lower asymptotic variance than the unrestricted estimator. Furthermore, for any $\Wb$, 
+    \begin{equation}
+        \label{hansen_eq_8_28}
+        \Vb_{\oras{\b}, \text{emd}} \leq \Vb_{\oras{\b}}\of{\Wb}
+    \end{equation}
+    so (\ref{hansen_eq_8_25}) is asymptotically efficient in the class of minimum distance estimators. 
+\end{theorem}
+
+Theorem \ref{hansen_thm_8_9} shows that the minimum distance estimator with the smallest asymptotic variance is (\ref{hansen_eq_8_25}). One implication is that the constrained least squares estimator is generally inefficient. The interesting exception is the case of conditional homoskedasticity in which case the optimal weight matrix is $\Wb = \bp{\Vb_{\oras{\b}}^0}^{-1}$, so in this case CLS is an efficient minimum distance estimator. Otherwise when the error is conditionally heteroskedastic there are asymptotic efficiency gains by using minimum distance rather than least squares.
+
+The fact that CLS is generally inefficient is counter-intuitive and requires some reflection to understand. Standard intuition suggests to apply the same estimation method (least squares) to the unconstrained and constrained models and this is the common empirical practice. But Theorem \ref{hansen_thm_8_9} shows that this is inefficient. Why? \highlightP{The reason is that the least squares estimator does not make use of the regressor $\ora{X}_2$. It ignores the information $\E\bs{\ora{X}_2 e} = \ora{0}$. This information is relevant when the error is heteroskedastic and the excluded regressors are correlated with the included regressors.}
+
+Inequality (\ref{hansen_eq_8_27}) shows that the efficient minimum distance estimator $\wt{\oras{\b}}_{\text{emd}}$ has a smaller asymptotic variance than the unrestricted least squares estimator $\wh{\oras{\b}}$. This means that efficient estimation is attained by imposing correct restrictions when we use the minimum distance method.
+
+\section{Exclusion Restriction Revisited}
+
+We return to the example of estimation with a simple exclusion restriction. The model is 
+\begin{equation}
+    \notag 
+    Y = \ora{X}_1 \b_1 + \ora{X}_2 \b_2 + e,
+\end{equation}
+with the exclusion restriction $\ora{\b}_2 = \ora{0}$. We have introduced three estimators of $\ora{\b}_1$. The first is unconstrained least squares applied to (\ref{hansen_eq_8_10}) which can be written as $\wh{\oras{\b}}_1 = \wh{\Qb}_{11 \cdot 2}^{-1} \wh{\Qb}_{1 Y \cdot 2}$. From Theorem \ref{hansen_thm_7_9} and equation (\ref{hansen_eq_7_14}) its asymptotic variance is 
+\begin{equation}
+    \notag 
+    \operatorname{avar}\left[\widehat{\oras{\beta}}_1\right]=\boldsymbol{Q}_{11 \cdot 2}^{-1}\left(\bds{\Omega}_{11}-\boldsymbol{Q}_{12} \boldsymbol{Q}_{22}^{-1} \bds{\Omega}_{21}-\bds{\Omega}_{12} \boldsymbol{Q}_{22}^{-1} \boldsymbol{Q}_{21}+\boldsymbol{Q}_{12} \boldsymbol{Q}_{22}^{-1} \bds{\Omega}_{22} \boldsymbol{Q}_{22}^{-1} \boldsymbol{Q}_{21}\right) \boldsymbol{Q}_{11 \cdot 2}^{-1} .
+\end{equation}
+
+The second estimator of $\ora{\b}_1$ is CLS, which can be written as $\wt{\oras{\b}}_1 = \wh{\Qb}_{11}^{-1} \wh{\Qb}_{1Y}$. Its asymptotic variance can be deduced from Theorem \ref{hansen_thm_8_8} but is simpler to apply the VLT directly to show that 
+\begin{equation}
+    \label{hansen_eq_8_29}
+    \operatorname{avar}\bs{\wt{\oras{\b}}_1} = \Qb_{11}^{-1} \bds{\O}_{11} \Qb_{11}^{-1}.
+\end{equation}
+
+The third estimator of $\ora{\b}_1$ is efficient minimum distance. Applying (\ref{hansen_eq_8_25}), it equals 
+\begin{equation}
+    \label{hansen_eq_8_30}
+    \ol{\b}_1 = \wh{\b}_1 - \wh{\Vb}_{12} \wh{\Vb}_{22}^{-1} \wh{\oras{\b}_2}
+\end{equation}
+where we have partitioned 
+\begin{equation}
+    \notag 
+    \wh{\Vb}_{\oras{\b}} = \bp{\begin{array}{cc}
+        \wh{\Vb}_{11} & \wh{\Vb}_{12} \\
+        \wh{\Vb}_{21} & \wh{\Vb}_{22}
+    \end{array}}.
+\end{equation}
+From Theorem \ref{hansen_thm_8_9} its asymptotic variance is 
+\begin{equation}
+    \label{hansen_eq_8_31}
+    \operatorname{avar}\bs{\ol{\b}_1} = \Vb_{11} - \Vb_{12} \Vb_{22}^{-1} \Vb_{21}.
+\end{equation}
+
+\highlightP{In general the three estimators are different and they have different asymptotic variances.} It is instructive to compare the variances to assess whether or not the constrained estimator is more efficient than the unconstrained estimator.
+
+First, assume conditional homoskedasticity. In this case the two covariance matrices simply to 
+\begin{equation}
+    \notag 
+    \operatorname{avar}\bs{\wh{\oras{\b}}_1} = \s^2 \Qb_{11 \cdot 2}^{-1}, \quad \operatorname{avar}\bs{\wt{\oras{\b}}_1} = \s^2 \Qb_{11}^{-1}.
+\end{equation}
+If $\Qb_{12} = \bds{0}$ (so $\ora{X}_1$ and $\ora{X}_2$ are uncorrelated) then these two variance matrices are equal and the two estimators have equal asymptotic efficiency. Otherwise, since $\Qb_{12} \Qb_{22}^{-1} \Qb_{21} \geq \bds{0}$, then $\Qb_{11} \geq \Qb_{11 \cdot 2}$ and consequently 
+\begin{equation}
+    \notag 
+    \Qb_{11}^{-1} \s^2 \leq \Qb_{11 \cdot 2}^{-1} \s^2.
+\end{equation}
+This means that under conditional homoskedasticity $\wt{\oras{\b}}_1$ has a lower asymptotic covariance matrix than $\wh{\oras{\b}}_1$. \highlightP{Therefore in this context constrained least squares is more efficient than unconstrained least squares. This is consistent with our intuition that imposing a correct restriction (excluding an irrelevant regressor) improves estimation efficiency.}
+
+\highlightP{However, in the general case of conditional heteroskedasticity this ranking is not guaranteed. In fact what is really amazing is that the variance ranking can be reversed. The CLS estimator can have a larger asymptotic variance than the unconstrained least squares estimator.} when the estimation method is least squares, deleting the irrelevant variable $\ora{X}_2$ can actually increase estimation variance, or equivalently, adding an irrelevant variable can decrease the estimation variance.
+
+
+To repeat this unexpected finding, we have shown that it is possible for least squares applied to the short regression (\ref{hansen_eq_8_11}) to be less efficient for estimation of $\ora{\b}_1$ than least squares applied to the long regression (\ref{hansen_eq_8_10}) even though the constraint $\ora{\b}_2 = \ora{0}$ is valid! This result is strongly counter-intuitive. It
+seems to contradict our initial motivation for pursuing constrained estimation -- to improve estimation efficiency. It turns out that a more refined answer is appropriate. \highlightP{Constrained estimation is desirable but not necessarily CLS. While least squares is asymptotically efficient for estimation of the unconstrained projection model it is not an efficient estimator of the constrained projection model.}
+
+\section{Variance and Standard Error Estimation}
+\setcounter{equation}{34}
+
+We have discussed covariance matrix estimation for CLS but not yet for the EMD estimator. The asymptotic covariance matrix (\ref{hansen_eq_8_26}) may be estimated by replacing $\Vb_{\oras{\b}}$ with a consistent estimator. It is best to construct the variance estimate using $\wt{\oras{\b}}_{\text{emd}}$. The EMD residuals are $\wt{e}_i = Y_i - \ora{X}_i^{\prime} \wt{\oras{\b}}_{\text{emd}}$. Using these we can estimate the matrix $\bds{\O} = \E\bs{\ora{X}\ora{X}^{\prime} e^2}$ by 
+\begin{equation}
+    \notag 
+    \wt{\bds{\O}} = \frac{1}{n-k+q} \sum_{i=1}^{n} \ora{X}_i \ora{X}_i^{\prime} \wt{e}_i^2.
+\end{equation}
+Following the formula for CLS we recommend an adjusted degrees of freedom. Given $\wt{\bds{\O}}$ the moment estimator of $\Vb_{\oras{\b}}$ is 
+\begin{equation}
+    \notag 
+    \wt{\Vb}_{\oras{\b}} = \wh{\Qb}_{XX}^{-1} \wt{\bds{\O}} \wh{\Qb}_{XX}^{-1}.
+\end{equation}
+Given this, we construct the variance estimator 
+\begin{equation}
+    \label{hansen_eq_8_35}
+    \wt{\Vb}_{\oras{\b}, \text{emd}} = \wt{\Vb}_{\oras{\b}} - \wt{\Vb}_{\oras{\b}} \Rb \bp{\Rb^{\prime} \wt{\Vb}_{\oras{\b}} \Rb}^{-1} \Rb^{\prime} \wt{\Vb}_{\oras{\b}}.
+\end{equation}
+A standard error for $\ora{h}^{\prime}\wt{\oras{\b}}_{\text{emd}}$ is then 
+\begin{equation}
+    \label{hansen_eq_8_36}
+    s\of{\oras{h}^{\prime} \wt{\oras{\b}}_{\text{emd}}} = \sqrt{n^{-1} \oras{h}^{\prime} \wt{\Vb}_{\oras{\b}, \text{emd}} \oras{h}}.
+\end{equation}
+
+\section{Hausman Equality}
+
+From (\ref{hansen_eq_8_25}) we have 
+\begin{equation}
+    \notag 
+    \sqrt{n}\bp{\wh{\oras{\b}}_{\text{ols}} - \wt{\oras{\b}}_{\text{emd}}} \indist N\of{\oras{0}, \Vb_{\oras{\b}} \Rb \bp{\Rb^{\prime} \Vb_{\oras{\b}} \Rb}^{-1} \Rb^{\prime} \Vb_{\oras{\b}}}.
+\end{equation}
+It follows that the asymptotic variances of the estimators satisfy the relationship
+\begin{equation}
+    \label{hansen_eq_8_37}
+    \operatorname{avar}\bs{\wh{\oras{\b}}_{\text{ols}} - \wt{\oras{\b}}_{\text{emd}}} = \operatorname{avar}\bs{\wt{\oras{\b}}_{\text{emd}}} - \operatorname{avar}\bs{\wh{\oras{\b}}_{\text{ols}}}.
+\end{equation}
+We call (\ref{hansen_eq_8_37}) the Hausman Equality: the asymptotic variance of the difference between an efficient and another estimator is the difference in the asymptotic variances.
